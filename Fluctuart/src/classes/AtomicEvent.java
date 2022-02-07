@@ -7,6 +7,8 @@ import interfaces.AtomicEventI;
 
 public abstract class AtomicEvent extends Event implements AtomicEventI {
 	
+	private static final long serialVersionUID = 8860251323779443274L;
+
 	public AtomicEvent(LocalTime time) {
 		super(time);
 	}

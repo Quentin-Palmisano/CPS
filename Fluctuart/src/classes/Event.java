@@ -8,6 +8,8 @@ import interfaces.EventI;
 
 public abstract class Event implements EventI {
 	
+	private static final long serialVersionUID = 2219550166009750377L;
+	
 	protected LocalTime time;
 	protected HashMap<String, Serializable> property;
 
