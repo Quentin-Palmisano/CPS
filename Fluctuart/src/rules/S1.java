@@ -2,6 +2,7 @@ package rules;
 
 import java.util.ArrayList;
 
+import correlator.HealthCorrelatorStateI;
 import events.HealthEvent;
 import interfaces.CorrelatorStateI;
 import interfaces.EventBaseI;
@@ -12,6 +13,8 @@ public class S1 implements RuleI {
 
 	public S1() {
 	}
+	
+	EventI matched;
 
 	@Override
 	public ArrayList<EventI> match(EventBaseI eb) {
@@ -21,6 +24,7 @@ public class S1 implements RuleI {
 			if (e instanceof HealthEvent && e.hasProperty("type")
 					&& ((String)e.getPropertyValue("type")).equals("emergency")) {
 				he = e;
+				matched = e;
 			}
 		}		
 		if (he != null) {
@@ -39,20 +43,21 @@ public class S1 implements RuleI {
 
 	@Override
 	public boolean filter(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
-		// TODO Auto-generated method stub
-		return false;
+		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
+		return samuState.isAmbulanceAvailable();
 	}
 
 	@Override
 	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
-		// TODO Auto-generated method stub
-
+		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
+		samuState.callAmbulance();
 	}
 
 	@Override
 	public void update(ArrayList<EventI> matchedEvents, EventBaseI eb) {
-		// TODO Auto-generated method stub
-
+		for(EventI e : matchedEvents) {
+			eb.removeEvent(e);
+		}
 	}
 
 }

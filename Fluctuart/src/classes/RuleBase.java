@@ -7,9 +7,13 @@ import interfaces.EventBaseI;
 import interfaces.EventI;
 import interfaces.RuleI;
 
-public abstract class RuleBase {
+public class RuleBase {
 
 	private ArrayList<RuleI> rules;
+	
+	public RuleBase() {
+		this.rules = new ArrayList<>();
+	}
 	
 	public RuleBase(ArrayList<RuleI> rules) {
 		this.rules = rules;
@@ -39,7 +43,6 @@ public abstract class RuleBase {
 		boolean b = false;
 		while(fireFirstOn(eb, c)) b=true;
 		return b;
-		
 	}
 
 }

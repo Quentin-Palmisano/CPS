@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import interfaces.EventBaseI;
 import interfaces.EventI;
 
-public abstract class EventBase implements EventBaseI {
+public class EventBase implements EventBaseI {
 	
 	protected ArrayList<EventI> events;
 
@@ -42,12 +42,14 @@ public abstract class EventBase implements EventBaseI {
 
 	@Override
 	public void clearEvents(Duration d) {
+		ArrayList<EventI> toDelete = new ArrayList<>();
 		for(EventI e : events) {
 			Duration d1 = Duration.between(e.getTimeStamp(), LocalTime.now());
 			if (d.compareTo(d1) >= 0) {
-				events.remove(e);
+				toDelete.add(e);
 			}
 		}
+		events.removeAll(toDelete);
 	}
 
 }

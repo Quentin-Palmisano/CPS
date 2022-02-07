@@ -11,8 +11,8 @@ public abstract class Event implements EventI {
 	protected LocalTime time;
 	protected HashMap<String, Serializable> property;
 
-	public Event() {
-		this.time = LocalTime.now();
+	public Event(LocalTime time) {
+		this.time = time;
 		property = new HashMap<String, Serializable>();
 	}
 

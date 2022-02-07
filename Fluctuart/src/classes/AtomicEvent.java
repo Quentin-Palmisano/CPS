@@ -1,13 +1,14 @@
 package classes;
 
 import java.io.Serializable;
+import java.time.LocalTime;
 
 import interfaces.AtomicEventI;
 
 public abstract class AtomicEvent extends Event implements AtomicEventI {
 	
-	public AtomicEvent() {
-		super();
+	public AtomicEvent(LocalTime time) {
+		super(time);
 	}
 
 	@Override

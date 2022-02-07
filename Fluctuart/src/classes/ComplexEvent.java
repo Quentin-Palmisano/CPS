@@ -1,5 +1,6 @@
 package classes;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import interfaces.ComplexEventI;
@@ -9,8 +10,8 @@ public abstract class ComplexEvent extends Event implements ComplexEventI {
 	
 	protected ArrayList<EventI> events;
 	
-	public ComplexEvent() {
-		super();
+	public ComplexEvent(LocalTime time) {
+		super(time);
 		this.events = new ArrayList<EventI>();
 	}
 
