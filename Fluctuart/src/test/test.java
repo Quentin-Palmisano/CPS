@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import java.text.RuleBasedCollator;
 import java.time.Duration;
 import java.time.LocalTime;
-import java.util.Calendar;
 
 import org.junit.jupiter.api.Test;
 
@@ -19,14 +18,14 @@ import events.SignalEvent;
 class test {
 
 	@Test
-	void test() {
+	void healthEventTest() {
 		HealthEvent hp = new HealthEvent(LocalTime.now());
 		hp.putProperty("type", "emergency");
 		assert ((String)hp.getPropertyValue("type")).equals("emergency");
 	}
 	
 	@Test
-	void clear() {
+	void clearEventTest() {
 		EventBase eb = new EventBase();
 		eb.addEvent(new HealthEvent(LocalTime.now().minusMinutes(10)));
 		eb.addEvent(new SignalEvent(LocalTime.now()));
@@ -37,7 +36,7 @@ class test {
 	boolean called;
 	
 	@Test
-	void S1() {
+	void S1Test() {
 		
 		RuleBase rulebase = new RuleBase();
 		rulebase.addRule(new rules.S1());
