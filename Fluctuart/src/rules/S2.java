@@ -2,22 +2,21 @@ package rules;
 
 import java.util.ArrayList;
 
-import correlator.HealthCorrelatorStateI;
-import interfaces.CorrelatorStateI;
-import interfaces.EventI;
+import correlator.*;
+import interfaces.*;
 
 public class S2 extends S1 {
 
 	@Override
 	public boolean filter(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
-		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
+		Health2CorrelatorStateI samuState = (Health2CorrelatorStateI)c;
 		return samuState.isAmbulanceAvailable();
 	}
 
 	@Override
 	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
-		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
-		samuState.callAmbulance();
+		Health2CorrelatorStateI samuState = (Health2CorrelatorStateI)c;
+		samuState.spreadEvent();
 	}
 	
 }

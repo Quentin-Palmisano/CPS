@@ -1,64 +1,25 @@
 package composants;
 
-import composants.interfaces.CEPBusManagementCI;
-import composants.interfaces.EventEmissionCI;
+import java.io.Serializable;
+
+import composants.interfaces.*;
 import interfaces.EventI;
 
-public class CEPBus implements EventEmissionCI, CEPBusManagementCI{
+public class CEPBus implements EventEmissionCI, Serializable{
+
+	private static final long serialVersionUID = 6632854676686822297L;
 
 	@Override
 	public void sendEvent(String emitterURI, EventI event) {
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void sendEvents(String emitterURI, EventI[] events) {
+		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public String registerEmitter(String uri) {
-		return null;
-	}
-
-	@Override
-	public void unregisterEmitter(String uri) {
-		
-	}
-
-	@Override
-	public String registerCorrelator(String uri, String inboundPortURI) {
-		return null;
-	}
-
-	@Override
-	public void unregisterCorrelator(String uri) {
-		
-	}
-
-	@Override
-	public void registerExecutor(String uri, String inboundPortURI) {
-		
-	}
-
-	@Override
-	public String getExecutorInboundPortURI(String uri) {
-		return null;
-	}
-
-	@Override
-	public void unregisterExecutor(String uri) {
-		
-	}
-
-	@Override
-	public void subscribe(String subscriberURI, String emitterURI) {
-		
-	}
-
-	@Override
-	public void unsubscribe(String subscriberURI, String emitterURI) {
-		
-	}
+	
 
 }

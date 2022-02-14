@@ -1,6 +1,7 @@
 package interfaces;
 
 import java.time.Duration;
+import java.util.ArrayList;
 
 public interface EventBaseI {
 
@@ -9,6 +10,7 @@ public interface EventBaseI {
 	public void removeEvent(EventI e);
 	
 	public EventI getEvent(int i);
+	public ArrayList<EventI> getEvents();
 	
 	public int numberOfEvents();
 	

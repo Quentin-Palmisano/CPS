@@ -1,27 +1,27 @@
 package rules;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 
-import correlator.Health1CorrelatorStateI;
-import events.HealthEvent;
-import interfaces.CorrelatorStateI;
-import interfaces.EventBaseI;
-import interfaces.EventI;
-import interfaces.RuleI;
+import classes.*;
+import correlator.*;
+import events.*;
+import interfaces.*;
 
-public class S1 implements RuleI {
-
-	public S1() {
+public class F1 implements RuleI {
+	
+	public F1() {
 	}
 	
-
+	EventI matched;
+	
 	@Override
 	public ArrayList<EventI> match(EventBaseI eb) {
 		EventI he = null;
 		for (int i = 0 ; i < eb.numberOfEvents() && (he == null) ; i++) {
 			EventI e = eb.getEvent(i);
 			if (e instanceof HealthEvent && e.hasProperty("type")
-					&& ((String)e.getPropertyValue("type")).equals("emergency")) {
+					&& ((String)e.getPropertyValue("type")).equals("building")) {
 				he = e;
 			}
 		}		
@@ -36,19 +36,19 @@ public class S1 implements RuleI {
 
 	@Override
 	public boolean correlate(ArrayList<EventI> matchedEvents) {
-		return 	true;
+		return true;
 	}
 
 	@Override
 	public boolean filter(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
-		Health1CorrelatorStateI samuState = (Health1CorrelatorStateI)c;
-		return samuState.isAmbulanceAvailable();
+		Fire1CorrelatorStateI samuState = (Fire1CorrelatorStateI)c;
+		return samuState.isBigLadderAvailable();
 	}
 
 	@Override
 	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
-		Health1CorrelatorStateI samuState = (Health1CorrelatorStateI)c;
-		samuState.callAmbulance();
+		Fire1CorrelatorStateI samuState = (Fire1CorrelatorStateI)c;
+		samuState.triggerAlarm();
 	}
 
 	@Override
@@ -56,6 +56,8 @@ public class S1 implements RuleI {
 		for(EventI e : matchedEvents) {
 			eb.removeEvent(e);
 		}
+		FirstFireSignal f = new FirstFireSignal(LocalTime.now());
+		eb.addEvent(f);
 	}
 
 }

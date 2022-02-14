@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import classes.EventBase;
 import classes.RuleBase;
-import correlator.HealthCorrelatorStateI;
+import correlator.Health1CorrelatorStateI;
 import events.HealthEvent;
 import events.SignalEvent;
 
@@ -43,7 +43,7 @@ class test {
 		eventbase.addEvent(hp);
 		
 		called = false;
-		HealthCorrelatorStateI c = new HealthCorrelatorStateI() {
+		Health1CorrelatorStateI c = new Health1CorrelatorStateI() {
 			
 			@Override
 			public boolean isAmbulanceAvailable() {

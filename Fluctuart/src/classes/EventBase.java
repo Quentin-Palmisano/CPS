@@ -31,6 +31,11 @@ public class EventBase implements EventBaseI {
 	}
 
 	@Override
+	public ArrayList<EventI> getEvents() {
+		return events;
+	}
+
+	@Override
 	public int numberOfEvents() {
 		return events.size();
 	}
