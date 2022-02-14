@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="SmartCityFrontEnd-13022022-src/src"/>
+	<classpathentry kind="lib" path="._SmartCitySimulator-13022022.jar"/>
+	<classpathentry kind="lib" path="SmartCitySimulator-13022022.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
