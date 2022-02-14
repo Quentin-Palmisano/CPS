@@ -1,9 +1,10 @@
 package composants.interfaces;
 
+import fr.sorbonne_u.components.interfaces.ComponentInterface;
 import fr.sorbonne_u.components.interfaces.OfferedCI;
 import fr.sorbonne_u.components.interfaces.RequiredCI;
 
-public interface CEPBusManagementCI extends RequiredCI, OfferedCI {
+public interface CEPBusManagementCI extends ComponentInterface, RequiredCI, OfferedCI {
 	
 	public String registerEmitter(String uri);
 	public void unregisterEmitter(String uri);

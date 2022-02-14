@@ -1,25 +1,18 @@
 package composants;
 
-import java.io.Serializable;
-
 import composants.interfaces.*;
-import interfaces.EventI;
+import fr.sorbonne_u.components.AbstractComponent;
+import fr.sorbonne_u.components.annotations.OfferedInterfaces;
+import fr.sorbonne_u.components.annotations.RequiredInterfaces;
 
-public class CEPBus implements EventEmissionCI, Serializable{
+@OfferedInterfaces(offered={EventEmissionCI.class})
+@RequiredInterfaces(required={EventReceptionCI.class})
+public class CEPBus extends AbstractComponent{
 
-	private static final long serialVersionUID = 6632854676686822297L;
-
-	@Override
-	public void sendEvent(String emitterURI, EventI event) {
-		// TODO Auto-generated method stub
-		
+	protected CEPBus() {
+		super(1, 1);
 	}
 
-	@Override
-	public void sendEvents(String emitterURI, EventI[] events) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 
 }
