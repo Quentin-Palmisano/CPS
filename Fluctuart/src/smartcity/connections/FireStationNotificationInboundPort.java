@@ -1,4 +1,4 @@
-package fr.sorbonne_u.cps.smartcity.connections;
+package smartcity.connections;
 
 // Copyright Jacques Malenfant, Sorbonne Universite.
 // Jacques.Malenfant@lip6.fr

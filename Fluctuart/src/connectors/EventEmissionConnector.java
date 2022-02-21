@@ -1,6 +1,6 @@
 package connectors;
 
-import composants.interfaces.EventEmissionCI;
+import components.interfaces.EventEmissionCI;
 import fr.sorbonne_u.components.connectors.AbstractConnector;
 import interfaces.EventI;
 

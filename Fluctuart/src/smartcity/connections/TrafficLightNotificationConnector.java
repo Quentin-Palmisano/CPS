@@ -1,4 +1,6 @@
-package fr.sorbonne_u.cps.smartcity.connections;
+package smartcity.connections;
+
+import java.time.LocalTime;
 
 // Copyright Jacques Malenfant, Sorbonne Universite.
 // Jacques.Malenfant@lip6.fr
@@ -34,43 +36,41 @@ package fr.sorbonne_u.cps.smartcity.connections;
 // knowledge of the CeCILL-C license and that you accept its terms.
 
 import fr.sorbonne_u.components.connectors.AbstractConnector;
-import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
-import fr.sorbonne_u.cps.smartcity.interfaces.SAMUActionCI;
-import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfSAMURessources;
+import fr.sorbonne_u.cps.smartcity.grid.Direction;
+import fr.sorbonne_u.cps.smartcity.interfaces.TrafficLightNotificationCI;
 
 // -----------------------------------------------------------------------------
 /**
- * The class <code>SAMUActionConnector</code> implements the connector
- * for the {@code SAMUActionCI} interface.
+ * The class <code>TrafficLightNotificationConnector</code>
  *
  * <p><strong>Description</strong></p>
  * 
  * <p><strong>Invariant</strong></p>
  * 
  * <pre>
- * invariant	true
+ * invariant		true
  * </pre>
  * 
- * <p>Created on : 2022-02-12</p>
+ * <p>Created on : 2022-02-13</p>
  * 
  * @author	<a href="mailto:Jacques.Malenfant@lip6.fr">Jacques Malenfant</a>
  */
-public class			SAMUActionConnector
+public class			TrafficLightNotificationConnector
 extends		AbstractConnector
-implements	SAMUActionCI
+implements	TrafficLightNotificationCI
 {
 	/**
-	 * @see fr.sorbonne_u.cps.smartcity.interfaces.SAMUActionCI#triggerIntervention(fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition, java.lang.String, fr.sorbonne_u.cps.smartcity.interfaces.TypeOfSAMURessources)
+	 * @see fr.sorbonne_u.cps.smartcity.interfaces.TrafficLightNotificationCI#vehiclePassage(java.lang.String, fr.sorbonne_u.cps.smartcity.grid.Direction, java.time.LocalTime)
 	 */
 	@Override
-	public void			triggerIntervention(
-		AbsolutePosition position,
-		String personId,
-		TypeOfSAMURessources type
+	public void			vehiclePassage(
+		String vehicleId,
+		Direction d,
+		LocalTime occurrence
 		) throws Exception
 	{
-		((SAMUActionCI)this.offering).
-							triggerIntervention(position, personId, type);
+		((TrafficLightNotificationCI)this.offering).
+									vehiclePassage(vehicleId, d, occurrence);
 	}
 }
 // -----------------------------------------------------------------------------

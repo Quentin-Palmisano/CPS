@@ -1,4 +1,4 @@
-package fr.sorbonne_u.cps.smartcity.connections;
+package smartcity.connections;
 
 // Copyright Jacques Malenfant, Sorbonne Universite.
 // Jacques.Malenfant@lip6.fr
@@ -34,57 +34,62 @@ package fr.sorbonne_u.cps.smartcity.connections;
 // knowledge of the CeCILL-C license and that you accept its terms.
 
 import fr.sorbonne_u.components.connectors.AbstractConnector;
-import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
-import fr.sorbonne_u.cps.smartcity.interfaces.FireStationActionCI;
-import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFirefightingResource;
+import fr.sorbonne_u.cps.smartcity.interfaces.TrafficLightActionCI;
+import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfTrafficLightPriority;
 
 // -----------------------------------------------------------------------------
 /**
- * The class <code>FireStationActionConnector</code> implements the connector
- * for the {@code FireStationActionCI} interface.
+ * The class <code>TrafficLightActionConnector</code>
  *
  * <p><strong>Description</strong></p>
  * 
  * <p><strong>Invariant</strong></p>
  * 
  * <pre>
- * invariant	true
+ * invariant		true
  * </pre>
  * 
- * <p>Created on : 2022-02-04</p>
+ * <p>Created on : 2022-02-13</p>
  * 
  * @author	<a href="mailto:Jacques.Malenfant@lip6.fr">Jacques Malenfant</a>
  */
-public class			FireStationActionConnector
+public class			TrafficLightActionConnector
 extends		AbstractConnector
-implements	FireStationActionCI
+implements	TrafficLightActionCI
 {
 	/**
-	 * @see fr.sorbonne_u.cps.smartcity.interfaces.FireStationActionCI#triggerFirstAlarm(fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition, fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFirefightingResource)
+	 * 
+	 * <p><strong>Contract</strong></p>
+	 * 
+	 * <pre>
+	 * pre	true				// no more preconditions.
+	 * post	true				// no more postconditions.
+	 * </pre>
+	 * 
+	 * @see fr.sorbonne_u.cps.smartcity.interfaces.TrafficLightActionCI#changePriority(fr.sorbonne_u.cps.smartcity.interfaces.TypeOfTrafficLightPriority)
 	 */
 	@Override
-	public void			triggerFirstAlarm(AbsolutePosition p, TypeOfFirefightingResource r)
+	public void			changePriority(TypeOfTrafficLightPriority priority)
 	throws Exception
 	{
-		((FireStationActionCI)this.offering).triggerFirstAlarm(p, r);
+		((TrafficLightActionCI)this.offering).changePriority(priority);
 	}
 
 	/**
-	 * @see fr.sorbonne_u.cps.smartcity.interfaces.FireStationActionCI#triggerSecondAlarm(fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition)
+	 * 
+	 * <p><strong>Contract</strong></p>
+	 * 
+	 * <pre>
+	 * pre	true				// no more preconditions.
+	 * post	true				// no more postconditions.
+	 * </pre>
+	 * 
+	 * @see fr.sorbonne_u.cps.smartcity.interfaces.TrafficLightActionCI#returnToNormalMode()
 	 */
 	@Override
-	public void			triggerSecondAlarm(AbsolutePosition p) throws Exception
+	public void			returnToNormalMode() throws Exception
 	{
-		((FireStationActionCI)this.offering).triggerSecondAlarm(p);
-	}
-
-	/**
-	 * @see fr.sorbonne_u.cps.smartcity.interfaces.FireStationActionCI#triggerGeneralAlarm(fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition)
-	 */
-	@Override
-	public void			triggerGeneralAlarm(AbsolutePosition p) throws Exception
-	{
-		((FireStationActionCI)this.offering).triggerGeneralAlarm(p);
+		((TrafficLightActionCI)this.offering).returnToNormalMode();
 	}
 }
 // -----------------------------------------------------------------------------

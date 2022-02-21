@@ -1,4 +1,4 @@
-package fr.sorbonne_u.cps.smartcity.connections;
+package smartcity.connections;
 
 // Copyright Jacques Malenfant, Sorbonne Universite.
 // Jacques.Malenfant@lip6.fr
@@ -36,56 +36,72 @@ package fr.sorbonne_u.cps.smartcity.connections;
 import fr.sorbonne_u.components.ComponentI;
 import fr.sorbonne_u.components.ports.AbstractOutboundPort;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
-import fr.sorbonne_u.cps.smartcity.interfaces.SAMUActionCI;
-import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfSAMURessources;
+import fr.sorbonne_u.cps.smartcity.interfaces.FireStationActionCI;
+import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFirefightingResource;
 
 // -----------------------------------------------------------------------------
 /**
- * The class <code>SAMUActionOutboundPort</code> implements the outbound port
- * for the {@code SAMUActionCI} interface.
+ * The class <code>FireStationActionOutboundPort</code> implements the outbound
+ * port for the {@code FireStationActionCI} interface.
  *
  * <p><strong>Description</strong></p>
  * 
  * <p><strong>Invariant</strong></p>
  * 
  * <pre>
- * invariant	true
+ * invariant		true
  * </pre>
  * 
- * <p>Created on : 2022-02-12</p>
+ * <p>Created on : 2022-02-04</p>
  * 
  * @author	<a href="mailto:Jacques.Malenfant@lip6.fr">Jacques Malenfant</a>
  */
-public class			SAMUActionOutboundPort
+public class			FireStationActionOutboundPort
 extends		AbstractOutboundPort
-implements	SAMUActionCI
+implements	FireStationActionCI
 {
 	private static final long serialVersionUID = 1L;
 
-	public				SAMUActionOutboundPort(ComponentI owner)
+	public				FireStationActionOutboundPort(ComponentI owner)
 	throws Exception
 	{
-		super(SAMUActionCI.class, owner);
+		super(FireStationActionCI.class, owner);
 	}
 
-	public				SAMUActionOutboundPort(String uri, ComponentI owner)
-	throws Exception
+	public				FireStationActionOutboundPort(
+		String uri,
+		ComponentI owner
+		) throws Exception
 	{
-		super(uri, SAMUActionCI.class, owner);
+		super(uri, FireStationActionCI.class, owner);
 	}
 
 	/**
-	 * @see fr.sorbonne_u.cps.smartcity.interfaces.SAMUActionCI#triggerIntervention(fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition, java.lang.String, fr.sorbonne_u.cps.smartcity.interfaces.TypeOfSAMURessources)
+	 * @see fr.sorbonne_u.cps.smartcity.interfaces.FireStationActionCI#triggerFirstAlarm(fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition, fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFirefightingResource)
 	 */
 	@Override
-	public void			triggerIntervention(
-		AbsolutePosition position,
-		String personId,
-		TypeOfSAMURessources type
-		) throws Exception
+	public void			triggerFirstAlarm(AbsolutePosition p, TypeOfFirefightingResource r)
+	throws Exception
 	{
-		((SAMUActionCI)this.getConnector()).
-							triggerIntervention(position, personId, type);
+		((FireStationActionCI)this.getConnector()).triggerFirstAlarm(p, r);
+	}
+
+	/**
+	 * @see fr.sorbonne_u.cps.smartcity.interfaces.FireStationActionCI#triggerSecondAlarm(fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition)
+	 */
+	@Override
+	public void			triggerSecondAlarm(AbsolutePosition p) throws Exception
+	{
+		((FireStationActionCI)this.getConnector()).triggerSecondAlarm(p);
+	}
+
+	/**
+	 * @see fr.sorbonne_u.cps.smartcity.interfaces.FireStationActionCI#triggerGeneralAlarm(fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition)
+	 */
+	@Override
+	public void			triggerGeneralAlarm(AbsolutePosition p) throws Exception
+	{
+		((FireStationActionCI)this.getConnector()).triggerGeneralAlarm(p);
 	}
 }
 // -----------------------------------------------------------------------------

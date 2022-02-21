@@ -1,4 +1,4 @@
-package composants.interfaces;
+package components.interfaces;
 
 import fr.sorbonne_u.components.interfaces.ComponentInterface;
 import fr.sorbonne_u.components.interfaces.OfferedCI;

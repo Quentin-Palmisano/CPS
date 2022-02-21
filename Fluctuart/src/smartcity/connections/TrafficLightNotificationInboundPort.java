@@ -1,4 +1,6 @@
-package fr.sorbonne_u.cps.smartcity.connections;
+package smartcity.connections;
+
+import java.time.LocalTime;
 
 // Copyright Jacques Malenfant, Sorbonne Universite.
 // Jacques.Malenfant@lip6.fr
@@ -34,74 +36,66 @@ package fr.sorbonne_u.cps.smartcity.connections;
 // knowledge of the CeCILL-C license and that you accept its terms.
 
 import fr.sorbonne_u.components.ComponentI;
-import fr.sorbonne_u.components.ports.AbstractOutboundPort;
-import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
-import fr.sorbonne_u.cps.smartcity.interfaces.FireStationActionCI;
-import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFirefightingResource;
+import fr.sorbonne_u.components.ports.AbstractInboundPort;
+import fr.sorbonne_u.cps.smartcity.grid.Direction;
+import fr.sorbonne_u.cps.smartcity.interfaces.TrafficLightNotificationCI;
+import fr.sorbonne_u.cps.smartcity.interfaces.TrafficLightNotificationImplI;
 
 // -----------------------------------------------------------------------------
 /**
- * The class <code>FireStationActionOutboundPort</code> implements the outbound
- * port for the {@code FireStationActionCI} interface.
+ * The class <code>TrafficLightNotificationInboundPort</code>
  *
  * <p><strong>Description</strong></p>
  * 
  * <p><strong>Invariant</strong></p>
  * 
  * <pre>
- * invariant		true
+ * invariant	true
  * </pre>
  * 
- * <p>Created on : 2022-02-04</p>
+ * <p>Created on : 2022-02-13</p>
  * 
  * @author	<a href="mailto:Jacques.Malenfant@lip6.fr">Jacques Malenfant</a>
  */
-public class			FireStationActionOutboundPort
-extends		AbstractOutboundPort
-implements	FireStationActionCI
+public class			TrafficLightNotificationInboundPort
+extends		AbstractInboundPort
+implements	TrafficLightNotificationCI
 {
 	private static final long serialVersionUID = 1L;
 
-	public				FireStationActionOutboundPort(ComponentI owner)
+	public				TrafficLightNotificationInboundPort(ComponentI owner)
 	throws Exception
 	{
-		super(FireStationActionCI.class, owner);
+		super(TrafficLightNotificationCI.class, owner);
+
+		assert	owner instanceof TrafficLightNotificationImplI;
 	}
 
-	public				FireStationActionOutboundPort(
+	public				TrafficLightNotificationInboundPort(
 		String uri,
 		ComponentI owner
 		) throws Exception
 	{
-		super(uri, FireStationActionCI.class, owner);
+		super(uri, TrafficLightNotificationCI.class, owner);
+
+		assert	owner instanceof TrafficLightNotificationImplI;
 	}
 
 	/**
-	 * @see fr.sorbonne_u.cps.smartcity.interfaces.FireStationActionCI#triggerFirstAlarm(fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition, fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFirefightingResource)
+	 * @see fr.sorbonne_u.cps.smartcity.interfaces.TrafficLightNotificationCI#vehiclePassage(java.lang.String, fr.sorbonne_u.cps.smartcity.grid.Direction, java.time.LocalTime)
 	 */
 	@Override
-	public void			triggerFirstAlarm(AbsolutePosition p, TypeOfFirefightingResource r)
-	throws Exception
+	public void			vehiclePassage(
+		String vehicleId,
+		Direction d,
+		LocalTime occurrence
+		) throws Exception
 	{
-		((FireStationActionCI)this.getConnector()).triggerFirstAlarm(p, r);
-	}
-
-	/**
-	 * @see fr.sorbonne_u.cps.smartcity.interfaces.FireStationActionCI#triggerSecondAlarm(fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition)
-	 */
-	@Override
-	public void			triggerSecondAlarm(AbsolutePosition p) throws Exception
-	{
-		((FireStationActionCI)this.getConnector()).triggerSecondAlarm(p);
-	}
-
-	/**
-	 * @see fr.sorbonne_u.cps.smartcity.interfaces.FireStationActionCI#triggerGeneralAlarm(fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition)
-	 */
-	@Override
-	public void			triggerGeneralAlarm(AbsolutePosition p) throws Exception
-	{
-		((FireStationActionCI)this.getConnector()).triggerGeneralAlarm(p);
+		this.getOwner().handleRequest(
+				o -> { ((TrafficLightNotificationImplI)o).
+									vehiclePassage(vehicleId, d, occurrence);
+						return null;
+				});
 	}
 }
 // -----------------------------------------------------------------------------

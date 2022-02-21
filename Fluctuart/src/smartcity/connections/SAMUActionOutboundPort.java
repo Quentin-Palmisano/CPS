@@ -1,6 +1,4 @@
-package fr.sorbonne_u.cps.smartcity.connections;
-
-import java.time.LocalTime;
+package smartcity.connections;
 
 // Copyright Jacques Malenfant, Sorbonne Universite.
 // Jacques.Malenfant@lip6.fr
@@ -36,14 +34,15 @@ import java.time.LocalTime;
 // knowledge of the CeCILL-C license and that you accept its terms.
 
 import fr.sorbonne_u.components.ComponentI;
-import fr.sorbonne_u.components.ports.AbstractInboundPort;
-import fr.sorbonne_u.cps.smartcity.grid.Direction;
-import fr.sorbonne_u.cps.smartcity.interfaces.TrafficLightNotificationCI;
-import fr.sorbonne_u.cps.smartcity.interfaces.TrafficLightNotificationImplI;
+import fr.sorbonne_u.components.ports.AbstractOutboundPort;
+import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
+import fr.sorbonne_u.cps.smartcity.interfaces.SAMUActionCI;
+import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfSAMURessources;
 
 // -----------------------------------------------------------------------------
 /**
- * The class <code>TrafficLightNotificationInboundPort</code>
+ * The class <code>SAMUActionOutboundPort</code> implements the outbound port
+ * for the {@code SAMUActionCI} interface.
  *
  * <p><strong>Description</strong></p>
  * 
@@ -53,49 +52,40 @@ import fr.sorbonne_u.cps.smartcity.interfaces.TrafficLightNotificationImplI;
  * invariant	true
  * </pre>
  * 
- * <p>Created on : 2022-02-13</p>
+ * <p>Created on : 2022-02-12</p>
  * 
  * @author	<a href="mailto:Jacques.Malenfant@lip6.fr">Jacques Malenfant</a>
  */
-public class			TrafficLightNotificationInboundPort
-extends		AbstractInboundPort
-implements	TrafficLightNotificationCI
+public class			SAMUActionOutboundPort
+extends		AbstractOutboundPort
+implements	SAMUActionCI
 {
 	private static final long serialVersionUID = 1L;
 
-	public				TrafficLightNotificationInboundPort(ComponentI owner)
+	public				SAMUActionOutboundPort(ComponentI owner)
 	throws Exception
 	{
-		super(TrafficLightNotificationCI.class, owner);
-
-		assert	owner instanceof TrafficLightNotificationImplI;
+		super(SAMUActionCI.class, owner);
 	}
 
-	public				TrafficLightNotificationInboundPort(
-		String uri,
-		ComponentI owner
-		) throws Exception
+	public				SAMUActionOutboundPort(String uri, ComponentI owner)
+	throws Exception
 	{
-		super(uri, TrafficLightNotificationCI.class, owner);
-
-		assert	owner instanceof TrafficLightNotificationImplI;
+		super(uri, SAMUActionCI.class, owner);
 	}
 
 	/**
-	 * @see fr.sorbonne_u.cps.smartcity.interfaces.TrafficLightNotificationCI#vehiclePassage(java.lang.String, fr.sorbonne_u.cps.smartcity.grid.Direction, java.time.LocalTime)
+	 * @see fr.sorbonne_u.cps.smartcity.interfaces.SAMUActionCI#triggerIntervention(fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition, java.lang.String, fr.sorbonne_u.cps.smartcity.interfaces.TypeOfSAMURessources)
 	 */
 	@Override
-	public void			vehiclePassage(
-		String vehicleId,
-		Direction d,
-		LocalTime occurrence
+	public void			triggerIntervention(
+		AbsolutePosition position,
+		String personId,
+		TypeOfSAMURessources type
 		) throws Exception
 	{
-		this.getOwner().handleRequest(
-				o -> { ((TrafficLightNotificationImplI)o).
-									vehiclePassage(vehicleId, d, occurrence);
-						return null;
-				});
+		((SAMUActionCI)this.getConnector()).
+							triggerIntervention(position, personId, type);
 	}
 }
 // -----------------------------------------------------------------------------

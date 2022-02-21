@@ -1,4 +1,4 @@
-package fr.sorbonne_u.cps.smartcity.connections;
+package smartcity.connections;
 
 // Copyright Jacques Malenfant, Sorbonne Universite.
 // Jacques.Malenfant@lip6.fr
@@ -33,64 +33,44 @@ package fr.sorbonne_u.cps.smartcity.connections;
 // The fact that you are presently reading this means that you have had
 // knowledge of the CeCILL-C license and that you accept its terms.
 
-import fr.sorbonne_u.components.ComponentI;
-import fr.sorbonne_u.components.ports.AbstractOutboundPort;
-import fr.sorbonne_u.cps.smartcity.interfaces.TrafficLightActionCI;
-import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfTrafficLightPriority;
+import fr.sorbonne_u.components.connectors.AbstractConnector;
+import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
+import fr.sorbonne_u.cps.smartcity.interfaces.SAMUActionCI;
+import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfSAMURessources;
 
 // -----------------------------------------------------------------------------
 /**
- * The class <code>TrafficLightActionOutboundPort</code>
+ * The class <code>SAMUActionConnector</code> implements the connector
+ * for the {@code SAMUActionCI} interface.
  *
  * <p><strong>Description</strong></p>
  * 
  * <p><strong>Invariant</strong></p>
  * 
  * <pre>
- * invariant		true
+ * invariant	true
  * </pre>
  * 
- * <p>Created on : 2022-02-13</p>
+ * <p>Created on : 2022-02-12</p>
  * 
  * @author	<a href="mailto:Jacques.Malenfant@lip6.fr">Jacques Malenfant</a>
  */
-public class			TrafficLightActionOutboundPort
-extends		AbstractOutboundPort
-implements	TrafficLightActionCI
+public class			SAMUActionConnector
+extends		AbstractConnector
+implements	SAMUActionCI
 {
-	private static final long serialVersionUID = 1L;
-
-	public				TrafficLightActionOutboundPort(ComponentI owner)
-	throws Exception
-	{
-		super(TrafficLightActionCI.class, owner);
-	}
-
-	public				TrafficLightActionOutboundPort(
-		String uri, 
-		ComponentI owner
+	/**
+	 * @see fr.sorbonne_u.cps.smartcity.interfaces.SAMUActionCI#triggerIntervention(fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition, java.lang.String, fr.sorbonne_u.cps.smartcity.interfaces.TypeOfSAMURessources)
+	 */
+	@Override
+	public void			triggerIntervention(
+		AbsolutePosition position,
+		String personId,
+		TypeOfSAMURessources type
 		) throws Exception
 	{
-		super(uri, TrafficLightActionCI.class, owner);
-	}
-
-	/**
-	 * @see fr.sorbonne_u.cps.smartcity.interfaces.TrafficLightActionCI#changePriority(fr.sorbonne_u.cps.smartcity.interfaces.TypeOfTrafficLightPriority)
-	 */
-	@Override
-	public void			changePriority(TypeOfTrafficLightPriority priority)
-	throws Exception
-	{
-		((TrafficLightActionCI)this.getConnector()).changePriority(priority);
-	}
-
-	/**
-	 * @see fr.sorbonne_u.cps.smartcity.interfaces.TrafficLightActionCI#returnToNormalMode()
-	 */
-	@Override
-	public void			returnToNormalMode() throws Exception
-	{
-		((TrafficLightActionCI)this.getConnector()).returnToNormalMode();
+		((SAMUActionCI)this.offering).
+							triggerIntervention(position, personId, type);
 	}
 }
 // -----------------------------------------------------------------------------

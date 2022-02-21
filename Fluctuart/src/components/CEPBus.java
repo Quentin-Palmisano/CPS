@@ -1,6 +1,6 @@
-package composants;
+package components;
 
-import composants.interfaces.*;
+import components.interfaces.*;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.annotations.OfferedInterfaces;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
@@ -19,6 +19,7 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementCI, Eve
 		super(1, 1);
 		
 		emissionPort = new EventEmissionInboundPort(URI, this);
+		emissionPort.publishPort();
 		
 	}
 

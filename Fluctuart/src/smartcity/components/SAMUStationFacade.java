@@ -1,4 +1,4 @@
-package fr.sorbonne_u.cps.smartcity.components;
+package smartcity.components;
 
 // Copyright Jacques Malenfant, Sorbonne Universite.
 // Jacques.Malenfant@lip6.fr
@@ -38,10 +38,7 @@ import fr.sorbonne_u.components.annotations.OfferedInterfaces;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
 import fr.sorbonne_u.components.exceptions.ComponentShutdownException;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
-import fr.sorbonne_u.cps.smartcity.connections.SAMUNotificationInboundPort;
-import fr.sorbonne_u.cps.smartcity.connections.SAMUActionConnector;
 import fr.sorbonne_u.cps.smartcity.BasicSimSmartCityDescriptor;
-import fr.sorbonne_u.cps.smartcity.connections.SAMUActionOutboundPort;
 import fr.sorbonne_u.cps.smartcity.descriptions.SmartCityDescriptor;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
 import fr.sorbonne_u.cps.smartcity.grid.IntersectionPosition;
@@ -51,6 +48,9 @@ import fr.sorbonne_u.cps.smartcity.interfaces.SAMUActionCI;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfHealthAlarm;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfSAMURessources;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfTrafficLightPriority;
+import smartcity.connections.SAMUActionConnector;
+import smartcity.connections.SAMUActionOutboundPort;
+import smartcity.connections.SAMUNotificationInboundPort;
 
 import java.time.LocalTime;
 

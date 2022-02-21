@@ -1,4 +1,4 @@
-package composants;
+package components;
 
 import fr.sorbonne_u.components.AbstractComponent;
 

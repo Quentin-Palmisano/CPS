@@ -1,4 +1,4 @@
-package composants.interfaces;
+package components.interfaces;
 
 import java.io.Serializable;
 

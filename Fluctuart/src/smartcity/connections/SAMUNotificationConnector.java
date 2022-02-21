@@ -1,4 +1,4 @@
-package fr.sorbonne_u.cps.smartcity.connections;
+package smartcity.connections;
 
 // Copyright Jacques Malenfant, Sorbonne Universite.
 // Jacques.Malenfant@lip6.fr
@@ -34,19 +34,17 @@ package fr.sorbonne_u.cps.smartcity.connections;
 // knowledge of the CeCILL-C license and that you accept its terms.
 
 import java.time.LocalTime;
-import fr.sorbonne_u.components.ComponentI;
-import fr.sorbonne_u.components.ports.AbstractInboundPort;
+import fr.sorbonne_u.components.connectors.AbstractConnector;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
 import fr.sorbonne_u.cps.smartcity.grid.IntersectionPosition;
 import fr.sorbonne_u.cps.smartcity.interfaces.SAMUNotificationCI;
-import fr.sorbonne_u.cps.smartcity.interfaces.SAMUNotificationImplI;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfHealthAlarm;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfTrafficLightPriority;
 
 // -----------------------------------------------------------------------------
 /**
- * The class <code>SAMUNotificationInboundPort</code> implements the inbound
- * port for the {@code SAMUNotificationCI} interface.
+ * The class <code>SAMUNotificationConnector</code> implements the connector
+ * for the {@code SAMUNotificationCI} interface.
  *
  * <p><strong>Description</strong></p>
  * 
@@ -60,30 +58,10 @@ import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfTrafficLightPriority;
  * 
  * @author	<a href="mailto:Jacques.Malenfant@lip6.fr">Jacques Malenfant</a>
  */
-public class			SAMUNotificationInboundPort
-extends		AbstractInboundPort
+public class			SAMUNotificationConnector
+extends		AbstractConnector
 implements	SAMUNotificationCI
 {
-	private static final long serialVersionUID = 1L;
-
-	public				SAMUNotificationInboundPort(ComponentI owner)
-	throws Exception
-	{
-		super(SAMUNotificationCI.class, owner);
-
-		assert	owner instanceof SAMUNotificationImplI;
-	}
-
-	public				SAMUNotificationInboundPort(
-		String uri,
-		ComponentI owner
-		) throws Exception
-	{
-		super(uri, SAMUNotificationCI.class, owner);
-
-		assert	owner instanceof SAMUNotificationImplI;
-	}
-
 	/**
 	 * @see fr.sorbonne_u.cps.smartcity.interfaces.SAMUNotificationCI#healthAlarm(fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition, fr.sorbonne_u.cps.smartcity.interfaces.TypeOfHealthAlarm, java.time.LocalTime)
 	 */
@@ -94,11 +72,8 @@ implements	SAMUNotificationCI
 		LocalTime occurrence
 		) throws Exception
 	{
-		this.getOwner().handleRequest(
-				o -> {	((SAMUNotificationImplI)o).
+		((SAMUNotificationCI)this.offering).
 									healthAlarm(position, type, occurrence);
-						return null;
-					 });
 	}
 
 	/**
@@ -111,11 +86,8 @@ implements	SAMUNotificationCI
 		LocalTime occurrence
 		) throws Exception
 	{
-		this.getOwner().handleRequest(
-				o -> {	((SAMUNotificationImplI)o).
+		((SAMUNotificationCI)this.offering).
 								trackingAlarm(position, personId, occurrence);
-						return null;
-					 });
 	}
 
 	/**
@@ -125,11 +97,7 @@ implements	SAMUNotificationCI
 	public void			manualSignal(String personId, LocalTime occurrence)
 	throws Exception
 	{
-		this.getOwner().handleRequest(
-				o -> {	((SAMUNotificationImplI)o).
-										manualSignal(personId, occurrence);
-						return null;
-					 });
+		((SAMUNotificationCI)this.offering).manualSignal(personId, occurrence);
 	}
 
 	/**
@@ -144,13 +112,9 @@ implements	SAMUNotificationCI
 		LocalTime occurrence
 		) throws Exception
 	{
-		this.getOwner().handleRequest(
-				o -> {	((SAMUNotificationImplI)o).
-									requestPriority(intersection, priority,
-													vehicleId, destination,
-													occurrence);
-						return null;
-					 });
+		((SAMUNotificationCI)this.offering).
+						requestPriority(intersection, priority, vehicleId,
+										destination, occurrence);
 	}
 
 	/**
@@ -160,11 +124,8 @@ implements	SAMUNotificationCI
 	public void			atDestination(String vehicleId, LocalTime occurrence)
 	throws Exception
 	{
-		this.getOwner().handleRequest(
-				o -> {	((SAMUNotificationImplI)o).
-										atDestination(vehicleId, occurrence);
-						return null;
-					 });
+		((SAMUNotificationCI)this.offering).
+									atDestination(vehicleId, occurrence);
 	}
 
 	/**
@@ -174,11 +135,7 @@ implements	SAMUNotificationCI
 	public void			atStation(String vehicleId, LocalTime occurrence)
 	throws Exception
 	{
-		this.getOwner().handleRequest(
-				o -> {	((SAMUNotificationImplI)o).
-										atStation(vehicleId, occurrence);
-						return null;
-					 });
+		((SAMUNotificationCI)this.offering).atStation(vehicleId, occurrence);
 	}
 
 	/**
@@ -188,11 +145,7 @@ implements	SAMUNotificationCI
 	public void			notifyMedicsAvailable(LocalTime occurrence)
 	throws Exception
 	{
-		this.getOwner().handleRequest(
-				o -> {	((SAMUNotificationImplI)o).
-											notifyMedicsAvailable(occurrence);
-						return null;
-					 });
+		((SAMUNotificationCI)this.offering).notifyMedicsAvailable(occurrence);
 	}
 
 	/**
@@ -202,11 +155,7 @@ implements	SAMUNotificationCI
 	public void			notifyNoMedicAvailable(LocalTime occurrence)
 	throws Exception
 	{
-		this.getOwner().handleRequest(
-				o -> {	((SAMUNotificationImplI)o).
-											notifyNoMedicAvailable(occurrence);
-						return null;
-					 });
+		((SAMUNotificationCI)this.offering).notifyNoMedicAvailable(occurrence);
 	}
 
 	/**
@@ -216,11 +165,8 @@ implements	SAMUNotificationCI
 	public void			notifyAmbulancesAvailable(LocalTime occurrence)
 	throws Exception
 	{
-		this.getOwner().handleRequest(
-				o -> {	((SAMUNotificationImplI)o).
-										notifyAmbulancesAvailable(occurrence);
-						return null;
-					 });
+		((SAMUNotificationCI)this.offering).
+									notifyAmbulancesAvailable(occurrence);
 	}
 
 	/**
@@ -230,11 +176,8 @@ implements	SAMUNotificationCI
 	public void			notifyNoAmbulanceAvailable(LocalTime occurrence)
 	throws Exception
 	{
-		this.getOwner().handleRequest(
-				o -> {	((SAMUNotificationImplI)o).
-										notifyNoAmbulanceAvailable(occurrence);
-						return null;
-					 });
+		((SAMUNotificationCI)this.offering).
+									notifyNoAmbulanceAvailable(occurrence);
 	}
 }
 // -----------------------------------------------------------------------------

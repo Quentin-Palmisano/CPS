@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import classes.EventBase;
 import classes.RuleBase;
-import composants.CEPBus;
-import composants.interfaces.CEPBusManagementCI;
+import components.CEPBus;
+import components.interfaces.CEPBusManagementCI;
 import correlator.Health1CorrelatorStateI;
 import events.HealthEvent;
 import events.SignalEvent;
@@ -67,7 +67,7 @@ class test {
 	@Test
 	void CEPBusTest() {
 		
-		CEPBus bus = new CEPBus();
+		//CEPBus bus = new CEPBus();
 		
 	}
 }

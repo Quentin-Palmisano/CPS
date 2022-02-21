@@ -1,6 +1,4 @@
-package fr.sorbonne_u.cps.smartcity.connections;
-
-import java.time.LocalTime;
+package smartcity.connections;
 
 // Copyright Jacques Malenfant, Sorbonne Universite.
 // Jacques.Malenfant@lip6.fr
@@ -36,41 +34,57 @@ import java.time.LocalTime;
 // knowledge of the CeCILL-C license and that you accept its terms.
 
 import fr.sorbonne_u.components.connectors.AbstractConnector;
-import fr.sorbonne_u.cps.smartcity.grid.Direction;
-import fr.sorbonne_u.cps.smartcity.interfaces.TrafficLightNotificationCI;
+import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
+import fr.sorbonne_u.cps.smartcity.interfaces.FireStationActionCI;
+import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFirefightingResource;
 
 // -----------------------------------------------------------------------------
 /**
- * The class <code>TrafficLightNotificationConnector</code>
+ * The class <code>FireStationActionConnector</code> implements the connector
+ * for the {@code FireStationActionCI} interface.
  *
  * <p><strong>Description</strong></p>
  * 
  * <p><strong>Invariant</strong></p>
  * 
  * <pre>
- * invariant		true
+ * invariant	true
  * </pre>
  * 
- * <p>Created on : 2022-02-13</p>
+ * <p>Created on : 2022-02-04</p>
  * 
  * @author	<a href="mailto:Jacques.Malenfant@lip6.fr">Jacques Malenfant</a>
  */
-public class			TrafficLightNotificationConnector
+public class			FireStationActionConnector
 extends		AbstractConnector
-implements	TrafficLightNotificationCI
+implements	FireStationActionCI
 {
 	/**
-	 * @see fr.sorbonne_u.cps.smartcity.interfaces.TrafficLightNotificationCI#vehiclePassage(java.lang.String, fr.sorbonne_u.cps.smartcity.grid.Direction, java.time.LocalTime)
+	 * @see fr.sorbonne_u.cps.smartcity.interfaces.FireStationActionCI#triggerFirstAlarm(fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition, fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFirefightingResource)
 	 */
 	@Override
-	public void			vehiclePassage(
-		String vehicleId,
-		Direction d,
-		LocalTime occurrence
-		) throws Exception
+	public void			triggerFirstAlarm(AbsolutePosition p, TypeOfFirefightingResource r)
+	throws Exception
 	{
-		((TrafficLightNotificationCI)this.offering).
-									vehiclePassage(vehicleId, d, occurrence);
+		((FireStationActionCI)this.offering).triggerFirstAlarm(p, r);
+	}
+
+	/**
+	 * @see fr.sorbonne_u.cps.smartcity.interfaces.FireStationActionCI#triggerSecondAlarm(fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition)
+	 */
+	@Override
+	public void			triggerSecondAlarm(AbsolutePosition p) throws Exception
+	{
+		((FireStationActionCI)this.offering).triggerSecondAlarm(p);
+	}
+
+	/**
+	 * @see fr.sorbonne_u.cps.smartcity.interfaces.FireStationActionCI#triggerGeneralAlarm(fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition)
+	 */
+	@Override
+	public void			triggerGeneralAlarm(AbsolutePosition p) throws Exception
+	{
+		((FireStationActionCI)this.offering).triggerGeneralAlarm(p);
 	}
 }
 // -----------------------------------------------------------------------------

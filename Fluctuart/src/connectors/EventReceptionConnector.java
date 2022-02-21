@@ -1,6 +1,6 @@
 package connectors;
 
-import composants.interfaces.EventReceptionCI;
+import components.interfaces.EventReceptionCI;
 import fr.sorbonne_u.components.connectors.AbstractConnector;
 import interfaces.EventI;
 

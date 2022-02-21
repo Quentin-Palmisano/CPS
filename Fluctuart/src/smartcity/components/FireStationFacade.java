@@ -1,4 +1,4 @@
-package fr.sorbonne_u.cps.smartcity.components;
+package smartcity.components;
 
 // Copyright Jacques Malenfant, Sorbonne Universite.
 // Jacques.Malenfant@lip6.fr
@@ -39,9 +39,6 @@ import fr.sorbonne_u.components.annotations.RequiredInterfaces;
 import fr.sorbonne_u.components.exceptions.ComponentShutdownException;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import fr.sorbonne_u.cps.smartcity.BasicSimSmartCityDescriptor;
-import fr.sorbonne_u.cps.smartcity.connections.FireStationNotificationInboundPort;
-import fr.sorbonne_u.cps.smartcity.connections.FireStationActionConnector;
-import fr.sorbonne_u.cps.smartcity.connections.FireStationActionOutboundPort;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
 import fr.sorbonne_u.cps.smartcity.grid.IntersectionPosition;
 import fr.sorbonne_u.cps.smartcity.interfaces.FireStationNotificationCI;
@@ -50,6 +47,9 @@ import fr.sorbonne_u.cps.smartcity.interfaces.FireStationActionCI;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFire;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFirefightingResource;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfTrafficLightPriority;
+import smartcity.connections.FireStationActionConnector;
+import smartcity.connections.FireStationActionOutboundPort;
+import smartcity.connections.FireStationNotificationInboundPort;
 
 import java.time.LocalTime;
 
