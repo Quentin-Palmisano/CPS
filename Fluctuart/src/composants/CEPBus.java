@@ -5,6 +5,7 @@ import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.annotations.OfferedInterfaces;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
 import interfaces.EventI;
+import ports.EventEmissionInboundPort;
 
 @OfferedInterfaces(offered={EventEmissionCI.class})
 @RequiredInterfaces(required={EventReceptionCI.class})
@@ -12,8 +13,13 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementCI, Eve
 
 	public static final String URI = "URI_BUS";
 	
-	public CEPBus() {
+	private final EventEmissionInboundPort emissionPort;
+	
+	public CEPBus() throws Exception {
 		super(1, 1);
+		
+		emissionPort = new EventEmissionInboundPort(URI, this);
+		
 	}
 
 	@Override
