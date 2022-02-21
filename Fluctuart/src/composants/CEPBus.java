@@ -12,7 +12,7 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementCI, Eve
 
 	public static final String URI = "URI_BUS";
 	
-	protected CEPBus() {
+	public CEPBus() {
 		super(1, 1);
 	}
 
