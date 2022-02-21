@@ -7,7 +7,7 @@ import interfaces.EventI;
 
 public interface EventReceptionCI extends ComponentInterface, RequiredCI, OfferedCI {
 	
-	public void receiveEvent(String emitterURI, EventI event);
-	public void receiveEvents(String emitterURI, EventI[] events);
+	public void receiveEvent(String emitterURI, EventI event) throws Exception;
+	public void receiveEvents(String emitterURI, EventI[] events) throws Exception;
 
 }

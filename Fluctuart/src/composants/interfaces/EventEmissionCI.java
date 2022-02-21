@@ -7,7 +7,7 @@ import interfaces.EventI;
 
 public interface EventEmissionCI extends ComponentInterface, RequiredCI, OfferedCI {
 	
-	public void sendEvent(String emitterURI, EventI event);
-	public void sendEvents(String emitterURI, EventI[] events);
+	public void sendEvent(String emitterURI, EventI event) throws Exception;
+	public void sendEvents(String emitterURI, EventI[] events) throws Exception;
 	
 }
