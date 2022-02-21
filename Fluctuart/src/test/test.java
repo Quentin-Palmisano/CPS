@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import classes.EventBase;
 import classes.RuleBase;
+import composants.CEPBus;
+import composants.interfaces.CEPBusManagementCI;
 import correlator.Health1CorrelatorStateI;
 import events.HealthEvent;
 import events.SignalEvent;
@@ -59,6 +61,13 @@ class test {
 		rulebase.fireAllOn(eventbase, c);
 		
 		assert (called);
+		
+	}
+	
+	@Test
+	void CEPBusTest() {
+		
+		CEPBus bus = new CEPBus();
 		
 	}
 }
