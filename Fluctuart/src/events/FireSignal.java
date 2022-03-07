@@ -11,5 +11,9 @@ public class FireSignal extends AtomicEvent {
 	public FireSignal(LocalTime time) {
 		super(time);
 	}
+	
+	public FireSignal(LocalTime time, String type) {
+		super(time, type);
+	}
 
 }

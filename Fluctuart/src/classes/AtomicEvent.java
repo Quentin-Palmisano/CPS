@@ -12,6 +12,11 @@ public abstract class AtomicEvent extends Event implements AtomicEventI {
 	public AtomicEvent(LocalTime time) {
 		super(time);
 	}
+	
+	public AtomicEvent(LocalTime time, String type) {
+		super(time);
+		this.putProperty("type", type);
+	}
 
 	@Override
 	public Serializable putProperty(String name, Serializable value) {

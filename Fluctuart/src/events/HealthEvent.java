@@ -11,5 +11,10 @@ public class HealthEvent extends AtomicEvent {
 	public HealthEvent(LocalTime time) {
 		super(time);
 	}
+	
+	public HealthEvent(LocalTime time, String type) {
+		super(time, type);
+	}
+	
 
 }
