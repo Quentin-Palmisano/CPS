@@ -11,7 +11,7 @@ import fr.sorbonne_u.cps.smartcity.grid.IntersectionPosition;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfHealthAlarm;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfTrafficLightPriority;
 import ports.EventEmissionOutboundPort;
-import smartcity.components.SAMUStationFacade;
+import fr.sorbonne_u.cps.smartcity.components.SAMUStationFacade;
 
 public class SAMUStation extends SAMUStationFacade {
 	
