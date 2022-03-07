@@ -1,6 +1,7 @@
 package components;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 import components.interfaces.CEPBusManagementCI;
 import components.interfaces.EventEmissionCI;
@@ -18,16 +19,16 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementCI, Eve
 
 	public static final String URI = "URI_BUS";
 	
-	public static CEPBus CEPBUS;
+	public static CEPBus BUS;
 	
-	private final HashMap<String, String> emitters = new HashMap<>();
+	private final HashSet<String> emitters = new HashSet<>();
 	//private final HashMap<String, String> subscribers = new HashMap<>();
 	
 	private final EventEmissionInboundPort emissionPort;
 	
 	public CEPBus() throws Exception {
 		super(1, 1);
-		CEPBUS = this;
+		BUS = this;
 		
 		emissionPort = new EventEmissionInboundPort(URI, this);
 		emissionPort.publishPort();
@@ -60,15 +61,13 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementCI, Eve
 
 	@Override
 	public String registerEmitter(String uri) throws Exception {
-		emitters.put(uri, URI);
-		this.doPortConnection(uri, URI, EventEmissionConnector.class.getCanonicalName());
+		emitters.add(uri);
 		return URI;
 	}
 
 	@Override
 	public void unregisterEmitter(String uri) throws Exception {
 		emitters.remove(uri);
-		this.doPortDisconnection(uri);
 	}
 
 	@Override

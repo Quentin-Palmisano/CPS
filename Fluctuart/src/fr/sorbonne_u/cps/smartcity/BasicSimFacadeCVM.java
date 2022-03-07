@@ -97,12 +97,11 @@ extends		AbstractBasicSimCVM
 		super();
 	}
 
-	/**
-	 * @see fr.sorbonne_u.components.cvm.AbstractCVM#deploy()
-	 */
 	@Override
 	public void			deploy() throws Exception
 	{
+		
+		
 		// create an iterator over valid fire station identifiers, which in turn
 		// allow to perform operations on the smart city descriptor to get
 		// information about them
@@ -161,7 +160,8 @@ extends		AbstractBasicSimCVM
 												getActionInboundPortURI(p)
 							});
 		}
-
+		
+		
 		super.deploy();
 	}
 

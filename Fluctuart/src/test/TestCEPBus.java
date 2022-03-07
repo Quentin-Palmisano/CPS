@@ -24,6 +24,25 @@ class TestCEPBus extends AbstractBasicSimCVM {
 	
 	public void			deploy() throws Exception
 	{
+		
+		AbstractComponent.createComponent(CEPBus.class.getCanonicalName(), new Object[0]);
+		
+
+		Iterator<String> fireStationIdsIterator =
+					BasicSimSmartCityDescriptor.createFireStationIdIterator();
+		while (fireStationIdsIterator.hasNext()) {
+			String fireStationId = fireStationIdsIterator.next();
+			String notificationInboundPortURI = AbstractPort.generatePortURI();
+			this.register(fireStationId, notificationInboundPortURI);
+			AbstractComponent.createComponent(
+				FireStationFacade.class.getCanonicalName(),
+				new Object[]{
+						fireStationId,
+						notificationInboundPortURI,
+						BasicSimSmartCityDescriptor.
+										getActionInboundPortURI(fireStationId)
+						});
+		}
 
 		Iterator<String> samuStationsIditerator =
 					BasicSimSmartCityDescriptor.createSAMUStationIdIterator();
@@ -31,38 +50,50 @@ class TestCEPBus extends AbstractBasicSimCVM {
 			String samuStationId = samuStationsIditerator.next();
 			String notificationInboundPortURI = AbstractPort.generatePortURI();
 			this.register(samuStationId, notificationInboundPortURI);
+			
+			String uri = "SAMUStation " + samuStationId;
+			
 			AbstractComponent.createComponent(
 					SAMUStation.class.getCanonicalName(),
 					new Object[]{
+							uri,
 							samuStationId,
 							notificationInboundPortURI,
 							BasicSimSmartCityDescriptor.
 										getActionInboundPortURI(samuStationId)
 							});
+			
 		}
 
-
+		Iterator<IntersectionPosition> trafficLightsIterator =
+					BasicSimSmartCityDescriptor.createTrafficLightPositionIterator();
+		while (trafficLightsIterator.hasNext()) {
+			IntersectionPosition p = trafficLightsIterator.next();
+			String notificationInboundPortURI = AbstractPort.generatePortURI();
+			this.register(p.toString(), notificationInboundPortURI);
+			AbstractComponent.createComponent(
+					TrafficLightFacade.class.getCanonicalName(),
+					new Object[]{
+							p,
+							notificationInboundPortURI,
+							BasicSimSmartCityDescriptor.
+												getActionInboundPortURI(p)
+							});
+		}
+		
+		
 		super.deploy();
 	}
-
-	@Test
-	void CEPBusTest() {
-		String bus;
+	
+	public static void main(String[] args) {
 		try {
-			 bus = AbstractComponent.createComponent(CEPBus.class.getCanonicalName(), new Object[] {});
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
-		
-		try {
-			BasicSimFacadeCVM c = new BasicSimFacadeCVM();
+			TestCEPBus c = new TestCEPBus();
 			c.startStandardLifeCycle(10000L);
 			Thread.sleep(100000L);
 			System.exit(0);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			e.printStackTrace();
 		}
-		
 	}
 	
 }

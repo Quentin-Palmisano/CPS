@@ -17,12 +17,18 @@ public class SAMUStation extends SAMUStationFacade {
 	
 	private EventEmissionOutboundPort emissionPort;
 
-	protected SAMUStation(String stationId, String notificationInboundPortURI, String actionInboundPortURI)
+	public final String uri;
+	
+	protected SAMUStation(String uri, String stationId, String notificationInboundPortURI, String actionInboundPortURI)
 			throws Exception {
 		super(stationId, notificationInboundPortURI, actionInboundPortURI);
+		this.uri = uri;
 		
 		emissionPort = new EventEmissionOutboundPort(this);
 		emissionPort.localPublishPort();
+		
+		String ibp = CEPBus.BUS.registerEmitter(uri);
+		this.doPortConnection(emissionPort.getPortURI(), ibp, EventEmissionConnector.class.getCanonicalName());
 		
 	}
 	
