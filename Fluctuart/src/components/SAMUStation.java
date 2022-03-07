@@ -56,6 +56,10 @@ public class SAMUStation extends SAMUStationFacade {
 		super.shutdown();
 	}
 	
+	
+	
+	// events
+	
 	@Override
 	public void			healthAlarm(
 		AbsolutePosition position,
