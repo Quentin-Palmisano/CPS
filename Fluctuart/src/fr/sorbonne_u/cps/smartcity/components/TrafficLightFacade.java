@@ -1,4 +1,4 @@
-package smartcity.components;
+package fr.sorbonne_u.cps.smartcity.components;
 
 // Copyright Jacques Malenfant, Sorbonne Universite.
 // Jacques.Malenfant@lip6.fr
@@ -39,16 +39,15 @@ import fr.sorbonne_u.components.annotations.RequiredInterfaces;
 import fr.sorbonne_u.components.exceptions.ComponentShutdownException;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import fr.sorbonne_u.cps.smartcity.BasicSimSmartCityDescriptor;
+import fr.sorbonne_u.cps.smartcity.connections.TrafficLightActionConnector;
+import fr.sorbonne_u.cps.smartcity.connections.TrafficLightActionOutboundPort;
+import fr.sorbonne_u.cps.smartcity.connections.TrafficLightNotificationInboundPort;
 import fr.sorbonne_u.cps.smartcity.grid.Direction;
 import fr.sorbonne_u.cps.smartcity.grid.IntersectionPosition;
 import fr.sorbonne_u.cps.smartcity.interfaces.TrafficLightActionCI;
 import fr.sorbonne_u.cps.smartcity.interfaces.TrafficLightNotificationCI;
 import fr.sorbonne_u.cps.smartcity.interfaces.TrafficLightNotificationImplI;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfTrafficLightPriority;
-import smartcity.connections.TrafficLightActionConnector;
-import smartcity.connections.TrafficLightActionOutboundPort;
-import smartcity.connections.TrafficLightNotificationInboundPort;
-
 import java.time.LocalTime;
 
 // -----------------------------------------------------------------------------

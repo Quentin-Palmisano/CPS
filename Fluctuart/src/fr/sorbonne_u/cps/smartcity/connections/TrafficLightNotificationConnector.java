@@ -1,4 +1,4 @@
-package smartcity.connections;
+package fr.sorbonne_u.cps.smartcity.connections;
 
 import java.time.LocalTime;
 

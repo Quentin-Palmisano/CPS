@@ -1,4 +1,4 @@
-package smartcity;
+package fr.sorbonne_u.cps.smartcity;
 
 // Copyright Jacques Malenfant, Sorbonne Universite.
 // Jacques.Malenfant@lip6.fr
@@ -35,12 +35,10 @@ package smartcity;
 
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.AbstractPort;
-import fr.sorbonne_u.cps.smartcity.AbstractBasicSimCVM;
-import fr.sorbonne_u.cps.smartcity.BasicSimSmartCityDescriptor;
+import fr.sorbonne_u.cps.smartcity.components.FireStationFacade;
+import fr.sorbonne_u.cps.smartcity.components.SAMUStationFacade;
+import fr.sorbonne_u.cps.smartcity.components.TrafficLightFacade;
 import fr.sorbonne_u.cps.smartcity.grid.IntersectionPosition;
-import smartcity.components.FireStationFacade;
-import smartcity.components.SAMUStationFacade;
-import smartcity.components.TrafficLightFacade;
 
 import java.util.Iterator;
 
