@@ -7,7 +7,7 @@ import interfaces.EventBaseI;
 import interfaces.EventI;
 import interfaces.RuleI;
 
-public class C1 implements RuleI {
+public class C01 implements RuleI {
 
 	@Override
 	public ArrayList<EventI> match(EventBaseI eb) {
