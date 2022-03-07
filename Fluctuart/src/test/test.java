@@ -37,7 +37,7 @@ class test {
 	void S1Test() {
 		
 		RuleBase rulebase = new RuleBase();
-		rulebase.addRule(new rules.S1());
+		rulebase.addRule(new rules.S01());
 		
 		EventBase eventbase = new EventBase();
 		HealthEvent hp = new HealthEvent(LocalTime.now());
@@ -64,10 +64,4 @@ class test {
 		
 	}
 	
-	@Test
-	void CEPBusTest() {
-		
-		//CEPBus bus = new CEPBus();
-		
-	}
 }
