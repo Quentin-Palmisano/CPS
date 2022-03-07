@@ -94,6 +94,7 @@ class TestCEPBus extends AbstractBasicSimCVM {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 	}
 	
 }
