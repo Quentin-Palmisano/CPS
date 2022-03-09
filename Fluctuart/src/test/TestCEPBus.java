@@ -2,18 +2,14 @@ package test;
 
 import java.util.Iterator;
 
-import org.junit.jupiter.api.Test;
-
 import components.CEPBus;
+import components.FireStation;
 import components.SAMUStation;
+import components.TrafficLight;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.AbstractPort;
 import fr.sorbonne_u.cps.smartcity.AbstractBasicSimCVM;
-import fr.sorbonne_u.cps.smartcity.BasicSimFacadeCVM;
 import fr.sorbonne_u.cps.smartcity.BasicSimSmartCityDescriptor;
-import fr.sorbonne_u.cps.smartcity.components.FireStationFacade;
-import fr.sorbonne_u.cps.smartcity.components.SAMUStationFacade;
-import fr.sorbonne_u.cps.smartcity.components.TrafficLightFacade;
 import fr.sorbonne_u.cps.smartcity.grid.IntersectionPosition;
 
 class TestCEPBus extends AbstractBasicSimCVM {
@@ -22,28 +18,11 @@ class TestCEPBus extends AbstractBasicSimCVM {
 		super();
 	}
 	
-	public void			deploy() throws Exception
+	public void deploy() throws Exception
 	{
 		
 		AbstractComponent.createComponent(CEPBus.class.getCanonicalName(), new Object[0]);
 		
-
-		Iterator<String> fireStationIdsIterator =
-					BasicSimSmartCityDescriptor.createFireStationIdIterator();
-		while (fireStationIdsIterator.hasNext()) {
-			String fireStationId = fireStationIdsIterator.next();
-			String notificationInboundPortURI = AbstractPort.generatePortURI();
-			this.register(fireStationId, notificationInboundPortURI);
-			AbstractComponent.createComponent(
-				FireStationFacade.class.getCanonicalName(),
-				new Object[]{
-						fireStationId,
-						notificationInboundPortURI,
-						BasicSimSmartCityDescriptor.
-										getActionInboundPortURI(fireStationId)
-						});
-		}
-
 		Iterator<String> samuStationsIditerator =
 					BasicSimSmartCityDescriptor.createSAMUStationIdIterator();
 		while (samuStationsIditerator.hasNext()) {
@@ -65,6 +44,25 @@ class TestCEPBus extends AbstractBasicSimCVM {
 			
 		}
 
+		
+		Iterator<String> fireStationIdsIterator =
+					BasicSimSmartCityDescriptor.createFireStationIdIterator();
+		while (fireStationIdsIterator.hasNext()) {
+			String fireStationId = fireStationIdsIterator.next();
+			String notificationInboundPortURI = AbstractPort.generatePortURI();
+			this.register(fireStationId, notificationInboundPortURI);
+			AbstractComponent.createComponent(
+				FireStation.class.getCanonicalName(),
+				new Object[]{
+						fireStationId,
+						notificationInboundPortURI,
+						BasicSimSmartCityDescriptor.
+										getActionInboundPortURI(fireStationId)
+						});
+		}
+
+		
+
 		Iterator<IntersectionPosition> trafficLightsIterator =
 					BasicSimSmartCityDescriptor.createTrafficLightPositionIterator();
 		while (trafficLightsIterator.hasNext()) {
@@ -72,7 +70,7 @@ class TestCEPBus extends AbstractBasicSimCVM {
 			String notificationInboundPortURI = AbstractPort.generatePortURI();
 			this.register(p.toString(), notificationInboundPortURI);
 			AbstractComponent.createComponent(
-					TrafficLightFacade.class.getCanonicalName(),
+					TrafficLight.class.getCanonicalName(),
 					new Object[]{
 							p,
 							notificationInboundPortURI,
