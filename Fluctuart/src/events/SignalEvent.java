@@ -11,5 +11,9 @@ public class SignalEvent extends AtomicEvent {
 	public SignalEvent(LocalTime time) {
 		super(time);
 	}
+	
+	public SignalEvent(LocalTime time, String type) {
+		super(time, type);
+	}
 
 }
