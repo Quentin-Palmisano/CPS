@@ -23,7 +23,7 @@ public class RuleBase {
 		rules.add(r);
 	}
 	
-	public boolean fireFirstOn(EventBaseI eb, CorrelatorStateI c) {
+	public boolean fireFirstOn(EventBaseI eb, CorrelatorStateI c) throws Exception {
 		for(RuleI r : rules) {
 			ArrayList<EventI> matchedEvents = r.match(eb);
 			if(matchedEvents!=null) {
@@ -39,7 +39,7 @@ public class RuleBase {
 		return false;		
 	}
 	
-	public boolean fireAllOn(EventBaseI eb, CorrelatorStateI c) {
+	public boolean fireAllOn(EventBaseI eb, CorrelatorStateI c) throws Exception {
 		boolean b = false;
 		while(fireFirstOn(eb, c)) b=true;
 		return b;
