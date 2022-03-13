@@ -7,10 +7,22 @@ import interfaces.EventI;
 
 public class HealthCorrelatorState extends CorrelatorState implements HealthCorrelatorStateI {
 
+	boolean ambulanceAvailable;
+	boolean medicAvailable;
+	
 	@Override
 	public void receiveEvent(String emitterURI, EventI event) throws Exception {
-		
-		
+		String name = (String) event.getPropertyValue("name");
+		if(name.equals("notifyNoAmbulancesAvailable")) {
+			ambulanceAvailable = false;
+		}else if(name.equals("notifyAmbulancesAvailable")) {
+			ambulanceAvailable = true;
+		}
+		if(name.equals("notifyNoMedicsAvailable")) {
+			medicAvailable = false;
+		}else if(name.equals("notifyMedicsAvailable")) {
+			medicAvailable = true;
+		}
 	}
 	
 	@Override
@@ -21,7 +33,7 @@ public class HealthCorrelatorState extends CorrelatorState implements HealthCorr
 	
 	@Override
 	public boolean isAmbulanceAvailable() {
-		return false;
+		return ambulanceAvailable;
 	}
 
 	
