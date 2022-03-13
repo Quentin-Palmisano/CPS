@@ -58,6 +58,11 @@ class test {
 			public void triggerIntervention(AbsolutePosition position, String personId, TypeOfSAMURessources type) {
 				called = true;
 			}
+
+			@Override
+			public boolean isMedicAvailable() {
+				return false;
+			}
 			
 		};
 		
