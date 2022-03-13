@@ -8,5 +8,6 @@ public interface HealthCorrelatorStateI extends CorrelatorStateI {
 	
 	void triggerIntervention(AbsolutePosition position, String personId, TypeOfSAMURessources type) throws Exception;
 	boolean isAmbulanceAvailable();
+	boolean isMedicAvailable();
 
 }
