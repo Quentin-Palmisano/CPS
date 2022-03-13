@@ -2,10 +2,9 @@ package rules;
 
 import java.util.ArrayList;
 
-import correlator.*;
-import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
-import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfSAMURessources;
-import interfaces.*;
+import correlator.HealthCorrelatorStateI;
+import interfaces.CorrelatorStateI;
+import interfaces.EventI;
 
 public class S02 extends S01 {
 
@@ -18,7 +17,7 @@ public class S02 extends S01 {
 	@Override
 	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) throws Exception {
 		c.traceRuleTrigger("S02");
-		// propagate
+		// TODO propagate
 	}
 	
 }

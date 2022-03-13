@@ -172,11 +172,11 @@ public class FireStation extends FireStationFacade implements ActionExecutionCI{
 	@Override
 	public ResponseI execute(ActionI a, Serializable[] params) throws Exception {
 		FireAction fa = (FireAction) a;
-		if(fa == FireAction.firstAlarm) {
+		if(fa == FireAction.FIRST_ALARM) {
 			actionOBP.triggerFirstAlarm((AbsolutePosition) params[0], (TypeOfFirefightingResource) params[1]);
-		} else if(fa == FireAction.secondAlarm) {
+		} else if(fa == FireAction.SECOND_ALARM) {
 			actionOBP.triggerSecondAlarm((AbsolutePosition) params[0]);
-		} else if(fa == FireAction.generalAlarm) {
+		} else if(fa == FireAction.GENERAL_ALARM) {
 			actionOBP.triggerGeneralAlarm((AbsolutePosition) params[0]);
 		}
 		return null;

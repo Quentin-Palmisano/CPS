@@ -5,6 +5,9 @@ import rules.RuleBase;
 import rules.S01;
 import rules.S02;
 import rules.S03;
+import rules.S04;
+import rules.S05;
+import rules.S06;
 
 public class HealthCorrelator extends Correlator {
 
@@ -16,6 +19,9 @@ public class HealthCorrelator extends Correlator {
 		ruleBase.addRule(new S01());
 		ruleBase.addRule(new S02());
 		ruleBase.addRule(new S03());
+		ruleBase.addRule(new S04());
+		ruleBase.addRule(new S05());
+		ruleBase.addRule(new S06());
 
 		this.getTracer().setTitle(uri);
 		this.getTracer().setRelativePosition(3, 0);

@@ -14,6 +14,7 @@ import fr.sorbonne_u.cps.smartcity.components.SAMUStationFacade;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
 import fr.sorbonne_u.cps.smartcity.grid.IntersectionPosition;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfHealthAlarm;
+import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfSAMURessources;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfTrafficLightPriority;
 import interfaces.ActionI;
 import interfaces.ResponseI;
@@ -213,7 +214,9 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionCI 
 	@Override
 	public ResponseI execute(ActionI a, Serializable[] params) throws Exception {
 		HealthAction action = (HealthAction) a;
-		this.actionOBP.triggerIntervention(action.position, action.personId, action.type);
+		if(action == HealthAction.INTERVENTION) {
+			this.actionOBP.triggerIntervention((AbsolutePosition) params[0], (String) params[1], (TypeOfSAMURessources) params[2]);	
+		}
 		return null;
 	}
 	

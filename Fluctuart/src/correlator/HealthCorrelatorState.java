@@ -1,5 +1,7 @@
 package correlator;
 
+import java.io.Serializable;
+
 import actions.HealthAction;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfSAMURessources;
@@ -29,8 +31,7 @@ public class HealthCorrelatorState extends CorrelatorState implements HealthCorr
 	public void triggerIntervention(AbsolutePosition position, String personId, TypeOfSAMURessources type) throws Exception{
 		correlator.traceMessage("Trigger Intervention at position " + position + " for " + personId + " of type " + type + "\n");
 		
-		HealthAction action = new HealthAction(position, personId, type);
-		this.executor.execute(action, null);
+		this.executor.execute(HealthAction.INTERVENTION, new Serializable[] {position, personId, type});
 	}
 	
 	@Override

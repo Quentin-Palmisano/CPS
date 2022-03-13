@@ -11,6 +11,7 @@ import fr.sorbonne_u.cps.smartcity.components.SAMUStationFacade;
 import fr.sorbonne_u.cps.smartcity.components.TrafficLightFacade;
 import fr.sorbonne_u.cps.smartcity.grid.Direction;
 import fr.sorbonne_u.cps.smartcity.grid.IntersectionPosition;
+import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfTrafficLightPriority;
 import interfaces.ActionI;
 import interfaces.ResponseI;
 import ports.ActionExecutionInboundPort;
@@ -71,6 +72,7 @@ public class TrafficLight extends TrafficLightFacade implements ActionExecutionC
 
 	@Override
 	public ResponseI execute(ActionI a, Serializable[] params) throws Exception {
+		actionOBP.changePriority((TypeOfTrafficLightPriority) params[0]);
 		return null;
 	}
 
