@@ -9,7 +9,7 @@ import classes.EventBase;
 import classes.RuleBase;
 import components.CEPBus;
 import components.interfaces.CEPBusManagementCI;
-import correlator.Health1CorrelatorStateI;
+import correlator.HealthCorrelatorStateI;
 import events.HealthEvent;
 import events.SignalEvent;
 
@@ -45,7 +45,7 @@ class test {
 		eventbase.addEvent(hp);
 		
 		called = false;
-		Health1CorrelatorStateI c = new Health1CorrelatorStateI() {
+		HealthCorrelatorStateI c = new HealthCorrelatorStateI() {
 			
 			@Override
 			public boolean isAmbulanceAvailable() {

@@ -10,15 +10,16 @@ import components.interfaces.EventReceptionCI;
 import connectors.EventReceptionConnector;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.annotations.OfferedInterfaces;
-import fr.sorbonne_u.components.annotations.RequiredInterfaces;
 import interfaces.EventI;
+import ports.CEPBusManagementInboundPort;
 import ports.EventEmissionInboundPort;
 import ports.EventReceptionOutboundPort;
 
-@OfferedInterfaces(offered={EventEmissionCI.class})
-@RequiredInterfaces(required={EventReceptionCI.class})
+@OfferedInterfaces(offered={EventEmissionCI.class, CEPBusManagementCI.class, EventReceptionCI.class})
 public class CEPBus extends AbstractComponent implements CEPBusManagementCI, EventEmissionCI {
 
+	public static final String ManagementURI = "CEPBUS_MANAGEMENT_URI";
+	
 	public static CEPBus BUS;
 	
 	private class EventReceptionOutboundConnection {
@@ -41,6 +42,7 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementCI, Eve
 	private final HashMap<String, String> executors = new HashMap<>();
 	
 	private final EventEmissionInboundPort emissionPort;
+	private final CEPBusManagementInboundPort managementPort;
 	
 	public CEPBus() throws Exception {
 		super(1, 1);
@@ -48,6 +50,9 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementCI, Eve
 		
 		emissionPort = new EventEmissionInboundPort(this);
 		emissionPort.publishPort();
+		
+		managementPort = new CEPBusManagementInboundPort(ManagementURI, this);
+		managementPort.publishPort();
 		
 		this.getTracer().setTitle("CEPBus");
 		this.getTracer().setRelativePosition(2, 0);

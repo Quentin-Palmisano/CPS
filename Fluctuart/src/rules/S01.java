@@ -2,7 +2,7 @@ package rules;
 
 import java.util.ArrayList;
 
-import correlator.Health1CorrelatorStateI;
+import correlator.HealthCorrelatorStateI;
 import events.HealthEvent;
 import interfaces.CorrelatorStateI;
 import interfaces.EventBaseI;
@@ -41,13 +41,13 @@ public class S01 implements RuleI {
 
 	@Override
 	public boolean filter(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
-		Health1CorrelatorStateI samuState = (Health1CorrelatorStateI)c;
+		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
 		return samuState.isAmbulanceAvailable();
 	}
 
 	@Override
 	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
-		Health1CorrelatorStateI samuState = (Health1CorrelatorStateI)c;
+		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
 		samuState.callAmbulance();
 	}
 

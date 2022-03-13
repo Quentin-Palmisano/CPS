@@ -5,6 +5,7 @@ import java.util.Iterator;
 import components.CEPBus;
 import components.FireStation;
 import components.SAMUStation;
+import components.TestCorrelator;
 import components.TrafficLight;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.AbstractPort;
@@ -62,7 +63,6 @@ class TestCEPBus extends AbstractBasicSimCVM {
 		}
 
 		
-
 		Iterator<IntersectionPosition> trafficLightsIterator =
 					BasicSimSmartCityDescriptor.createTrafficLightPositionIterator();
 		while (trafficLightsIterator.hasNext()) {
@@ -78,7 +78,8 @@ class TestCEPBus extends AbstractBasicSimCVM {
 												getActionInboundPortURI(p)
 							});
 		}
-		
+
+		AbstractComponent.createComponent(TestCorrelator.class.getCanonicalName(), new Object[0]);
 		
 		super.deploy();
 	}
