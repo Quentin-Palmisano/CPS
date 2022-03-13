@@ -7,8 +7,8 @@ import interfaces.EventI;
 
 public class HealthCorrelatorState extends CorrelatorState implements HealthCorrelatorStateI {
 	
-	boolean ambulanceAvailable;
-	boolean medicAvailable;
+	boolean ambulanceAvailable = false;
+	boolean medicAvailable = false;
 	
 	@Override
 	public void receiveEvent(String emitterURI, EventI event) throws Exception {

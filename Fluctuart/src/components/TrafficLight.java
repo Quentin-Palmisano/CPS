@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalTime;
 
 import components.interfaces.ActionExecutionCI;
+import connectors.CEPBusManagementConnector;
 import connectors.EventEmissionConnector;
 import events.AtomicEvent;
 import fr.sorbonne_u.cps.smartcity.components.SAMUStationFacade;
@@ -13,10 +14,12 @@ import fr.sorbonne_u.cps.smartcity.grid.IntersectionPosition;
 import interfaces.ActionI;
 import interfaces.ResponseI;
 import ports.ActionExecutionInboundPort;
+import ports.CEPBusManagementOutboundPort;
 import ports.EventEmissionOutboundPort;
 
 public class TrafficLight extends TrafficLightFacade implements ActionExecutionCI{
 
+	protected final CEPBusManagementOutboundPort managementPort;
 	private EventEmissionOutboundPort emissionPort;
 	private ActionExecutionInboundPort actionPort;
 
@@ -27,6 +30,10 @@ public class TrafficLight extends TrafficLightFacade implements ActionExecutionC
 		super(position, notificationInboundPortURI, actionInboundPortURI);
 		
 		this.uri = uri;
+		
+		managementPort = new CEPBusManagementOutboundPort(this);
+		managementPort.localPublishPort();
+		this.doPortConnection(managementPort.getPortURI(), CEPBus.ManagementURI, CEPBusManagementConnector.class.getCanonicalName());
 
 		emissionPort = new EventEmissionOutboundPort(this);
 		emissionPort.localPublishPort();
@@ -34,10 +41,10 @@ public class TrafficLight extends TrafficLightFacade implements ActionExecutionC
 		actionPort = new ActionExecutionInboundPort(this);
 		actionPort.publishPort();
 
-		String ibp = CEPBus.BUS.registerEmitter(uri);
+		String ibp = managementPort.registerEmitter(uri);
 		this.doPortConnection(emissionPort.getPortURI(), ibp, EventEmissionConnector.class.getCanonicalName());
 
-		CEPBus.BUS.registerExecutor(uri, actionPort.getPortURI());
+		managementPort.registerExecutor(uri, actionPort.getPortURI());
 
 	}
 

@@ -3,6 +3,7 @@ package rules;
 import java.util.ArrayList;
 
 import correlator.*;
+import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFire;
 import interfaces.*;
 
 public class F01 implements RuleI {
@@ -17,8 +18,7 @@ public class F01 implements RuleI {
 		EventI he = null;
 		for (int i = 0 ; i < eb.numberOfEvents() && (he == null) ; i++) {
 			EventI e = eb.getEvent(i);
-			if (e.hasProperty("type")
-					&& ((String)e.getPropertyValue("type")).equals("building")) {
+			if (e.hasProperty("type") && e.getPropertyValue("type") == TypeOfFire.Building) {
 				he = e;
 			}
 		}		
@@ -38,13 +38,14 @@ public class F01 implements RuleI {
 
 	@Override
 	public boolean filter(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
-		Fire1CorrelatorStateI samuState = (Fire1CorrelatorStateI)c;
-		return samuState.isBigLadderAvailable();
+		FireCorrelatorStateI samuState = (FireCorrelatorStateI)c;
+		return samuState.isHighLadderTruckAvailable();
 	}
 
 	@Override
 	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
-		Fire1CorrelatorStateI samuState = (Fire1CorrelatorStateI)c;
+		c.traceRuleTrigger("F01");
+		FireCorrelatorStateI samuState = (FireCorrelatorStateI)c;
 		samuState.triggerAlarm();
 	}
 

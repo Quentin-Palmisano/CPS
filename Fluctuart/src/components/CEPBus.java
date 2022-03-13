@@ -20,8 +20,6 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementCI, Eve
 
 	public static final String ManagementURI = "CEPBUS_MANAGEMENT_URI";
 	
-	public static CEPBus BUS;
-	
 	private class EventReceptionOutboundConnection {
 		public EventReceptionOutboundConnection(CEPBus bus, String inboundPortURI) throws Exception {
 			receptionPort = new EventReceptionOutboundPort(bus);
@@ -46,7 +44,6 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementCI, Eve
 	
 	public CEPBus() throws Exception {
 		super(1, 1);
-		BUS = this;
 		
 		emissionPort = new EventEmissionInboundPort(this);
 		emissionPort.publishPort();
