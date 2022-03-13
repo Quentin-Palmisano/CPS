@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalTime;
 
 import components.interfaces.ActionExecutionCI;
+import connectors.CEPBusManagementConnector;
 import connectors.EventEmissionConnector;
 import events.AtomicEvent;
 import fr.sorbonne_u.cps.smartcity.components.FireStationFacade;
@@ -14,10 +15,12 @@ import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfTrafficLightPriority;
 import interfaces.ActionI;
 import interfaces.ResponseI;
 import ports.ActionExecutionInboundPort;
+import ports.CEPBusManagementOutboundPort;
 import ports.EventEmissionOutboundPort;
 
 public class FireStation extends FireStationFacade implements ActionExecutionCI{
 
+	protected final CEPBusManagementOutboundPort managementPort;
 	private EventEmissionOutboundPort emissionPort;
 	private ActionExecutionInboundPort actionPort;
 
@@ -28,16 +31,20 @@ public class FireStation extends FireStationFacade implements ActionExecutionCI{
 		super(stationId, notificationInboundPortURI, actionInboundPortURI);
 		this.uri = uri;
 		
+		managementPort = new CEPBusManagementOutboundPort(this);
+		managementPort.localPublishPort();
+		this.doPortConnection(managementPort.getPortURI(), CEPBus.ManagementURI, CEPBusManagementConnector.class.getCanonicalName());
+		
 		emissionPort = new EventEmissionOutboundPort(this);
 		emissionPort.localPublishPort();
 		
 		actionPort = new ActionExecutionInboundPort(this);
 		actionPort.publishPort();
 		
-		String ibp = CEPBus.BUS.registerEmitter(uri);
+		String ibp = managementPort.registerEmitter(uri);
 		this.doPortConnection(emissionPort.getPortURI(), ibp, EventEmissionConnector.class.getCanonicalName());
 		
-		CEPBus.BUS.registerExecutor(uri, actionPort.getPortURI());
+		managementPort.registerExecutor(uri, actionPort.getPortURI());
 		
 	}
 	

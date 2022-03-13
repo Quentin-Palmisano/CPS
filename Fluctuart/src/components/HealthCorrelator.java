@@ -8,7 +8,7 @@ import rules.S03;
 
 public class HealthCorrelator extends Correlator {
 
-	protected HealthCorrelator(String uri, String stationURI) throws Exception {
+	public HealthCorrelator(String uri, String stationURI) throws Exception {
 		super(uri, stationURI, new HealthCorrelatorState(), new RuleBase());
 		
 		managementPort.subscribe(uri, stationURI);

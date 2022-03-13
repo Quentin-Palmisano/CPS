@@ -16,7 +16,6 @@ public class S03 implements RuleI {
 	public S03() {
 	}
 	
-
 	@Override
 	public ArrayList<EventI> match(EventBaseI eb) {
 		EventI he = null;
