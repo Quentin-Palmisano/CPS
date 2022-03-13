@@ -17,7 +17,7 @@ import ports.EventReceptionInboundPort;
 
 public abstract class Correlator extends AbstractComponent implements EventReceptionCI {
 	
-	private final String uri;
+	public final String uri;
 	
 	protected RuleBase ruleBase;
 	protected EventBase eventBase = new EventBase();
@@ -42,10 +42,10 @@ public abstract class Correlator extends AbstractComponent implements EventRecep
 		emissionPort = new EventEmissionOutboundPort(this);
 		emissionPort.localPublishPort();
 		
-		receptionPort = new EventReceptionInboundPort(this);
+		receptionPort = new EventReceptionInboundPort("zbeb", this);
 		receptionPort.publishPort();
 		
-		String ibp = managementPort.registerCorrelator(uri, receptionPort.getPortURI());
+		String ibp = CEPBus.BUS.registerCorrelator(uri, receptionPort.getPortURI());
 		
 		
 		this.doPortConnection(emissionPort.getPortURI(), ibp, EventEmissionConnector.class.getCanonicalName());
@@ -53,9 +53,9 @@ public abstract class Correlator extends AbstractComponent implements EventRecep
 		executionPort = new ActionExecutionOutboundPort(this);
 		executionPort.localPublishPort();
 		
-		String eibp = managementPort.getExecutorInboundPortURI(executorURI);
+		String eibp = CEPBus.BUS.getExecutorInboundPortURI(executorURI);
 		
-		this.doPortConnection(managementPort.getPortURI(), eibp, ActionExecutionConnector.class.getCanonicalName());
+		this.doPortConnection(executionPort.getPortURI(), eibp, ActionExecutionConnector.class.getCanonicalName());
 		
 		state.setExecutor(executionPort);
 		

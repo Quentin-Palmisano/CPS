@@ -27,7 +27,7 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementCI, Eve
 			receptionPort = new EventReceptionOutboundPort(bus);
 			receptionPort.localPublishPort();
 
-			bus.doPortConnection(inboundPortURI, receptionPort.getPortURI(), EventReceptionConnector.class.getCanonicalName());
+			bus.doPortConnection(receptionPort.getPortURI(), inboundPortURI, EventReceptionConnector.class.getCanonicalName());
 		}
 		public void destroy(CEPBus bus) throws Exception {
 			bus.doPortDisconnection(receptionPort.getPortURI());

@@ -5,7 +5,7 @@ import java.util.Iterator;
 import components.CEPBus;
 import components.FireStation;
 import components.SAMUStation;
-import components.TestCorrelator;
+import components.HealthCorrelator;
 import components.TrafficLight;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.AbstractPort;
@@ -24,6 +24,8 @@ class TestCEPBus extends AbstractBasicSimCVM {
 		
 		AbstractComponent.createComponent(CEPBus.class.getCanonicalName(), new Object[0]);
 		
+		String u = "frfr";
+		
 		Iterator<String> samuStationsIditerator =
 					BasicSimSmartCityDescriptor.createSAMUStationIdIterator();
 		while (samuStationsIditerator.hasNext()) {
@@ -32,6 +34,7 @@ class TestCEPBus extends AbstractBasicSimCVM {
 			this.register(samuStationId, notificationInboundPortURI);
 			
 			String uri = "SAMUStation " + samuStationId;
+			u = uri;
 			
 			AbstractComponent.createComponent(
 					SAMUStation.class.getCanonicalName(),
@@ -43,9 +46,11 @@ class TestCEPBus extends AbstractBasicSimCVM {
 										getActionInboundPortURI(samuStationId)
 							});
 			
-			AbstractComponent.createComponent(TestCorrelator.class.getCanonicalName(), new Object[] {uri});
+
 			
 		}
+		
+		AbstractComponent.createComponent(HealthCorrelator.class.getCanonicalName(), new Object[] {"Health Correlator", u});
 
 		
 		Iterator<String> fireStationIdsIterator =
@@ -95,7 +100,6 @@ class TestCEPBus extends AbstractBasicSimCVM {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 }
