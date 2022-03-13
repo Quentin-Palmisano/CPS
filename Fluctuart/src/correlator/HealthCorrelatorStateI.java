@@ -6,7 +6,7 @@ import interfaces.CorrelatorStateI;
 
 public interface HealthCorrelatorStateI extends CorrelatorStateI {
 	
-	public boolean isAmbulanceAvailable();
 	void triggerIntervention(AbsolutePosition position, String personId, TypeOfSAMURessources type) throws Exception;
+	boolean isAmbulanceAvailable();
 
 }

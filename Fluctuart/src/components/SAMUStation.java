@@ -163,6 +163,7 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionCI 
 	{
 		super.notifyMedicsAvailable(occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
+		event.putProperty("MedicAvailable", true);
 		emissionPort.sendEvent(event);
 	}
 
@@ -172,6 +173,7 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionCI 
 	{
 		super.notifyNoMedicAvailable(occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
+		event.putProperty("NoMedicAvailable", true);
 		emissionPort.sendEvent(event);
 	}
 
@@ -181,6 +183,7 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionCI 
 	{
 		super.notifyAmbulancesAvailable(occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
+		event.putProperty("AmbulanceAvailable", true);
 		emissionPort.sendEvent(event);
 	}
 
@@ -190,6 +193,7 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionCI 
 	{
 		super.notifyNoAmbulanceAvailable(occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
+		event.putProperty("NoAmbulanceAvailable", true);
 		emissionPort.sendEvent(event);
 	}
 
