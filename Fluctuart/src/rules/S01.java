@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import correlator.HealthCorrelatorStateI;
 import events.HealthEvent;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
+import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfHealthAlarm;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfSAMURessources;
 import interfaces.CorrelatorStateI;
 import interfaces.EventBaseI;
@@ -23,7 +24,7 @@ public class S01 implements RuleI {
 		for (int i = 0 ; i < eb.numberOfEvents() && (he == null) ; i++) {
 			EventI e = eb.getEvent(i);
 			if (e.hasProperty("type")
-					&& ((String)e.getPropertyValue("type")).equals("emergency")) {
+					&& (e.getPropertyValue("type"))==TypeOfHealthAlarm.EMERGENCY) {
 				he = e;
 			}
 		}		
