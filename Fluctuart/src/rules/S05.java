@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 
 import correlator.HealthCorrelatorStateI;
+import events.AtomicEvent;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfHealthAlarm;
 import interfaces.CorrelatorStateI;
 import interfaces.EventBaseI;
@@ -55,9 +56,9 @@ public class S05 implements RuleI {
 
 	@Override
 	public void update(ArrayList<EventI> matchedEvents, EventBaseI eb) {
-		for(EventI e : matchedEvents) {
-			eb.removeEvent(e);
-		}
+		//On remplace le type de l'evenement.
+		//Pas de nouvelle instance.
+		((AtomicEvent) matchedEvents.get(0)).putProperty("type", TypeOfHealthAlarm.MEDICAL);
 	}
 
 }
