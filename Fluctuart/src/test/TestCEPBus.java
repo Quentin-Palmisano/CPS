@@ -43,6 +43,8 @@ class TestCEPBus extends AbstractBasicSimCVM {
 										getActionInboundPortURI(samuStationId)
 							});
 			
+			AbstractComponent.createComponent(TestCorrelator.class.getCanonicalName(), new Object[] {uri});
+			
 		}
 
 		
@@ -79,7 +81,7 @@ class TestCEPBus extends AbstractBasicSimCVM {
 							});
 		}
 
-		AbstractComponent.createComponent(TestCorrelator.class.getCanonicalName(), new Object[0]);
+		
 		
 		super.deploy();
 	}

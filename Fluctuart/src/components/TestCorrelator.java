@@ -7,8 +7,8 @@ import rules.S02;
 
 public class TestCorrelator extends Correlator {
 
-	protected TestCorrelator() throws Exception {
-		super("Test Correlator", new HealthCorrelatorState(), new RuleBase());
+	protected TestCorrelator(String executorURI) throws Exception {
+		super("Test Correlator", executorURI, new HealthCorrelatorState(), new RuleBase());
 		
 		ruleBase.addRule(new S01());
 		ruleBase.addRule(new S02());

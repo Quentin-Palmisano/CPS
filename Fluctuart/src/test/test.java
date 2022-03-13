@@ -56,6 +56,11 @@ class test {
 			public void callAmbulance() {
 				called = true;
 			}
+
+			@Override
+			public void spreadEvent() {
+			}
+			
 		};
 		
 		rulebase.fireAllOn(eventbase, c);

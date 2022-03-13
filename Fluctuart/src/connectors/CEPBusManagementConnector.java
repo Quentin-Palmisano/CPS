@@ -31,7 +31,7 @@ public class CEPBusManagementConnector extends AbstractConnector implements CEPB
 	}
 
 	@Override
-	public String getExecutorInboundPortURI(String uri) {
+	public String getExecutorInboundPortURI(String uri) throws Exception {
 		return ((CEPBusManagementCI) this.offering).getExecutorInboundPortURI(uri);
 	}
 
@@ -41,12 +41,12 @@ public class CEPBusManagementConnector extends AbstractConnector implements CEPB
 	}
 
 	@Override
-	public void subscribe(String subscriberURI, String emitterURI) {
+	public void subscribe(String subscriberURI, String emitterURI) throws Exception {
 		((CEPBusManagementCI) this.offering).subscribe(subscriberURI, emitterURI);
 	}
 
 	@Override
-	public void unsubscribe(String subscriberURI, String emitterURI) {
+	public void unsubscribe(String subscriberURI, String emitterURI) throws Exception {
 		((CEPBusManagementCI) this.offering).unsubscribe(subscriberURI, emitterURI);
 	}
 	
