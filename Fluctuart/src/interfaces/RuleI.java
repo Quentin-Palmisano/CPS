@@ -10,7 +10,7 @@ public interface RuleI {
 	
 	public boolean filter(ArrayList<EventI> matchedEvents, CorrelatorStateI c);
 	
-	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c);
+	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) throws Exception;
 
 	public void update(ArrayList<EventI> matchedEvents, EventBaseI eb);
 

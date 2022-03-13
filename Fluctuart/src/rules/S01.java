@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import correlator.HealthCorrelatorStateI;
 import events.HealthEvent;
+import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
+import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfSAMURessources;
 import interfaces.CorrelatorStateI;
 import interfaces.EventBaseI;
 import interfaces.EventI;
@@ -46,9 +48,13 @@ public class S01 implements RuleI {
 	}
 
 	@Override
-	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
+	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) throws Exception {
 		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
-		samuState.callAmbulance();
+		HealthEvent e = (HealthEvent) matchedEvents.get(0);
+		AbsolutePosition p = (AbsolutePosition) e.getPropertyValue("position");
+		String s = (String) e.getPropertyValue("personId");
+		TypeOfSAMURessources t = TypeOfSAMURessources.AMBULANCE;
+		samuState.triggerIntervention(p, s, t);
 	}
 
 	@Override

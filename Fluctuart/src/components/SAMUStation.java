@@ -3,6 +3,7 @@ package components;
 import java.io.Serializable;
 import java.time.LocalTime;
 
+import actions.HealthAction;
 import classes.AtomicEvent;
 import components.interfaces.ActionExecutionCI;
 import connectors.EventEmissionConnector;
@@ -194,6 +195,8 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionCI 
 
 	@Override
 	public ResponseI execute(ActionI a, Serializable[] params) throws Exception {
+		HealthAction action = (HealthAction) a;
+		this.actionOBP.triggerIntervention(action.position, action.personId, action.type);
 		return null;
 	}
 	
