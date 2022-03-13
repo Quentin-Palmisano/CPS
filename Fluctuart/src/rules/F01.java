@@ -1,10 +1,8 @@
 package rules;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 
 import correlator.*;
-import events.*;
 import interfaces.*;
 
 public class F01 implements RuleI {
@@ -55,8 +53,8 @@ public class F01 implements RuleI {
 		for(EventI e : matchedEvents) {
 			eb.removeEvent(e);
 		}
-		FirstFireSignal f = new FirstFireSignal(LocalTime.now());
-		eb.addEvent(f);
+		//AtomicEvent f = new FirstFireSignal(LocalTime.now());
+		//eb.addEvent(f);
 	}
 
 }
