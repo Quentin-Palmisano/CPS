@@ -1,8 +1,11 @@
 package rules;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import correlator.FireCorrelatorStateI;
+import events.AtomicEvent;
+import events.ComplexEvent;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFire;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFirefightingResource;
@@ -59,6 +62,11 @@ public class F01 implements RuleI {
 		for(EventI e : matchedEvents) {
 			eb.removeEvent(e);
 		}
+		
+		//ComplexEvent e = new ComplexEvent(LocalTime.now());
+		//AtomicEvent event = new AtomicEvent(LocalTime.now());
+		//e.addEvent(event);
+
 		//AtomicEvent f = new FirstFireSignal(LocalTime.now());
 		//eb.addEvent(f);
 	}
