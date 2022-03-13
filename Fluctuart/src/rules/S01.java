@@ -23,8 +23,7 @@ public class S01 implements RuleI {
 		EventI he = null;
 		for (int i = 0 ; i < eb.numberOfEvents() && (he == null) ; i++) {
 			EventI e = eb.getEvent(i);
-			if (e.hasProperty("type")
-					&& (e.getPropertyValue("type"))==TypeOfHealthAlarm.EMERGENCY) {
+			if (e.hasProperty("type") && (e.getPropertyValue("type")==TypeOfHealthAlarm.EMERGENCY)) {
 				he = e;
 			}
 		}		
@@ -51,7 +50,7 @@ public class S01 implements RuleI {
 	@Override
 	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) throws Exception {
 		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
-		HealthEvent e = (HealthEvent) matchedEvents.get(0);
+		EventI e = matchedEvents.get(0);
 		AbsolutePosition p = (AbsolutePosition) e.getPropertyValue("position");
 		String s = (String) e.getPropertyValue("personId");
 		TypeOfSAMURessources t = TypeOfSAMURessources.AMBULANCE;

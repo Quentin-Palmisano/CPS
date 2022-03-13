@@ -19,7 +19,7 @@ public class S02 extends S01 {
 	@Override
 	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) throws Exception {
 		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
-		HealthEvent e = (HealthEvent) matchedEvents.get(0);
+		EventI e = matchedEvents.get(0);
 		AbsolutePosition p = (AbsolutePosition) e.getPropertyValue("position");
 		String s = (String) e.getPropertyValue("personId");
 		TypeOfSAMURessources t = TypeOfSAMURessources.AMBULANCE;
