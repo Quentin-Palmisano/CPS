@@ -3,7 +3,6 @@ package rules;
 import java.util.ArrayList;
 
 import correlator.HealthCorrelatorStateI;
-import events.HealthEvent;
 import interfaces.CorrelatorStateI;
 import interfaces.EventBaseI;
 import interfaces.EventI;

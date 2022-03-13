@@ -3,7 +3,6 @@ package rules;
 import java.util.ArrayList;
 
 import correlator.HealthCorrelatorStateI;
-import events.HealthEvent;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfHealthAlarm;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfSAMURessources;
