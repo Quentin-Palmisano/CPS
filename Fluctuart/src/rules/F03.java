@@ -3,7 +3,7 @@ package rules;
 import java.util.ArrayList;
 
 import correlator.FireCorrelatorStateI;
-import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
+import correlator.HealthCorrelatorStateI;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFire;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFirefightingResource;
 import interfaces.CorrelatorStateI;
@@ -11,13 +11,8 @@ import interfaces.EventBaseI;
 import interfaces.EventI;
 import interfaces.RuleI;
 
-public class F01 implements RuleI {
-	
-	public F01() {
-	}
-	
-	EventI matched;
-	
+public class F03 implements RuleI {
+
 	@Override
 	public ArrayList<EventI> match(EventBaseI eb) {
 		EventI he = null;
@@ -43,15 +38,14 @@ public class F01 implements RuleI {
 
 	@Override
 	public boolean filter(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
-		FireCorrelatorStateI fireState = (FireCorrelatorStateI)c;
-		return fireState.isHighLadderTruckAvailable();
+		FireCorrelatorStateI samuState = (FireCorrelatorStateI)c;
+		return !samuState.isHighLadderTruckAvailable();
 	}
 
 	@Override
 	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) throws Exception {
-		c.traceRuleTrigger("F01");
-		FireCorrelatorStateI samuState = (FireCorrelatorStateI)c;
-		samuState.triggerFirstAlarm((AbsolutePosition) matchedEvents.get(0).getPropertyValue("position"), TypeOfFirefightingResource.HighLadderTruck);
+		c.traceRuleTrigger("F03");
+		// TODO propagate
 	}
 
 	@Override
@@ -59,8 +53,6 @@ public class F01 implements RuleI {
 		for(EventI e : matchedEvents) {
 			eb.removeEvent(e);
 		}
-		//AtomicEvent f = new FirstFireSignal(LocalTime.now());
-		//eb.addEvent(f);
 	}
 
 }
