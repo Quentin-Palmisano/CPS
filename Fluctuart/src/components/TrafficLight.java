@@ -54,6 +54,7 @@ public class TrafficLight extends TrafficLightFacade implements ActionExecutionC
 	public void	vehiclePassage(String vehicleId, Direction d, LocalTime occurrence) throws Exception {
 		super.vehiclePassage(vehicleId, d, occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
+		event.putProperty("name", "vehiclePassage");
 		event.putProperty("vehicleId", vehicleId);
 		event.putProperty("direction", d);
 		emissionPort.sendEvent(event);

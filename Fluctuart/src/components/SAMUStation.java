@@ -87,6 +87,7 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionCI 
 	{
 		super.healthAlarm(position, type, occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
+		event.putProperty("name", "healthAlarm");
 		event.putProperty("position", position);
 		event.putProperty("type", type);
 		emissionPort.sendEvent(event);
@@ -102,6 +103,7 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionCI 
 	{
 		super.trackingAlarm(position, personId, occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
+		event.putProperty("name", "trackingAlarm");
 		event.putProperty("position", position);
 		event.putProperty("personId", personId);
 		emissionPort.sendEvent(event);
@@ -115,6 +117,7 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionCI 
 	{
 		super.manualSignal(personId, occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
+		event.putProperty("name", "manualSignal");
 		event.putProperty("personId", personId);
 		emissionPort.sendEvent(event);
 	}
@@ -130,6 +133,7 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionCI 
 	{
 		super.requestPriority(intersection, priority, vehicleId, destination, occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
+		event.putProperty("name", "requestPriority");
 		event.putProperty("intersection", intersection);
 		event.putProperty("priority", priority);
 		event.putProperty("vehicleId", vehicleId);
@@ -143,6 +147,7 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionCI 
 	{
 		super.atDestination(vehicleId, occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
+		event.putProperty("name", "atDestination");
 		event.putProperty("vehicleId", vehicleId);
 		emissionPort.sendEvent(event);
 	}
@@ -153,6 +158,7 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionCI 
 	{
 		super.atStation(vehicleId, occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
+		event.putProperty("name", "atStation");
 		event.putProperty("vehicleId", vehicleId);
 		emissionPort.sendEvent(event);
 	}
@@ -163,7 +169,7 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionCI 
 	{
 		super.notifyMedicsAvailable(occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
-		event.putProperty("MedicAvailable", true);
+		event.putProperty("name", "notifyMedicsAvailable");
 		emissionPort.sendEvent(event);
 	}
 
@@ -173,7 +179,7 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionCI 
 	{
 		super.notifyNoMedicAvailable(occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
-		event.putProperty("NoMedicAvailable", true);
+		event.putProperty("name", "notifyNoMedicAvailable");
 		emissionPort.sendEvent(event);
 	}
 
@@ -183,7 +189,7 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionCI 
 	{
 		super.notifyAmbulancesAvailable(occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
-		event.putProperty("AmbulanceAvailable", true);
+		event.putProperty("name", "notifyAmbulancesAvailable");
 		emissionPort.sendEvent(event);
 	}
 
@@ -193,7 +199,7 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionCI 
 	{
 		super.notifyNoAmbulanceAvailable(occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
-		event.putProperty("NoAmbulanceAvailable", true);
+		event.putProperty("name", "notifyNoAmbulanceAvailable");
 		emissionPort.sendEvent(event);
 	}
 

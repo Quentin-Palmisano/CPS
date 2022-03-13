@@ -12,14 +12,15 @@ public class HealthCorrelatorState extends CorrelatorState implements HealthCorr
 	
 	@Override
 	public void receiveEvent(String emitterURI, EventI event) throws Exception {
-		if(event.hasProperty("NoAmbulanceAvailable")) {
+		String name = (String) event.getPropertyValue("name");
+		if(name.equals("notifyNoAmbulancesAvailable")) {
 			ambulanceAvailable = false;
-		}else if(event.hasProperty("AmbulanceAvailable")) {
+		}else if(name.equals("notifyAmbulancesAvailable")) {
 			ambulanceAvailable = true;
 		}
-		if(event.hasProperty("NoMedicAvailable")) {
+		if(name.equals("notifyNoMedicsAvailable")) {
 			medicAvailable = false;
-		}else if(event.hasProperty("MedicAvailable")) {
+		}else if(name.equals("notifyMedicsAvailable")) {
 			medicAvailable = true;
 		}
 	}
