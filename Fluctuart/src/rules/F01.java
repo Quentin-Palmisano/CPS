@@ -2,9 +2,14 @@ package rules;
 
 import java.util.ArrayList;
 
-import correlator.*;
+import correlator.FireCorrelatorStateI;
+import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFire;
-import interfaces.*;
+import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFirefightingResource;
+import interfaces.CorrelatorStateI;
+import interfaces.EventBaseI;
+import interfaces.EventI;
+import interfaces.RuleI;
 
 public class F01 implements RuleI {
 	
@@ -43,10 +48,10 @@ public class F01 implements RuleI {
 	}
 
 	@Override
-	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
+	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) throws Exception {
 		c.traceRuleTrigger("F01");
 		FireCorrelatorStateI samuState = (FireCorrelatorStateI)c;
-		samuState.triggerAlarm();
+		samuState.triggerFirstAlarm((AbsolutePosition) matchedEvents.get(0).getPropertyValue("position"), TypeOfFirefightingResource.HighLadderTruck);
 	}
 
 	@Override
