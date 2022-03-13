@@ -20,7 +20,7 @@ public class S01 implements RuleI {
 		EventI he = null;
 		for (int i = 0 ; i < eb.numberOfEvents() && (he == null) ; i++) {
 			EventI e = eb.getEvent(i);
-			if (e instanceof HealthEvent && e.hasProperty("type")
+			if (e.hasProperty("type")
 					&& ((String)e.getPropertyValue("type")).equals("emergency")) {
 				he = e;
 			}
