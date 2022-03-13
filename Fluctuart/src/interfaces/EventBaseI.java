@@ -7,9 +7,12 @@ public interface EventBaseI {
 
 	public void addEvent(EventI e);
 	
+	public void addEvents(EventI[] events);
+	
 	public void removeEvent(EventI e);
 	
 	public EventI getEvent(int i);
+	
 	public ArrayList<EventI> getEvents();
 	
 	public int numberOfEvents();

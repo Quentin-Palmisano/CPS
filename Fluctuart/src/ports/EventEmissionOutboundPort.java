@@ -7,8 +7,6 @@ import interfaces.EventI;
 
 public class EventEmissionOutboundPort extends AbstractOutboundPort implements EventEmissionCI {
 
-	private static final long serialVersionUID = 6434128801996724805L;
-
 	public EventEmissionOutboundPort(ComponentI owner) throws Exception {
 		super(EventEmissionCI.class, owner);
 	}

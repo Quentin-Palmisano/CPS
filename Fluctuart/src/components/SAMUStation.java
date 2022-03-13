@@ -1,21 +1,27 @@
 package components;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 
+import components.interfaces.ActionExecutionCI;
 import connectors.EventEmissionConnector;
 import events.HealthEvent;
 import fr.sorbonne_u.components.exceptions.ComponentShutdownException;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
+import fr.sorbonne_u.cps.smartcity.components.SAMUStationFacade;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
 import fr.sorbonne_u.cps.smartcity.grid.IntersectionPosition;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfHealthAlarm;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfTrafficLightPriority;
+import interfaces.ActionI;
+import interfaces.ResponseI;
+import ports.ActionExecutionInboundPort;
 import ports.EventEmissionOutboundPort;
-import fr.sorbonne_u.cps.smartcity.components.SAMUStationFacade;
 
-public class SAMUStation extends SAMUStationFacade {
+public class SAMUStation extends SAMUStationFacade implements ActionExecutionCI {
 	
 	private EventEmissionOutboundPort emissionPort;
+	private ActionExecutionInboundPort actionPort;
 
 	public final String uri;
 	
@@ -27,8 +33,13 @@ public class SAMUStation extends SAMUStationFacade {
 		emissionPort = new EventEmissionOutboundPort(this);
 		emissionPort.localPublishPort();
 		
+		actionPort = new ActionExecutionInboundPort(this);
+		actionPort.publishPort();
+		
 		String ibp = CEPBus.BUS.registerEmitter(uri);
 		this.doPortConnection(emissionPort.getPortURI(), ibp, EventEmissionConnector.class.getCanonicalName());
+		
+		CEPBus.BUS.registerExecutor(uri, actionPort.getPortURI());
 		
 	}
 	
@@ -150,6 +161,11 @@ public class SAMUStation extends SAMUStationFacade {
 	throws Exception
 	{
 		super.notifyNoAmbulanceAvailable(occurrence);
+	}
+
+	@Override
+	public ResponseI execute(ActionI a, Serializable[] params) throws Exception {
+		return null;
 	}
 	
 }

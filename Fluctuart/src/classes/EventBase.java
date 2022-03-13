@@ -19,6 +19,13 @@ public class EventBase implements EventBaseI {
 	public void addEvent(EventI e) {
 		events.add(e);
 	}
+	
+	@Override
+	public void addEvents(EventI[] events) {
+		for(EventI e : events) {
+			addEvent(e);
+		}
+	}
 
 	@Override
 	public void removeEvent(EventI e) {

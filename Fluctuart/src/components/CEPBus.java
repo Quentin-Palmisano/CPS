@@ -19,8 +19,6 @@ import ports.EventReceptionOutboundPort;
 @RequiredInterfaces(required={EventReceptionCI.class})
 public class CEPBus extends AbstractComponent implements CEPBusManagementCI, EventEmissionCI {
 
-	//public static final String URI = "URI_BUS";
-	
 	public static CEPBus BUS;
 	
 	private class EventReceptionOutboundConnection {
@@ -40,6 +38,7 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementCI, Eve
 	private final HashSet<String> emitters = new HashSet<>();
 	private final HashMap<String, EventReceptionOutboundConnection> correlators = new HashMap<>();
 	private final HashMap<String, ArrayList<String>> subscriptions = new HashMap<>();
+	private final HashMap<String, String> executors = new HashMap<>();
 	
 	private final EventEmissionInboundPort emissionPort;
 	
@@ -51,7 +50,7 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementCI, Eve
 		emissionPort.publishPort();
 		
 		this.getTracer().setTitle("CEPBus");
-		this.getTracer().setRelativePosition(0, 0);
+		this.getTracer().setRelativePosition(2, 0);
 		this.toggleTracing();
 		
 	}
@@ -107,16 +106,17 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementCI, Eve
 
 	@Override
 	public void registerExecutor(String uri, String inboundPortURI) throws Exception {
+		executors.put(uri, inboundPortURI);
 	}
 
 	@Override
 	public String getExecutorInboundPortURI(String uri) {
-		return null;
+		return executors.get(uri);
 	}
 
 	@Override
 	public void unregisterExecutor(String uri) throws Exception {
-		
+		executors.remove(uri);
 	}
 	
 	@Override

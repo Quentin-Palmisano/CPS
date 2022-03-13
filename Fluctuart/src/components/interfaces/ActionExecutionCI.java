@@ -10,6 +10,6 @@ import interfaces.ResponseI;
 
 public interface ActionExecutionCI extends ComponentInterface, RequiredCI, OfferedCI {
 	
-	public ResponseI execute(ActionI a, Serializable[] params);
+	public ResponseI execute(ActionI a, Serializable[] params) throws Exception;
 
 }

@@ -11,9 +11,9 @@ public interface CEPBusManagementCI extends ComponentInterface, RequiredCI, Offe
 	public String registerCorrelator(String uri, String inboundPortURI) throws Exception;
 	public void unregisterCorrelator(String uri) throws Exception;
 	public void registerExecutor(String uri, String inboundPortURI) throws Exception;
-	public String getExecutorInboundPortURI(String uri);
+	public String getExecutorInboundPortURI(String uri) throws Exception;
 	public void unregisterExecutor(String uri) throws Exception;
-	public void subscribe(String subscriberURI, String emitterURI);
-	public void unsubscribe(String subscriberURI, String emitterURI);
+	public void subscribe(String subscriberURI, String emitterURI) throws Exception;
+	public void unsubscribe(String subscriberURI, String emitterURI) throws Exception;
 
 }

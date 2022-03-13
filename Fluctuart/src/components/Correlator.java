@@ -1,40 +1,38 @@
 package components;
 
 import classes.RuleBase;
-import components.interfaces.EventEmissionCI;
 import components.interfaces.EventReceptionCI;
+import connectors.EventEmissionConnector;
 import fr.sorbonne_u.components.AbstractComponent;
 import interfaces.EventI;
+import ports.EventEmissionOutboundPort;
 
-public class Correlator extends AbstractComponent implements EventEmissionCI, EventReceptionCI{
+public abstract class Correlator extends AbstractComponent implements EventReceptionCI {
 	
-	public static final String URI = "URI_CORRELATOR";
+	protected RuleBase ruleBase;
 	
-	RuleBase ruleBase;
+	private final EventEmissionOutboundPort emissionPort;
 
-	protected Correlator(RuleBase rb) {
+	protected Correlator(RuleBase rb) throws Exception {
 		super(1, 1);
 		this.ruleBase=rb;
 		
+		emissionPort = new EventEmissionOutboundPort(this);
+		emissionPort.localPublishPort();
+		
+		String ibp = CEPBus.BUS.registerEmitter(emissionPort.getPortURI());
+		this.doPortConnection(emissionPort.getPortURI(), ibp, EventEmissionConnector.class.getCanonicalName());
+		
 	}
-
-	@Override
-	public void receiveEvent(String emitterURI, EventI event) throws Exception {
-	}
-
-	@Override
-	public void receiveEvents(String emitterURI, EventI[] events) throws Exception {
-	}
-
-	@Override
-	public void sendEvent(String emitterURI, EventI event) throws Exception {
-	}
-
-	@Override
-	public void sendEvents(String emitterURI, EventI[] events) throws Exception {
-	}
-
-
 	
+
+
+	public void sendEvent(EventI event) throws Exception {
+		emissionPort.sendEvent(event);
+	}
+
+	public void sendEvents(EventI[] events) throws Exception {
+		emissionPort.sendEvents(events);
+	}
 
 }
