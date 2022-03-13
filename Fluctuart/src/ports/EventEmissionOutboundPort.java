@@ -15,14 +15,6 @@ public class EventEmissionOutboundPort extends AbstractOutboundPort implements E
 		super(URI, EventEmissionCI.class, owner);
 	}
 	
-	public void sendEvent(EventI event) throws Exception {
-		sendEvent(this.getPortURI(), event);
-	}
-	
-	public void sendEvents(EventI[] events) throws Exception {
-		sendEvents(this.getPortURI(), events);
-	}
-	
 	@Override
 	public void sendEvent(String emitterURI, EventI event) throws Exception {
 		((EventEmissionCI) this.getConnector()).sendEvent(emitterURI, event);

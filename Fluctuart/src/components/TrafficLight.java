@@ -56,7 +56,7 @@ public class TrafficLight extends TrafficLightFacade implements ActionExecutionC
 		AtomicEvent event = new AtomicEvent(occurrence);
 		event.putProperty("vehicleId", vehicleId);
 		event.putProperty("direction", d);
-		emissionPort.sendEvent(event);
+		emissionPort.sendEvent(uri, event);
 	}
 
 

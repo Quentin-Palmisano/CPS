@@ -15,14 +15,6 @@ public class EventReceptionOutboundPort extends AbstractOutboundPort implements 
 		super(URI, EventReceptionCI.class, owner);
 	}
 	
-	public void sendEvent(EventI event) throws Exception {
-		receiveEvent(this.getPortURI(), event);
-	}
-	
-	public void sendEvents(EventI[] events) throws Exception {
-		receiveEvents(this.getPortURI(), events);
-	}
-	
 	@Override
 	public void receiveEvent(String emitterURI, EventI event) throws Exception {
 		((EventReceptionCI) this.getConnector()).receiveEvent(emitterURI, event);

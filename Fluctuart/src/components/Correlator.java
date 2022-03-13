@@ -24,10 +24,10 @@ public abstract class Correlator extends AbstractComponent implements EventRecep
 	
 	protected CorrelatorState state;
 	
-	private final CEPBusManagementOutboundPort managementPort;
-	private final EventEmissionOutboundPort emissionPort;
-	private final EventReceptionInboundPort receptionPort;
-	private final ActionExecutionOutboundPort executionPort;
+	protected final CEPBusManagementOutboundPort managementPort;
+	protected final EventEmissionOutboundPort emissionPort;
+	protected final EventReceptionInboundPort receptionPort;
+	protected final ActionExecutionOutboundPort executionPort;
 
 	protected Correlator(String uri, String executorURI, CorrelatorState state, RuleBase rb) throws Exception {
 		super(1, 1);
@@ -45,7 +45,7 @@ public abstract class Correlator extends AbstractComponent implements EventRecep
 		receptionPort = new EventReceptionInboundPort("zbeb", this);
 		receptionPort.publishPort();
 		
-		String ibp = CEPBus.BUS.registerCorrelator(uri, receptionPort.getPortURI());
+		String ibp = managementPort.registerCorrelator(uri, receptionPort.getPortURI());
 		
 		
 		this.doPortConnection(emissionPort.getPortURI(), ibp, EventEmissionConnector.class.getCanonicalName());
@@ -53,7 +53,7 @@ public abstract class Correlator extends AbstractComponent implements EventRecep
 		executionPort = new ActionExecutionOutboundPort(this);
 		executionPort.localPublishPort();
 		
-		String eibp = CEPBus.BUS.getExecutorInboundPortURI(executorURI);
+		String eibp = managementPort.getExecutorInboundPortURI(executorURI);
 		
 		this.doPortConnection(executionPort.getPortURI(), eibp, ActionExecutionConnector.class.getCanonicalName());
 		
@@ -61,18 +61,11 @@ public abstract class Correlator extends AbstractComponent implements EventRecep
 		
 	}
 	
-
-
-	public void sendEvent(EventI event) throws Exception {
-		emissionPort.sendEvent(event);
-	}
-
-	public void sendEvents(EventI[] events) throws Exception {
-		emissionPort.sendEvents(events);
-	}
-	
 	@Override
 	public void receiveEvent(String emitterURI, EventI event) throws Exception {
+		
+		this.traceMessage("Event received from " + emitterURI + "\n");
+		
 		state.receiveEvent(emitterURI, event);
 		eventBase.addEvent(event);
 		ruleBase.fireAllOn(eventBase, state);
@@ -80,6 +73,9 @@ public abstract class Correlator extends AbstractComponent implements EventRecep
 
 	@Override
 	public void receiveEvents(String emitterURI, EventI[] events) throws Exception {
+		
+		this.traceMessage("Events received from " + emitterURI + "\n");
+		
 		state.receiveEvents(emitterURI, events);
 		eventBase.addEvents(events);
 		ruleBase.fireAllOn(eventBase, state);
