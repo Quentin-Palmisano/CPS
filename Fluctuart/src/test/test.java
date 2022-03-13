@@ -12,6 +12,8 @@ import components.interfaces.CEPBusManagementCI;
 import correlator.HealthCorrelatorStateI;
 import events.HealthEvent;
 import events.SignalEvent;
+import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
+import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfSAMURessources;
 
 class test {
 
@@ -53,17 +55,17 @@ class test {
 			}
 			
 			@Override
-			public void callAmbulance() {
+			public void triggerIntervention(AbsolutePosition position, String personId, TypeOfSAMURessources type) {
 				called = true;
-			}
-
-			@Override
-			public void spreadEvent() {
 			}
 			
 		};
 		
-		rulebase.fireAllOn(eventbase, c);
+		try {
+			rulebase.fireAllOn(eventbase, c);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 		assert (called);
 		

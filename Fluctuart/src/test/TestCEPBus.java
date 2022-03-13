@@ -24,8 +24,6 @@ class TestCEPBus extends AbstractBasicSimCVM {
 		
 		AbstractComponent.createComponent(CEPBus.class.getCanonicalName(), new Object[0]);
 		
-		String u = "frfr";
-		
 		Iterator<String> samuStationsIditerator =
 					BasicSimSmartCityDescriptor.createSAMUStationIdIterator();
 		while (samuStationsIditerator.hasNext()) {
@@ -34,8 +32,7 @@ class TestCEPBus extends AbstractBasicSimCVM {
 			this.register(samuStationId, notificationInboundPortURI);
 			
 			String uri = "SAMUStation " + samuStationId;
-			u = uri;
-			
+
 			AbstractComponent.createComponent(
 					SAMUStation.class.getCanonicalName(),
 					new Object[]{
@@ -47,10 +44,10 @@ class TestCEPBus extends AbstractBasicSimCVM {
 							});
 			
 
+			AbstractComponent.createComponent(HealthCorrelator.class.getCanonicalName(), new Object[] {"Health Correlator " + samuStationId, uri});
 			
 		}
 		
-		AbstractComponent.createComponent(HealthCorrelator.class.getCanonicalName(), new Object[] {"Health Correlator", u});
 
 		
 		Iterator<String> fireStationIdsIterator =

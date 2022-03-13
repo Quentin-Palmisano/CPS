@@ -73,12 +73,14 @@ public abstract class Correlator extends AbstractComponent implements EventRecep
 	
 	@Override
 	public void receiveEvent(String emitterURI, EventI event) throws Exception {
+		state.receiveEvent(emitterURI, event);
 		eventBase.addEvent(event);
 		ruleBase.fireAllOn(eventBase, state);
 	}
 
 	@Override
 	public void receiveEvents(String emitterURI, EventI[] events) throws Exception {
+		state.receiveEvents(emitterURI, events);
 		eventBase.addEvents(events);
 		ruleBase.fireAllOn(eventBase, state);
 	}
