@@ -3,6 +3,7 @@ package components;
 import java.io.Serializable;
 import java.time.LocalTime;
 
+import actions.FireAction;
 import components.interfaces.ActionExecutionCI;
 import connectors.CEPBusManagementConnector;
 import connectors.EventEmissionConnector;
@@ -11,6 +12,7 @@ import fr.sorbonne_u.cps.smartcity.components.FireStationFacade;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
 import fr.sorbonne_u.cps.smartcity.grid.IntersectionPosition;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFire;
+import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFirefightingResource;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfTrafficLightPriority;
 import interfaces.ActionI;
 import interfaces.ResponseI;
@@ -169,6 +171,14 @@ public class FireStation extends FireStationFacade implements ActionExecutionCI{
 
 	@Override
 	public ResponseI execute(ActionI a, Serializable[] params) throws Exception {
+		FireAction fa = (FireAction) a;
+		if(fa == FireAction.FIRST_ALARM) {
+			actionOBP.triggerFirstAlarm((AbsolutePosition) params[0], (TypeOfFirefightingResource) params[1]);
+		} else if(fa == FireAction.SECOND_ALARM) {
+			actionOBP.triggerSecondAlarm((AbsolutePosition) params[0]);
+		} else if(fa == FireAction.GENERAL_ALARM) {
+			actionOBP.triggerGeneralAlarm((AbsolutePosition) params[0]);
+		}
 		return null;
 	}
 

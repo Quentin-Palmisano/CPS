@@ -1,5 +1,10 @@
 package correlator;
 
+import java.io.Serializable;
+
+import actions.FireAction;
+import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
+import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFirefightingResource;
 import interfaces.EventI;
 
 public class FireCorrelatorState extends CorrelatorState implements FireCorrelatorStateI {
@@ -33,11 +38,24 @@ public class FireCorrelatorState extends CorrelatorState implements FireCorrelat
 	}
 
 	@Override
-	public void triggerAlarm() {
+	public void triggerFirstAlarm(AbsolutePosition position, TypeOfFirefightingResource resource) throws Exception {
 		correlator.traceMessage("Trigger Alarm\n");
 		
-		// TODO trigger alarm
+		executor.execute(FireAction.FIRST_ALARM, new Serializable[] {position, resource});
+	}
+	
+	@Override
+	public void triggerSecondAlarm(AbsolutePosition position) throws Exception {
+		correlator.traceMessage("Trigger Alarm\n");
 		
+		executor.execute(FireAction.SECOND_ALARM, new Serializable[] {position});
+	}
+	
+	@Override
+	public void triggerGeneralAlarm(AbsolutePosition position) throws Exception {
+		correlator.traceMessage("Trigger Alarm\n");
+		
+		executor.execute(FireAction.GENERAL_ALARM, new Serializable[] {position});
 	}
 
 }
