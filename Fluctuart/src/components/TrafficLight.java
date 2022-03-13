@@ -3,11 +3,11 @@ package components;
 import java.io.Serializable;
 import java.time.LocalTime;
 
+import actions.TrafficAction;
 import components.interfaces.ActionExecutionCI;
 import connectors.CEPBusManagementConnector;
 import connectors.EventEmissionConnector;
 import events.AtomicEvent;
-import fr.sorbonne_u.cps.smartcity.components.SAMUStationFacade;
 import fr.sorbonne_u.cps.smartcity.components.TrafficLightFacade;
 import fr.sorbonne_u.cps.smartcity.grid.Direction;
 import fr.sorbonne_u.cps.smartcity.grid.IntersectionPosition;
@@ -72,7 +72,10 @@ public class TrafficLight extends TrafficLightFacade implements ActionExecutionC
 
 	@Override
 	public ResponseI execute(ActionI a, Serializable[] params) throws Exception {
-		actionOBP.changePriority((TypeOfTrafficLightPriority) params[0]);
+		TrafficAction ta = (TrafficAction) a;
+		if(ta == TrafficAction.PRIORITY_CHANGE) {
+			actionOBP.changePriority((TypeOfTrafficLightPriority) params[0]);
+		}
 		return null;
 	}
 

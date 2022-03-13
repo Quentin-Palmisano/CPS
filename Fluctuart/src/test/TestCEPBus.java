@@ -7,6 +7,7 @@ import components.FireCorrelator;
 import components.FireStation;
 import components.HealthCorrelator;
 import components.SAMUStation;
+import components.TrafficCorrelator;
 import components.TrafficLight;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.AbstractPort;
@@ -81,14 +82,21 @@ class TestCEPBus extends AbstractBasicSimCVM {
 			IntersectionPosition p = trafficLightsIterator.next();
 			String notificationInboundPortURI = AbstractPort.generatePortURI();
 			this.register(p.toString(), notificationInboundPortURI);
+			
+			String uri = "Traffic Light " + p;
+			
 			AbstractComponent.createComponent(
 					TrafficLight.class.getCanonicalName(),
 					new Object[]{
+							uri,
 							p,
 							notificationInboundPortURI,
 							BasicSimSmartCityDescriptor.
 												getActionInboundPortURI(p)
 							});
+			
+
+			AbstractComponent.createComponent(TrafficCorrelator.class.getCanonicalName(), new Object[] {"Traffic Correlator " + p, uri});
 		}
 
 		
