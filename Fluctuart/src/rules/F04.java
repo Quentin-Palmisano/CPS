@@ -36,8 +36,8 @@ public class F04 implements RuleI {
 
 	@Override
 	public boolean filter(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
-		FireCorrelatorStateI samuState = (FireCorrelatorStateI)c;
-		return !samuState.isStandardTruckAvailable();
+		FireCorrelatorStateI fireState = (FireCorrelatorStateI)c;
+		return !fireState.isStandardTruckAvailable();
 	}
 
 	@Override
