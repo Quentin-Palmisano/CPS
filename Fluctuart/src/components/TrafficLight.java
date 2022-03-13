@@ -3,9 +3,9 @@ package components;
 import java.io.Serializable;
 import java.time.LocalTime;
 
-import classes.AtomicEvent;
 import components.interfaces.ActionExecutionCI;
 import connectors.EventEmissionConnector;
+import events.AtomicEvent;
 import fr.sorbonne_u.cps.smartcity.components.SAMUStationFacade;
 import fr.sorbonne_u.cps.smartcity.components.TrafficLightFacade;
 import fr.sorbonne_u.cps.smartcity.grid.Direction;

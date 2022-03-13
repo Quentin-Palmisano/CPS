@@ -1,4 +1,4 @@
-package classes;
+package rules;
 
 import java.util.ArrayList;
 

@@ -1,7 +1,7 @@
 package components;
 
-import classes.RuleBase;
 import correlator.HealthCorrelatorState;
+import rules.RuleBase;
 import rules.S01;
 import rules.S02;
 

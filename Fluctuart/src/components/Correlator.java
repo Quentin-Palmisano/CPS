@@ -1,12 +1,11 @@
 package components;
 
-import classes.EventBase;
-import classes.RuleBase;
 import components.interfaces.EventReceptionCI;
 import connectors.ActionExecutionConnector;
 import connectors.CEPBusManagementConnector;
 import connectors.EventEmissionConnector;
 import correlator.CorrelatorState;
+import events.EventBase;
 import fr.sorbonne_u.components.AbstractComponent;
 import interfaces.CorrelatorStateI;
 import interfaces.EventI;
@@ -14,6 +13,7 @@ import ports.ActionExecutionOutboundPort;
 import ports.CEPBusManagementOutboundPort;
 import ports.EventEmissionOutboundPort;
 import ports.EventReceptionInboundPort;
+import rules.RuleBase;
 
 public abstract class Correlator extends AbstractComponent implements EventReceptionCI {
 	

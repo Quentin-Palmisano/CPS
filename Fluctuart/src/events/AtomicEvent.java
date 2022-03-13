@@ -1,4 +1,4 @@
-package classes;
+package events;
 
 import java.io.Serializable;
 import java.time.LocalTime;

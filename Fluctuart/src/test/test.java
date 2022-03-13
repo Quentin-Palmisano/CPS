@@ -5,15 +5,15 @@ import java.time.LocalTime;
 
 import org.junit.jupiter.api.Test;
 
-import classes.EventBase;
-import classes.RuleBase;
 import components.CEPBus;
 import components.interfaces.CEPBusManagementCI;
 import correlator.HealthCorrelatorStateI;
+import events.EventBase;
 import events.HealthEvent;
 import events.SignalEvent;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfSAMURessources;
+import rules.RuleBase;
 
 class test {
 

@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.time.LocalTime;
 
 import actions.HealthAction;
-import classes.AtomicEvent;
 import components.interfaces.ActionExecutionCI;
 import connectors.EventEmissionConnector;
+import events.AtomicEvent;
 import fr.sorbonne_u.components.exceptions.ComponentShutdownException;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import fr.sorbonne_u.cps.smartcity.components.SAMUStationFacade;
