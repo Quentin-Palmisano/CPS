@@ -62,8 +62,8 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementCI, Eve
 
 	@Override
 	public void sendEvent(String emitterURI, EventI event) throws Exception {
-		
-		this.traceMessage("Event received from " + emitterURI + "\n");
+
+		this.traceMessage("Event received from " + emitterURI + " of name " + event.getPropertyValue("name") + "\n");
 		
 		if(subscriptions.containsKey(emitterURI)) {
 			ArrayList<String> subscribers = subscriptions.get(emitterURI);
@@ -78,7 +78,9 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementCI, Eve
 	@Override
 	public void sendEvents(String emitterURI, EventI[] events) throws Exception {
 		
-		this.traceMessage("Events received from " + emitterURI + "\n");
+		for(EventI event : events) {
+			this.traceMessage("Events received from " + emitterURI + " of type " + event.getPropertyValue("name") + "\n");
+		}
 		
 		if(subscriptions.containsKey(emitterURI)) {
 			ArrayList<String> subscribers = subscriptions.get(emitterURI);

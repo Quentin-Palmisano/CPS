@@ -17,6 +17,7 @@ public class S02 extends S01 {
 
 	@Override
 	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) throws Exception {
+		c.traceRuleTrigger("S02");
 		// propagate
 	}
 	

@@ -64,6 +64,11 @@ class test {
 				return false;
 			}
 			
+			@Override
+			public void traceRuleTrigger(String ruleName) {
+				
+			}
+			
 		};
 		
 		try {

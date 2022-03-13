@@ -7,7 +7,6 @@ import connectors.EventEmissionConnector;
 import correlator.CorrelatorState;
 import events.EventBase;
 import fr.sorbonne_u.components.AbstractComponent;
-import interfaces.CorrelatorStateI;
 import interfaces.EventI;
 import ports.ActionExecutionOutboundPort;
 import ports.CEPBusManagementOutboundPort;
@@ -58,13 +57,14 @@ public abstract class Correlator extends AbstractComponent implements EventRecep
 		this.doPortConnection(executionPort.getPortURI(), eibp, ActionExecutionConnector.class.getCanonicalName());
 		
 		state.setExecutor(executionPort);
+		state.setCorrelator(this);
 		
 	}
 	
 	@Override
 	public void receiveEvent(String emitterURI, EventI event) throws Exception {
-		
-		this.traceMessage("Event received from " + emitterURI + "\n");
+
+		this.traceMessage("Event received from " + emitterURI + " of name " + event.getPropertyValue("name") + "\n");
 		
 		state.receiveEvent(emitterURI, event);
 		eventBase.addEvent(event);
@@ -73,8 +73,10 @@ public abstract class Correlator extends AbstractComponent implements EventRecep
 
 	@Override
 	public void receiveEvents(String emitterURI, EventI[] events) throws Exception {
-		
-		this.traceMessage("Events received from " + emitterURI + "\n");
+
+		for(EventI event : events) {
+			this.traceMessage("Event received from " + emitterURI + " of name " + event.getPropertyValue("name") + "\n");
+		}
 		
 		state.receiveEvents(emitterURI, events);
 		eventBase.addEvents(events);

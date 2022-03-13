@@ -4,6 +4,7 @@ import correlator.HealthCorrelatorState;
 import rules.RuleBase;
 import rules.S01;
 import rules.S02;
+import rules.S03;
 
 public class HealthCorrelator extends Correlator {
 
@@ -14,6 +15,7 @@ public class HealthCorrelator extends Correlator {
 		
 		ruleBase.addRule(new S01());
 		ruleBase.addRule(new S02());
+		ruleBase.addRule(new S03());
 
 		this.getTracer().setTitle(uri);
 		this.getTracer().setRelativePosition(3, 0);

@@ -48,6 +48,7 @@ public class S03 implements RuleI {
 
 	@Override
 	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) throws Exception {
+		c.traceRuleTrigger("S03");
 		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
 		EventI e = matchedEvents.get(0);
 		AbsolutePosition p = (AbsolutePosition) e.getPropertyValue("position");

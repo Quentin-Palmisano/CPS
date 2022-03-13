@@ -22,11 +22,10 @@ public class S01 implements RuleI {
 		EventI he = null;
 		for (int i = 0 ; i < eb.numberOfEvents() && (he == null) ; i++) {
 			EventI e = eb.getEvent(i);
-			if (e.hasProperty("type")
-					&& (e.getPropertyValue("type"))==TypeOfHealthAlarm.EMERGENCY) {
+			if (e.hasProperty("type") && (e.getPropertyValue("type")==TypeOfHealthAlarm.EMERGENCY)) {
 				he = e;
 			}
-		}		
+		}
 		if (he != null) {
 			ArrayList<EventI> matchedEvents = new ArrayList<>();
 			matchedEvents.add(he);
@@ -38,7 +37,7 @@ public class S01 implements RuleI {
 
 	@Override
 	public boolean correlate(ArrayList<EventI> matchedEvents) {
-		return 	true;
+		return true;
 	}
 
 	@Override
@@ -49,6 +48,7 @@ public class S01 implements RuleI {
 
 	@Override
 	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) throws Exception {
+		c.traceRuleTrigger("S01");
 		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
 		EventI e = matchedEvents.get(0);
 		AbsolutePosition p = (AbsolutePosition) e.getPropertyValue("position");
