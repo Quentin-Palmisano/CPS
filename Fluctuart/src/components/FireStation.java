@@ -5,12 +5,20 @@ import java.time.LocalTime;
 
 import actions.FireAction;
 import components.interfaces.ActionExecutionCI;
+import components.interfaces.ActionExecutionI;
+import components.interfaces.CEPBusManagementCI;
+import components.interfaces.EventEmissionCI;
 import connectors.CEPBusManagementConnector;
 import connectors.EventEmissionConnector;
 import events.AtomicEvent;
+import fr.sorbonne_u.components.annotations.OfferedInterfaces;
+import fr.sorbonne_u.components.annotations.RequiredInterfaces;
+import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import fr.sorbonne_u.cps.smartcity.components.FireStationFacade;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
 import fr.sorbonne_u.cps.smartcity.grid.IntersectionPosition;
+import fr.sorbonne_u.cps.smartcity.interfaces.FireStationActionCI;
+import fr.sorbonne_u.cps.smartcity.interfaces.FireStationNotificationCI;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFire;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFirefightingResource;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfTrafficLightPriority;
@@ -20,7 +28,9 @@ import ports.ActionExecutionInboundPort;
 import ports.CEPBusManagementOutboundPort;
 import ports.EventEmissionOutboundPort;
 
-public class FireStation extends FireStationFacade implements ActionExecutionCI{
+@OfferedInterfaces(offered={FireStationNotificationCI.class, ActionExecutionCI.class})
+@RequiredInterfaces(required={FireStationActionCI.class, EventEmissionCI.class, CEPBusManagementCI.class})
+public class FireStation extends FireStationFacade implements ActionExecutionI {
 
 	protected final CEPBusManagementOutboundPort managementPort;
 	private EventEmissionOutboundPort emissionPort;
@@ -43,17 +53,18 @@ public class FireStation extends FireStationFacade implements ActionExecutionCI{
 		actionPort = new ActionExecutionInboundPort(this);
 		actionPort.publishPort();
 		
-		String ibp = managementPort.registerEmitter(uri);
-		this.doPortConnection(emissionPort.getPortURI(), ibp, EventEmissionConnector.class.getCanonicalName());
-		
-		managementPort.registerExecutor(uri, actionPort.getPortURI());
-		
 	}
+	
 	
 	@Override
 	public synchronized void	execute() throws Exception
 	{
+		super.execute();
 		
+		String ibp = managementPort.registerEmitter(uri);
+		this.doPortConnection(emissionPort.getPortURI(), ibp, EventEmissionConnector.class.getCanonicalName());
+		
+		managementPort.registerExecutor(uri, actionPort.getPortURI());
 	}
 	
 	

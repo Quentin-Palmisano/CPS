@@ -1,12 +1,19 @@
 package components;
 
+import components.interfaces.ActionExecutionCI;
+import components.interfaces.CEPBusManagementCI;
+import components.interfaces.EventEmissionCI;
 import components.interfaces.EventReceptionCI;
+import components.interfaces.EventReceptionI;
 import connectors.ActionExecutionConnector;
 import connectors.CEPBusManagementConnector;
 import connectors.EventEmissionConnector;
 import correlator.CorrelatorState;
 import events.EventBase;
 import fr.sorbonne_u.components.AbstractComponent;
+import fr.sorbonne_u.components.annotations.OfferedInterfaces;
+import fr.sorbonne_u.components.annotations.RequiredInterfaces;
+import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import interfaces.EventI;
 import ports.ActionExecutionOutboundPort;
 import ports.CEPBusManagementOutboundPort;
@@ -14,7 +21,10 @@ import ports.EventEmissionOutboundPort;
 import ports.EventReceptionInboundPort;
 import rules.RuleBase;
 
-public abstract class Correlator extends AbstractComponent implements EventReceptionCI {
+
+@OfferedInterfaces(offered={EventReceptionCI.class})
+@RequiredInterfaces(required={ActionExecutionCI.class, EventEmissionCI.class, CEPBusManagementCI.class})
+public abstract class Correlator extends AbstractComponent implements EventReceptionI {
 	
 	public final String uri;
 	
@@ -27,12 +37,15 @@ public abstract class Correlator extends AbstractComponent implements EventRecep
 	protected final EventEmissionOutboundPort emissionPort;
 	protected final EventReceptionInboundPort receptionPort;
 	protected final ActionExecutionOutboundPort executionPort;
+	
+	private final String executorURI;
 
 	protected Correlator(String uri, String executorURI, CorrelatorState state, RuleBase rb) throws Exception {
 		super(1, 1);
 		this.uri = uri;
 		this.state = state;
 		this.ruleBase=rb;
+		this.executorURI = executorURI;
 		
 		managementPort = new CEPBusManagementOutboundPort(this);
 		managementPort.localPublishPort();
@@ -41,24 +54,27 @@ public abstract class Correlator extends AbstractComponent implements EventRecep
 		emissionPort = new EventEmissionOutboundPort(this);
 		emissionPort.localPublishPort();
 		
-		receptionPort = new EventReceptionInboundPort("zbeb", this);
+		receptionPort = new EventReceptionInboundPort(this);
 		receptionPort.publishPort();
-		
-		String ibp = managementPort.registerCorrelator(uri, receptionPort.getPortURI());
-		
-		
-		this.doPortConnection(emissionPort.getPortURI(), ibp, EventEmissionConnector.class.getCanonicalName());
 		
 		executionPort = new ActionExecutionOutboundPort(this);
 		executionPort.localPublishPort();
 		
-		String eibp = managementPort.getExecutorInboundPortURI(executorURI);
-		
-		this.doPortConnection(executionPort.getPortURI(), eibp, ActionExecutionConnector.class.getCanonicalName());
-		
 		state.setExecutor(executionPort);
 		state.setCorrelator(this);
 		
+	}
+	
+	@Override
+	public synchronized void	execute() throws Exception
+	{
+		super.execute();
+
+		String ibp = managementPort.registerCorrelator(uri, receptionPort.getPortURI());
+		this.doPortConnection(emissionPort.getPortURI(), ibp, EventEmissionConnector.class.getCanonicalName());
+		
+		String eibp = managementPort.getExecutorInboundPortURI(executorURI);
+		this.doPortConnection(executionPort.getPortURI(), eibp, ActionExecutionConnector.class.getCanonicalName());
 	}
 	
 	@Override

@@ -13,7 +13,6 @@ import components.TrafficLight;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.AbstractPort;
 import fr.sorbonne_u.cps.smartcity.AbstractSmartCityCVM;
-import fr.sorbonne_u.cps.smartcity.SmartCityCVM;
 import fr.sorbonne_u.cps.smartcity.SmartCityDescriptor;
 import fr.sorbonne_u.cps.smartcity.grid.IntersectionPosition;
 import fr.sorbonne_u.cps.smartcity.utils.TimeManager;

@@ -72,8 +72,6 @@ import java.util.concurrent.TimeUnit;
  * 
  * @author	<a href="mailto:Jacques.Malenfant@lip6.fr">Jacques Malenfant</a>
  */
-@OfferedInterfaces(offered={SAMUNotificationCI.class})
-@RequiredInterfaces(required={SAMUActionCI.class})
 public class			SAMUStationFacade
 extends		AbstractComponent
 implements	SAMUNotificationImplI

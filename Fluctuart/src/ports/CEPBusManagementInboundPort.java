@@ -1,6 +1,7 @@
 package ports;
 
 import components.interfaces.CEPBusManagementCI;
+import components.interfaces.CEPBusManagementI;
 import fr.sorbonne_u.components.ComponentI;
 import fr.sorbonne_u.components.ports.AbstractInboundPort;
 
@@ -18,7 +19,7 @@ public class CEPBusManagementInboundPort extends AbstractInboundPort implements 
 	public String registerEmitter(String uri) throws Exception {
 		return this.getOwner().handleRequest(owner -> {
 			try {
-				return ((CEPBusManagementCI)owner).registerEmitter(uri);
+				return ((CEPBusManagementI)owner).registerEmitter(uri);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
@@ -30,7 +31,7 @@ public class CEPBusManagementInboundPort extends AbstractInboundPort implements 
 	public void unregisterEmitter(String uri) throws Exception {
 		this.getOwner().runTask(owner -> {
 			try {
-				((CEPBusManagementCI)owner).unregisterEmitter(uri);
+				((CEPBusManagementI)owner).unregisterEmitter(uri);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -41,7 +42,7 @@ public class CEPBusManagementInboundPort extends AbstractInboundPort implements 
 	public String registerCorrelator(String uri, String inboundPortURI) throws Exception {
 		return this.getOwner().handleRequest(owner -> {
 			try {
-				return ((CEPBusManagementCI)owner).registerCorrelator(uri, inboundPortURI);
+				return ((CEPBusManagementI)owner).registerCorrelator(uri, inboundPortURI);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
@@ -53,7 +54,7 @@ public class CEPBusManagementInboundPort extends AbstractInboundPort implements 
 	public void unregisterCorrelator(String uri) throws Exception {
 		this.getOwner().runTask(owner -> {
 			try {
-				((CEPBusManagementCI)owner).unregisterCorrelator(uri);
+				((CEPBusManagementI)owner).unregisterCorrelator(uri);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -64,7 +65,7 @@ public class CEPBusManagementInboundPort extends AbstractInboundPort implements 
 	public void registerExecutor(String uri, String inboundPortURI) throws Exception {
 		this.getOwner().runTask(owner -> {
 			try {
-				((CEPBusManagementCI)owner).registerExecutor(uri, inboundPortURI);
+				((CEPBusManagementI)owner).registerExecutor(uri, inboundPortURI);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -75,7 +76,7 @@ public class CEPBusManagementInboundPort extends AbstractInboundPort implements 
 	public String getExecutorInboundPortURI(String uri) throws Exception {
 		return this.getOwner().handleRequest(owner -> {
 			try {
-				return ((CEPBusManagementCI)owner).getExecutorInboundPortURI(uri);
+				return ((CEPBusManagementI)owner).getExecutorInboundPortURI(uri);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
@@ -87,7 +88,7 @@ public class CEPBusManagementInboundPort extends AbstractInboundPort implements 
 	public void unregisterExecutor(String uri) throws Exception {
 		this.getOwner().runTask(owner -> {
 			try {
-				((CEPBusManagementCI)owner).unregisterExecutor(uri);
+				((CEPBusManagementI)owner).unregisterExecutor(uri);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -98,7 +99,7 @@ public class CEPBusManagementInboundPort extends AbstractInboundPort implements 
 	public void subscribe(String subscriberURI, String emitterURI) throws Exception {
 		this.getOwner().runTask(owner -> {
 			try {
-				((CEPBusManagementCI)owner).subscribe(subscriberURI, emitterURI);
+				((CEPBusManagementI)owner).subscribe(subscriberURI, emitterURI);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -109,7 +110,7 @@ public class CEPBusManagementInboundPort extends AbstractInboundPort implements 
 	public void unsubscribe(String subscriberURI, String emitterURI) throws Exception {
 		this.getOwner().runTask(owner -> {
 			try {
-				((CEPBusManagementCI)owner).unsubscribe(subscriberURI, emitterURI);
+				((CEPBusManagementI)owner).unsubscribe(subscriberURI, emitterURI);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

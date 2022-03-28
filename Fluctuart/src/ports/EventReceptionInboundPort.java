@@ -1,6 +1,7 @@
 package ports;
 
 import components.interfaces.EventReceptionCI;
+import components.interfaces.EventReceptionI;
 import fr.sorbonne_u.components.ComponentI;
 import fr.sorbonne_u.components.ports.AbstractInboundPort;
 import interfaces.EventI;
@@ -19,7 +20,7 @@ public class EventReceptionInboundPort extends AbstractInboundPort implements Ev
 	public void receiveEvent(String emitterURI, EventI event) throws Exception {
 		this.getOwner().runTask(owner -> {
 			try {
-				((EventReceptionCI)owner).receiveEvent(emitterURI, event);
+				((EventReceptionI)owner).receiveEvent(emitterURI, event);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -30,7 +31,7 @@ public class EventReceptionInboundPort extends AbstractInboundPort implements Ev
 	public void receiveEvents(String emitterURI, EventI[] events) throws Exception {
 		this.getOwner().runTask(owner -> {
 			try {
-				((EventReceptionCI)owner).receiveEvents(emitterURI, events);
+				((EventReceptionI)owner).receiveEvents(emitterURI, events);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

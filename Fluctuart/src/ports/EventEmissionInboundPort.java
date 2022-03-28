@@ -1,6 +1,7 @@
 package ports;
 
 import components.interfaces.EventEmissionCI;
+import components.interfaces.EventEmissionI;
 import fr.sorbonne_u.components.ComponentI;
 import fr.sorbonne_u.components.ports.AbstractInboundPort;
 import interfaces.EventI;
@@ -19,7 +20,7 @@ public class EventEmissionInboundPort extends AbstractInboundPort implements Eve
 	public void sendEvent(String emitterURI, EventI event) throws Exception {
 		this.getOwner().runTask(owner -> {
 			try {
-				((EventEmissionCI)owner).sendEvent(emitterURI, event);
+				((EventEmissionI)owner).sendEvent(emitterURI, event);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -30,7 +31,7 @@ public class EventEmissionInboundPort extends AbstractInboundPort implements Eve
 	public void sendEvents(String emitterURI, EventI[] events) throws Exception {
 		this.getOwner().runTask(owner -> {
 			try {
-				((EventEmissionCI)owner).sendEvents(emitterURI, events);
+				((EventEmissionI)owner).sendEvents(emitterURI, events);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

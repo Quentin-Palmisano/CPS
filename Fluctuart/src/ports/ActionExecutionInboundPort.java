@@ -3,6 +3,7 @@ package ports;
 import java.io.Serializable;
 
 import components.interfaces.ActionExecutionCI;
+import components.interfaces.ActionExecutionI;
 import fr.sorbonne_u.components.ComponentI;
 import fr.sorbonne_u.components.ports.AbstractInboundPort;
 import interfaces.ActionI;
@@ -22,7 +23,7 @@ public class ActionExecutionInboundPort extends AbstractInboundPort implements A
 	public ResponseI execute(ActionI a, Serializable[] params) throws Exception {
 		return this.getOwner().handleRequest(owner -> {
 			try {
-				return ((ActionExecutionCI)owner).execute(a, params);
+				return ((ActionExecutionI)owner).execute(a, params);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;

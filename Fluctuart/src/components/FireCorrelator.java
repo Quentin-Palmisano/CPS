@@ -1,17 +1,27 @@
 package components;
 
+import components.interfaces.ActionExecutionCI;
+import components.interfaces.CEPBusManagementCI;
+import components.interfaces.EventEmissionCI;
+import components.interfaces.EventReceptionCI;
 import correlator.FireCorrelatorState;
+import fr.sorbonne_u.components.annotations.OfferedInterfaces;
+import fr.sorbonne_u.components.annotations.RequiredInterfaces;
+import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import rules.F01;
 import rules.F02;
 import rules.F03;
 import rules.RuleBase;
 
+@OfferedInterfaces(offered={EventReceptionCI.class})
+@RequiredInterfaces(required={ActionExecutionCI.class, EventEmissionCI.class, CEPBusManagementCI.class})
 public class FireCorrelator extends Correlator {
+
+	private String stationURI;
 	
-	public FireCorrelator(String uri, String stationURI) throws Exception {
+	protected FireCorrelator(String uri, String stationURI) throws Exception {
 		super(uri, stationURI, new FireCorrelatorState(), new RuleBase());
-		
-		managementPort.subscribe(uri, stationURI);
+		this.stationURI = stationURI;
 		
 		ruleBase.addRule(new F01());
 		ruleBase.addRule(new F02());
@@ -21,6 +31,14 @@ public class FireCorrelator extends Correlator {
 		this.getTracer().setRelativePosition(3, 1);
 		this.toggleTracing();
 		
+	}
+	
+	@Override
+	public synchronized void	execute() throws Exception
+	{
+		super.execute();
+
+		managementPort.subscribe(uri, stationURI);
 	}
 	
 }
