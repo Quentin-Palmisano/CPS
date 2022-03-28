@@ -38,7 +38,7 @@ import fr.sorbonne_u.components.annotations.OfferedInterfaces;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
 import fr.sorbonne_u.components.exceptions.ComponentShutdownException;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
-import fr.sorbonne_u.cps.smartcity.BasicSimSmartCityDescriptor;
+import fr.sorbonne_u.cps.smartcity.SmartCityDescriptor;
 import fr.sorbonne_u.cps.smartcity.connections.TrafficLightActionConnector;
 import fr.sorbonne_u.cps.smartcity.connections.TrafficLightActionOutboundPort;
 import fr.sorbonne_u.cps.smartcity.connections.TrafficLightNotificationInboundPort;
@@ -48,7 +48,9 @@ import fr.sorbonne_u.cps.smartcity.interfaces.TrafficLightActionCI;
 import fr.sorbonne_u.cps.smartcity.interfaces.TrafficLightNotificationCI;
 import fr.sorbonne_u.cps.smartcity.interfaces.TrafficLightNotificationImplI;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfTrafficLightPriority;
+import fr.sorbonne_u.cps.smartcity.utils.TimeManager;
 import java.time.LocalTime;
+import java.util.concurrent.TimeUnit;
 
 // -----------------------------------------------------------------------------
 /**
@@ -76,6 +78,9 @@ implements	TrafficLightNotificationImplI
 	// Constants and variables
 	// -------------------------------------------------------------------------
 
+	/** set to true if actions must be tested.							 	*/
+	protected static final boolean					TEST_ACTIONS = false;
+
 	/** position of the traffic light.										*/
 	protected IntersectionPosition					position;
 	/** URI of the action inbound port.										*/
@@ -95,10 +100,10 @@ implements	TrafficLightNotificationImplI
 		String actionInboundPortURI
 		) throws Exception
 	{
-		super(2, 0);
+		super(2, 1);
 
 		assert	position != null &&
-								BasicSimSmartCityDescriptor.isInCity(position);
+								SmartCityDescriptor.isInCity(position);
 		assert	actionInboundPortURI != null && !actionInboundPortURI.isEmpty();
 		assert	notificationInboundPortURI != null &&
 									!notificationInboundPortURI.isEmpty();
@@ -112,7 +117,7 @@ implements	TrafficLightNotificationImplI
 		this.actionOBP = new TrafficLightActionOutboundPort(this);
 		this.actionOBP.publishPort();
 
-		this.getTracer().setTitle("TrafficLightFacade");
+		this.getTracer().setTitle("TrafficLightFacade " + this.position);
 		this.getTracer().setRelativePosition(1, 2);
 		this.toggleTracing();
 	}
@@ -145,12 +150,101 @@ implements	TrafficLightNotificationImplI
 	@Override
 	public synchronized void	execute() throws Exception
 	{
-		Thread.sleep(2000);
-		this.traceMessage("Change priority to emergency\n");
-		this.actionOBP.changePriority(TypeOfTrafficLightPriority.EMERGENCY);
-		Thread.sleep(100);
-		this.traceMessage("Return to normal mode\n");
-		this.actionOBP.returnToNormalMode();
+		if (TEST_ACTIONS) {
+			if (this.position.equals(new IntersectionPosition(1.0, 1.0))) {
+				LocalTime t1 =
+					TimeManager.get().getSimulatedStartTime().plusSeconds(10);
+				LocalTime t2 =
+					TimeManager.get().getSimulatedStartTime().plusSeconds(15);
+				LocalTime t3 =
+					TimeManager.get().getSimulatedStartTime().plusSeconds(20);
+				LocalTime t4 =
+					TimeManager.get().getSimulatedStartTime().plusSeconds(25);
+				LocalTime t5 =
+					TimeManager.get().getSimulatedStartTime().plusSeconds(30);
+				LocalTime t6 =
+					TimeManager.get().getSimulatedStartTime().plusSeconds(40);
+
+				long t1NanoDelay = TimeManager.get().localTime2nanoDelay(t1);
+				long t2NanoDelay = TimeManager.get().localTime2nanoDelay(t2);
+				long t3NanoDelay = TimeManager.get().localTime2nanoDelay(t3);
+				long t4NanoDelay = TimeManager.get().localTime2nanoDelay(t4);
+				long t5NanoDelay = TimeManager.get().localTime2nanoDelay(t5);
+				long t6NanoDelay = TimeManager.get().localTime2nanoDelay(t6);
+
+				this.scheduleTask(
+						(o -> { try {
+							this.traceMessage(
+									"Change priority to NORTH_SOUTH at "
+											+ t1 + "\n");
+							this.actionOBP.changePriority(
+									TypeOfTrafficLightPriority.NORTH_SOUTH);
+						} catch (Throwable e) {
+							e.printStackTrace();
+						}
+						}),
+						t1NanoDelay, 
+						TimeUnit.NANOSECONDS);
+				this.scheduleTask(
+						(o -> { try {
+							this.traceMessage("Return to normal mode at " +
+									t2 + "\n");
+							this.actionOBP.returnToNormalMode();
+						} catch (Throwable e) {
+							e.printStackTrace();
+						}
+						}),
+						t2NanoDelay, 
+						TimeUnit.NANOSECONDS);
+				this.scheduleTask(
+						(o -> { try {
+							this.traceMessage(
+									"Change priority to EAST_WEST at "
+											+ t3 + "\n");
+							this.actionOBP.changePriority(
+									TypeOfTrafficLightPriority.EAST_WEST);
+						} catch (Throwable e) {
+							e.printStackTrace();
+						}
+						}),
+						t3NanoDelay, 
+						TimeUnit.NANOSECONDS);
+				this.scheduleTask(
+						(o -> { try {
+							this.traceMessage("Return to normal mode at " +
+									t4 + "\n");
+							this.actionOBP.returnToNormalMode();
+						} catch (Throwable e) {
+							e.printStackTrace();
+						}
+						}),
+						t4NanoDelay, 
+						TimeUnit.NANOSECONDS);
+				this.scheduleTask(
+						(o -> { try {
+							this.traceMessage("Change priority to EMERGENCY at "
+									+ t5 + "\n");
+							this.actionOBP.changePriority(
+									TypeOfTrafficLightPriority.EMERGENCY);
+						} catch (Throwable e) {
+							e.printStackTrace();
+						}
+						}),
+						t5NanoDelay, 
+						TimeUnit.NANOSECONDS);
+				this.scheduleTask(
+						(o -> { try {
+							this.traceMessage("Return to normal mode at " +
+									t6 + "\n");
+							this.actionOBP.returnToNormalMode();
+						} catch (Throwable e) {
+							e.printStackTrace();
+						}
+						}),
+						t6NanoDelay, 
+						TimeUnit.NANOSECONDS);
+			}
+		}
 	}
 
 	/**
@@ -193,10 +287,11 @@ implements	TrafficLightNotificationImplI
 		LocalTime occurrence
 		) throws Exception
 	{
-		this.traceMessage("Traffic light at " + this.position +
-						  " receives the notification of the passage of " +
-						  vehicleId + " in the direction of " + d +
-						  " at " + occurrence + "\n");
+		this.traceMessage(
+				"Traffic light at " + this.position +
+				" receives the notification of the passage of " + vehicleId +
+				(d != null ? " in the direction of " + d : "") +
+				" at " + occurrence + "\n");
 	}
 }
 // -----------------------------------------------------------------------------

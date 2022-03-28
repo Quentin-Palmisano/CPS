@@ -40,9 +40,9 @@ import fr.sorbonne_u.components.exceptions.ComponentShutdownException;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import fr.sorbonne_u.cps.smartcity.connections.SAMUNotificationInboundPort;
 import fr.sorbonne_u.cps.smartcity.connections.SAMUActionConnector;
-import fr.sorbonne_u.cps.smartcity.BasicSimSmartCityDescriptor;
+import fr.sorbonne_u.cps.smartcity.SmartCityDescriptor;
 import fr.sorbonne_u.cps.smartcity.connections.SAMUActionOutboundPort;
-import fr.sorbonne_u.cps.smartcity.descriptions.SmartCityDescriptor;
+import fr.sorbonne_u.cps.smartcity.descriptions.AbstractSmartCityDescriptor;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
 import fr.sorbonne_u.cps.smartcity.grid.IntersectionPosition;
 import fr.sorbonne_u.cps.smartcity.interfaces.SAMUNotificationCI;
@@ -51,8 +51,10 @@ import fr.sorbonne_u.cps.smartcity.interfaces.SAMUActionCI;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfHealthAlarm;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfSAMURessources;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfTrafficLightPriority;
+import fr.sorbonne_u.cps.smartcity.utils.TimeManager;
 
 import java.time.LocalTime;
+import java.util.concurrent.TimeUnit;
 
 // -----------------------------------------------------------------------------
 /**
@@ -79,6 +81,9 @@ implements	SAMUNotificationImplI
 	// -------------------------------------------------------------------------
 	// Constants and variables
 	// -------------------------------------------------------------------------
+
+	/** set to true if actions must be tested.							 	*/
+	protected static final boolean			TEST_ACTIONS = true;
 
 	/** identifier of the corresponding SAMU station.						*/
 	protected String						stationId;
@@ -116,9 +121,9 @@ implements	SAMUNotificationImplI
 		String actionInboundPortURI
 		) throws Exception
 	{
-		super(2, 0);
+		super(2, 1);
 
-		assert	BasicSimSmartCityDescriptor.isValidSAMUStationId(stationId);
+		assert	SmartCityDescriptor.isValidSAMUStationId(stationId);
 		assert	notificationInboundPortURI != null && !notificationInboundPortURI.isEmpty();
 		assert	actionInboundPortURI != null && !actionInboundPortURI.isEmpty();
 
@@ -130,7 +135,7 @@ implements	SAMUNotificationImplI
 		this.actionOBP = new SAMUActionOutboundPort(this);
 		this.actionOBP.publishPort();
 
-		this.getTracer().setTitle("SAMUStationFacade");
+		this.getTracer().setTitle("SAMUStationFacade " + this.stationId);
 		this.getTracer().setRelativePosition(1, 0);
 		this.toggleTracing();
 	}
@@ -163,23 +168,63 @@ implements	SAMUNotificationImplI
 	@Override
 	public synchronized void	execute() throws Exception
 	{
-		Thread.sleep(2000);
-		AbsolutePosition p = new AbsolutePosition(1.5, 2.0);
-		this.traceMessage("Trigger ambulance intervention\n");
-		this.actionOBP.triggerIntervention(p, null,
-										   TypeOfSAMURessources.AMBULANCE);
-		Thread.sleep(100);
-		this.traceMessage("Trigger medic intervention\n");
-		this.actionOBP.triggerIntervention(p, null,
-										   TypeOfSAMURessources.MEDIC);
-		Thread.sleep(100);
-		this.traceMessage("Trigger medic intervention\n");
-		this.actionOBP.triggerIntervention(p, "person0",
-										   TypeOfSAMURessources.MEDIC);
-		Thread.sleep(100);
-		this.traceMessage("Trigger medic call\n");
-		this.actionOBP.triggerIntervention(p, "person0",
-										   TypeOfSAMURessources.TELEMEDIC);
+		if (TEST_ACTIONS) {
+			if (this.stationId.equals("SAMU-1")) {
+				LocalTime intervention1 =
+					TimeManager.get().getSimulatedStartTime().plusSeconds(20);
+				long intervention1delay =
+					TimeManager.get().localTime2nanoDelay(intervention1);
+				AbsolutePosition p1 = new AbsolutePosition(2.0, 0.5);
+				this.scheduleTask(
+					o -> {
+						try {
+							this.traceMessage(
+								"Trigger ambulance intervention at "
+								+ intervention1 + "\n");
+							this.actionOBP.triggerIntervention(
+								p1, null, TypeOfSAMURessources.AMBULANCE);
+						} catch (Throwable e) {
+							e.printStackTrace();
+						}
+					}, intervention1delay, TimeUnit.NANOSECONDS);
+
+//				LocalTime intervention2 =
+//					TimeManager.get().getSimulatedStartTime().plusSeconds(40);
+//				long intervention2delay =
+//					TimeManager.get().localTime2nanoDelay(intervention2);
+//				AbsolutePosition p2 = new AbsolutePosition(3.5, 1.0);
+//				this.scheduleTask(
+//					o -> {
+//						try {
+//							this.traceMessage(
+//								"Trigger telemedic intervention at "
+//								+ intervention2 + "\n");
+//							this.actionOBP.triggerIntervention(
+//								p2, "person-0", TypeOfSAMURessources.TELEMEDIC);
+//							} catch (Throwable e) {
+//								e.printStackTrace();
+//							}
+//						}, intervention2delay, TimeUnit.NANOSECONDS);
+//
+//				LocalTime intervention3 =
+//					TimeManager.get().getSimulatedStartTime().plusSeconds(60);
+//				long intervention3delay =
+//					TimeManager.get().localTime2nanoDelay(intervention3);
+//				AbsolutePosition p3 = new AbsolutePosition(3.5, 3.0);
+//				this.scheduleTask(
+//					o -> {
+//						try {
+//							this.traceMessage(
+//								"Trigger medic intervention at " +
+//								intervention3 + "\n");
+//							this.actionOBP.triggerIntervention(
+//								p3, "person-1", TypeOfSAMURessources.MEDIC);
+//						} catch (Throwable e) {
+//							e.printStackTrace();
+//						}
+//					}, intervention3delay, TimeUnit.NANOSECONDS);
+			}
+		}
 	}
 
 	/**
@@ -225,7 +270,7 @@ implements	SAMUNotificationImplI
 		assert	!type.isTracking();
 		assert	occurrence != null;
 
-		assert	SmartCityDescriptor.dependsUpon(position, this.stationId);
+		assert	AbstractSmartCityDescriptor.dependsUpon(position, this.stationId);
 
 		this.traceMessage("Health notification of type " + type +
 						  " at position " + position +
@@ -246,7 +291,7 @@ implements	SAMUNotificationImplI
 		assert	personId != null && !personId.isEmpty();
 		assert	occurrence != null;
 
-		assert	SmartCityDescriptor.dependsUpon(position, this.stationId);
+		assert	AbstractSmartCityDescriptor.dependsUpon(position, this.stationId);
 
 		this.traceMessage("Health notification of type tracking for " +
 						  personId + " at position " + position +

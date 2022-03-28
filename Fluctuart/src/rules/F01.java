@@ -1,11 +1,8 @@
 package rules;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 
 import correlator.FireCorrelatorStateI;
-import events.AtomicEvent;
-import events.ComplexEvent;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFire;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFirefightingResource;

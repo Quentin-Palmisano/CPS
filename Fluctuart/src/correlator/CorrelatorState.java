@@ -1,7 +1,6 @@
 package correlator;
 
 import components.Correlator;
-import components.HealthCorrelator;
 import components.interfaces.ActionExecutionCI;
 import components.interfaces.EventReceptionCI;
 import interfaces.CorrelatorStateI;

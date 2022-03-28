@@ -1,5 +1,6 @@
 package test;
 
+import java.time.LocalTime;
 import java.util.Iterator;
 
 import components.CEPBus;
@@ -11,11 +12,13 @@ import components.TrafficCorrelator;
 import components.TrafficLight;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.AbstractPort;
-import fr.sorbonne_u.cps.smartcity.AbstractBasicSimCVM;
-import fr.sorbonne_u.cps.smartcity.BasicSimSmartCityDescriptor;
+import fr.sorbonne_u.cps.smartcity.AbstractSmartCityCVM;
+import fr.sorbonne_u.cps.smartcity.SmartCityCVM;
+import fr.sorbonne_u.cps.smartcity.SmartCityDescriptor;
 import fr.sorbonne_u.cps.smartcity.grid.IntersectionPosition;
+import fr.sorbonne_u.cps.smartcity.utils.TimeManager;
 
-class TestCEPBus extends AbstractBasicSimCVM {
+class TestCEPBus extends AbstractSmartCityCVM {
 
 	public TestCEPBus() throws Exception {
 		super();
@@ -27,7 +30,7 @@ class TestCEPBus extends AbstractBasicSimCVM {
 		AbstractComponent.createComponent(CEPBus.class.getCanonicalName(), new Object[0]);
 		
 		Iterator<String> samuStationsIditerator =
-					BasicSimSmartCityDescriptor.createSAMUStationIdIterator();
+					SmartCityDescriptor.createSAMUStationIdIterator();
 		while (samuStationsIditerator.hasNext()) {
 			String samuStationId = samuStationsIditerator.next();
 			String notificationInboundPortURI = AbstractPort.generatePortURI();
@@ -41,7 +44,7 @@ class TestCEPBus extends AbstractBasicSimCVM {
 							uri,
 							samuStationId,
 							notificationInboundPortURI,
-							BasicSimSmartCityDescriptor.
+							SmartCityDescriptor.
 										getActionInboundPortURI(samuStationId)
 							});
 			
@@ -53,7 +56,7 @@ class TestCEPBus extends AbstractBasicSimCVM {
 
 		
 		Iterator<String> fireStationIdsIterator =
-					BasicSimSmartCityDescriptor.createFireStationIdIterator();
+				SmartCityDescriptor.createFireStationIdIterator();
 		while (fireStationIdsIterator.hasNext()) {
 			String fireStationId = fireStationIdsIterator.next();
 			String notificationInboundPortURI = AbstractPort.generatePortURI();
@@ -67,7 +70,7 @@ class TestCEPBus extends AbstractBasicSimCVM {
 						uri,
 						fireStationId,
 						notificationInboundPortURI,
-						BasicSimSmartCityDescriptor.
+						SmartCityDescriptor.
 										getActionInboundPortURI(fireStationId)
 						});
 			
@@ -77,7 +80,7 @@ class TestCEPBus extends AbstractBasicSimCVM {
 
 		
 		Iterator<IntersectionPosition> trafficLightsIterator =
-					BasicSimSmartCityDescriptor.createTrafficLightPositionIterator();
+				SmartCityDescriptor.createTrafficLightPositionIterator();
 		while (trafficLightsIterator.hasNext()) {
 			IntersectionPosition p = trafficLightsIterator.next();
 			String notificationInboundPortURI = AbstractPort.generatePortURI();
@@ -91,7 +94,7 @@ class TestCEPBus extends AbstractBasicSimCVM {
 							uri,
 							p,
 							notificationInboundPortURI,
-							BasicSimSmartCityDescriptor.
+							SmartCityDescriptor.
 												getActionInboundPortURI(p)
 							});
 			
@@ -106,12 +109,15 @@ class TestCEPBus extends AbstractBasicSimCVM {
 	
 	public static void main(String[] args) {
 		try {
+			simulatedStartTime = LocalTime.of(12, 0);
+			simulatedEndTime = LocalTime.of(12, 0).plusMinutes(20);
 			TestCEPBus c = new TestCEPBus();
-			c.startStandardLifeCycle(10000L);
-			Thread.sleep(100000L);
+			c.startStandardLifeCycle(
+					TimeManager.get().computeExecutionDuration() + START_DELAY);
+			Thread.sleep(10000L);
 			System.exit(0);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 	

@@ -38,7 +38,7 @@ import fr.sorbonne_u.components.annotations.OfferedInterfaces;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
 import fr.sorbonne_u.components.exceptions.ComponentShutdownException;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
-import fr.sorbonne_u.cps.smartcity.BasicSimSmartCityDescriptor;
+import fr.sorbonne_u.cps.smartcity.SmartCityDescriptor;
 import fr.sorbonne_u.cps.smartcity.connections.FireStationNotificationInboundPort;
 import fr.sorbonne_u.cps.smartcity.connections.FireStationActionConnector;
 import fr.sorbonne_u.cps.smartcity.connections.FireStationActionOutboundPort;
@@ -50,8 +50,10 @@ import fr.sorbonne_u.cps.smartcity.interfaces.FireStationActionCI;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFire;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFirefightingResource;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfTrafficLightPriority;
+import fr.sorbonne_u.cps.smartcity.utils.TimeManager;
 
 import java.time.LocalTime;
+import java.util.concurrent.TimeUnit;
 
 // -----------------------------------------------------------------------------
 /**
@@ -64,7 +66,7 @@ import java.time.LocalTime;
  * <p><strong>Invariant</strong></p>
  * 
  * <pre>
- * invariant		true
+ * invariant	true
  * </pre>
  * 
  * <p>Created on : 2022-01-27</p>
@@ -81,11 +83,14 @@ implements	FireStationNotificationImplI
 	// Constants and variables
 	// -------------------------------------------------------------------------
 
+	/** set to true if actions must be tested.							 	*/
+	protected static final boolean					TEST_ACTIONS = false;
+
 	/** identifier of the corresponding fire station.						*/
 	protected String								stationId;
 	/** URI of the action inbound port.										*/
 	protected String								actionInboundPortURI;
-	/** notifucation inbound port.											*/
+	/** notification inbound port.											*/
 	protected FireStationNotificationInboundPort	notificationIBP;
 	/** action outbound port.												*/
 	protected FireStationActionOutboundPort			actionOBP;
@@ -117,9 +122,9 @@ implements	FireStationNotificationImplI
 		String actionInboundPortURI
 		) throws Exception
 	{
-		super(2, 0);
+		super(2, 1);
 
-		assert	BasicSimSmartCityDescriptor.isValidFireStationId(stationId);
+		assert	SmartCityDescriptor.isValidFireStationId(stationId);
 		assert	notificationInboundPortURI != null &&
 										!notificationInboundPortURI.isEmpty();
 		assert	actionInboundPortURI != null &&
@@ -134,7 +139,7 @@ implements	FireStationNotificationImplI
 		this.actionOBP = new FireStationActionOutboundPort(this);
 		this.actionOBP.publishPort();
 
-		this.getTracer().setTitle("FireStationFacade");
+		this.getTracer().setTitle("FireStationFacade " + this.stationId);
 		this.getTracer().setRelativePosition(1, 1);
 		this.toggleTracing();
 	}
@@ -167,21 +172,76 @@ implements	FireStationNotificationImplI
 	@Override
 	public synchronized void	execute() throws Exception
 	{
-		Thread.sleep(2000);
-		AbsolutePosition p = new AbsolutePosition(1.5, 2.0);
-		this.traceMessage("Trigger first alarm with standard truck\n");
-		this.actionOBP.triggerFirstAlarm(p, TypeOfFirefightingResource.StandardTruck);
-		Thread.sleep(100);
-		this.traceMessage("Trigger second alarm with standard truck\n");
-		this.actionOBP.triggerSecondAlarm(p);
-		Thread.sleep(100);
-		p = new AbsolutePosition(2.0, 0.5);
-		this.traceMessage("Trigger first alarm with high ladder truck\n");
-		this.actionOBP.triggerFirstAlarm(p, TypeOfFirefightingResource.HighLadderTruck);
-		Thread.sleep(100);
-		this.traceMessage("Trigger general alarm\n");
-		this.actionOBP.triggerGeneralAlarm(p);
-		Thread.sleep(100);
+		if (TEST_ACTIONS) {
+			if (this.stationId.equals("FireStation-1")) {
+				LocalTime fireAlarm1 =
+					TimeManager.get().getSimulatedStartTime().plusSeconds(10);
+				long fireAlarm1NanoDelay =
+					TimeManager.get().localTime2nanoDelay(fireAlarm1);
+				AbsolutePosition p1 = new AbsolutePosition(1.5, 2.0);
+				this.scheduleTask(
+					o -> {
+						try {
+							this.traceMessage(
+								"Trigger first alarm intervention with "
+								+ "standard truck at " + fireAlarm1 + "\n");
+							this.actionOBP.triggerFirstAlarm(
+								p1, TypeOfFirefightingResource.StandardTruck);
+						} catch (Throwable e) {
+							e.printStackTrace();
+						}
+					}, fireAlarm1NanoDelay, TimeUnit.NANOSECONDS);
+
+				LocalTime secondAlarm1 =
+					TimeManager.get().getSimulatedStartTime().plusSeconds(15);
+				long secondAlarm1NanoDelay =
+					TimeManager.get().localTime2nanoDelay(secondAlarm1);
+				this.scheduleTask(
+					o -> {
+						try {
+							this.traceMessage(
+								"Trigger second alarm with standard truck at "
+								+ secondAlarm1 + "\n");
+							this.actionOBP.triggerSecondAlarm(p1);
+						} catch (Throwable e) {
+							e.printStackTrace();
+						}
+					}, secondAlarm1NanoDelay, TimeUnit.NANOSECONDS);
+
+				LocalTime fireAlarm2 =
+					TimeManager.get().getSimulatedStartTime().plusSeconds(20);
+				long fireAlarm2NanoDelay =
+					TimeManager.get().localTime2nanoDelay(fireAlarm2);
+				AbsolutePosition p2 = new AbsolutePosition(1.0, 2.5);
+				this.scheduleTask(
+					o -> {
+						try {
+							this.traceMessage(
+								"Trigger first alarm with high ladder at " +
+								fireAlarm2 + "\n");
+							this.actionOBP.triggerFirstAlarm(
+								p2, TypeOfFirefightingResource.HighLadderTruck);
+						} catch (Throwable e) {
+							e.printStackTrace();
+						}
+					}, fireAlarm2NanoDelay, TimeUnit.NANOSECONDS);
+
+				LocalTime generalAlarm2 =
+					TimeManager.get().getSimulatedStartTime().plusSeconds(25);
+				long generalAlarm2NanoDelay =
+					TimeManager.get().localTime2nanoDelay(generalAlarm2);
+				this.scheduleTask(
+					o -> {
+						try {
+							this.traceMessage("Trigger general alarm at " +
+											  generalAlarm2 + "\n");
+							this.actionOBP.triggerGeneralAlarm(p2);;
+						} catch (Throwable e) {
+							e.printStackTrace();
+						}
+					}, generalAlarm2NanoDelay, TimeUnit.NANOSECONDS);
+			}
+		}
 	}
 
 	/**

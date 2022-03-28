@@ -11,6 +11,9 @@
 	<classpathentry kind="lib" path="lib/commons-math3-3.5.jar"/>
 	<classpathentry kind="lib" path="lib/javassist.jar"/>
 	<classpathentry kind="lib" path="lib/jing.jar"/>
-	<classpathentry kind="lib" path="CPS-SmartCity-17022022/SmartCitySimulator-17022022.jar"/>
+	<classpathentry kind="lib" path="CPS-SmartCity-21032022/BCM4Java-CyPhy-12102021.jar"/>
+	<classpathentry kind="lib" path="CPS-SmartCity-21032022/Simulation-21032022.jar"/>
+	<classpathentry kind="lib" path="CPS-SmartCity-21032022/SmartCityBasic-21032022.jar"/>
+	<classpathentry kind="lib" path="CPS-SmartCity-21032022/SmartCityCommons-21032022.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

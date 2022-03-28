@@ -1,6 +1,5 @@
 package correlator;
 
-import actions.FireAction;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFirefightingResource;
 import interfaces.CorrelatorStateI;

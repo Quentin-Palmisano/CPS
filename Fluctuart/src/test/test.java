@@ -5,8 +5,6 @@ import java.time.LocalTime;
 
 import org.junit.jupiter.api.Test;
 
-import components.CEPBus;
-import components.interfaces.CEPBusManagementCI;
 import correlator.HealthCorrelatorStateI;
 import events.AtomicEvent;
 import events.EventBase;

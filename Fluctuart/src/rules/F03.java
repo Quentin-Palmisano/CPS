@@ -3,9 +3,7 @@ package rules;
 import java.util.ArrayList;
 
 import correlator.FireCorrelatorStateI;
-import correlator.HealthCorrelatorStateI;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFire;
-import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFirefightingResource;
 import interfaces.CorrelatorStateI;
 import interfaces.EventBaseI;
 import interfaces.EventI;

@@ -39,13 +39,14 @@ import fr.sorbonne_u.cps.smartcity.components.FireStationFacade;
 import fr.sorbonne_u.cps.smartcity.components.SAMUStationFacade;
 import fr.sorbonne_u.cps.smartcity.components.TrafficLightFacade;
 import fr.sorbonne_u.cps.smartcity.grid.IntersectionPosition;
-
+import fr.sorbonne_u.cps.smartcity.utils.TimeManager;
+import java.time.LocalTime;
 import java.util.Iterator;
 
 // -----------------------------------------------------------------------------
 /**
- * The class <code>BasicSimFacadeCVM</code> deploys the components that uses
- * the basic smart city simulator.
+ * The class <code>SmartCityCVM</code> deploys the components that uses the
+ * smart city simulator.
  *
  * <p><strong>Description</strong></p>
  * 
@@ -89,24 +90,25 @@ import java.util.Iterator;
  * 
  * @author	<a href="mailto:Jacques.Malenfant@lip6.fr">Jacques Malenfant</a>
  */
-public class			BasicSimFacadeCVM
-extends		AbstractBasicSimCVM
+public class			SmartCityCVM
+extends		AbstractSmartCityCVM
 {
-	public				BasicSimFacadeCVM() throws Exception
+	public				SmartCityCVM() throws Exception
 	{
 		super();
 	}
 
+	/**
+	 * @see fr.sorbonne_u.components.cvm.AbstractCVM#deploy()
+	 */
 	@Override
 	public void			deploy() throws Exception
 	{
-		
-		
 		// create an iterator over valid fire station identifiers, which in turn
 		// allow to perform operations on the smart city descriptor to get
 		// information about them
 		Iterator<String> fireStationIdsIterator =
-					BasicSimSmartCityDescriptor.createFireStationIdIterator();
+					SmartCityDescriptor.createFireStationIdIterator();
 		while (fireStationIdsIterator.hasNext()) {
 			String fireStationId = fireStationIdsIterator.next();
 			// generate an inbound port URI to be used by the facade component
@@ -124,13 +126,13 @@ extends		AbstractBasicSimCVM
 				new Object[]{
 						fireStationId,
 						notificationInboundPortURI,
-						BasicSimSmartCityDescriptor.
+						SmartCityDescriptor.
 										getActionInboundPortURI(fireStationId)
 						});
 		}
 
 		Iterator<String> samuStationsIditerator =
-					BasicSimSmartCityDescriptor.createSAMUStationIdIterator();
+					SmartCityDescriptor.createSAMUStationIdIterator();
 		while (samuStationsIditerator.hasNext()) {
 			String samuStationId = samuStationsIditerator.next();
 			String notificationInboundPortURI = AbstractPort.generatePortURI();
@@ -140,13 +142,13 @@ extends		AbstractBasicSimCVM
 					new Object[]{
 							samuStationId,
 							notificationInboundPortURI,
-							BasicSimSmartCityDescriptor.
+							SmartCityDescriptor.
 										getActionInboundPortURI(samuStationId)
 							});
 		}
 
 		Iterator<IntersectionPosition> trafficLightsIterator =
-					BasicSimSmartCityDescriptor.createTrafficLightPositionIterator();
+					SmartCityDescriptor.createTrafficLightPositionIterator();
 		while (trafficLightsIterator.hasNext()) {
 			IntersectionPosition p = trafficLightsIterator.next();
 			String notificationInboundPortURI = AbstractPort.generatePortURI();
@@ -156,21 +158,22 @@ extends		AbstractBasicSimCVM
 					new Object[]{
 							p,
 							notificationInboundPortURI,
-							BasicSimSmartCityDescriptor.
-												getActionInboundPortURI(p)
+							SmartCityDescriptor.getActionInboundPortURI(p)
 							});
 		}
-		
-		
+
 		super.deploy();
 	}
 
 	public static void	main(String[] args)
 	{
 		try {
-			BasicSimFacadeCVM c = new BasicSimFacadeCVM();
-			c.startStandardLifeCycle(10000L);
-			Thread.sleep(100000L);
+			simulatedStartTime = LocalTime.of(12, 0);
+			simulatedEndTime = LocalTime.of(12, 0).plusMinutes(20);
+			SmartCityCVM c = new SmartCityCVM();
+			c.startStandardLifeCycle(
+					TimeManager.get().computeExecutionDuration() + START_DELAY);
+			Thread.sleep(10000L);
 			System.exit(0);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
