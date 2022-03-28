@@ -83,6 +83,7 @@ public class FireStation extends FireStationFacade implements ActionExecutionI {
 		event.putProperty("name", "fireAlarm");
 		event.putProperty("position", position);
 		event.putProperty("type", type);
+		event.putProperty("stationId", stationId);
 		emissionPort.sendEvent(uri, event);
 	}
 
@@ -96,6 +97,7 @@ public class FireStation extends FireStationFacade implements ActionExecutionI {
 		AtomicEvent event = new AtomicEvent(occurrence);
 		event.putProperty("name", "endOfFire");
 		event.putProperty("position", position);
+		event.putProperty("stationId", stationId);
 		emissionPort.sendEvent(uri, event);
 	}
 
@@ -115,6 +117,7 @@ public class FireStation extends FireStationFacade implements ActionExecutionI {
 		event.putProperty("priority", priority);
 		event.putProperty("vehicleId", vehicleId);
 		event.putProperty("destination", destination);
+		event.putProperty("stationId", stationId);
 		emissionPort.sendEvent(uri, event);
 	}
 
@@ -126,6 +129,7 @@ public class FireStation extends FireStationFacade implements ActionExecutionI {
 		AtomicEvent event = new AtomicEvent(occurrence);
 		event.putProperty("name", "atDestination");
 		event.putProperty("vehicleId", vehicleId);
+		event.putProperty("stationId", stationId);
 		emissionPort.sendEvent(uri, event);
 	}
 
@@ -137,6 +141,7 @@ public class FireStation extends FireStationFacade implements ActionExecutionI {
 		AtomicEvent event = new AtomicEvent(occurrence);
 		event.putProperty("name", "atStation");
 		event.putProperty("vehicleId", vehicleId);
+		event.putProperty("stationId", stationId);
 		emissionPort.sendEvent(uri, event);
 	}
 
@@ -147,6 +152,7 @@ public class FireStation extends FireStationFacade implements ActionExecutionI {
 		super.notifyNoStandardTruckAvailable(occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
 		event.putProperty("name", "notifyNoStandardTruckAvailable");
+		event.putProperty("stationId", stationId);
 		emissionPort.sendEvent(uri, event);
 	}
 
@@ -157,6 +163,7 @@ public class FireStation extends FireStationFacade implements ActionExecutionI {
 		super.notifyStandardTrucksAvailable(occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
 		event.putProperty("name", "notifyStandardTrucksAvailable");
+		event.putProperty("stationId", stationId);
 		emissionPort.sendEvent(uri, event);
 	}
 
@@ -167,6 +174,7 @@ public class FireStation extends FireStationFacade implements ActionExecutionI {
 		super.notifyNoHighLadderTruckAvailable(occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
 		event.putProperty("name", "notifyNoHighLadderTruckAvailable");
+		event.putProperty("stationId", stationId);
 		emissionPort.sendEvent(uri, event);
 	}
 
@@ -177,6 +185,7 @@ public class FireStation extends FireStationFacade implements ActionExecutionI {
 		super.notifyHighLadderTrucksAvailable(occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
 		event.putProperty("name", "notifyHighLadderTrucksAvailable");
+		event.putProperty("stationId", stationId);
 		emissionPort.sendEvent(uri, event);
 	}
 
