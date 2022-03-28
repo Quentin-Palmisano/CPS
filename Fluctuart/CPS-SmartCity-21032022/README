@@ -1,0 +1,90 @@
+
+UE Composants --- éléments logiciels de support au projet de
+« Ville intelligente »
+
+
+Cette archive contient les éléments suivants :
+
+- SmartCityCommons-21032022.jar : les éléments logiciels communs à
+  l'ensemble du projet de ville intelligente.
+- SmartCityBasic-21032022.jar : le simulateur de base de la « ville
+  intelligente ».
+- SmartCitySmall-21032022.jar : le simulateur de « petite ville
+  intelligente ».
+- SmartCityFrontEnd-21032022-src.tgz : les éléments logiciels pouvant
+  servir de façade côté CEP pour le projet et dont les éléments visent
+  à démontrer comment se connecter et utiliser les simulateurs de
+  « ville intelligente » fournis; cette archive contient également
+  la javadoc des jars précédents.
+
+Cette archive contient aussi trois jars d'outils utilisés pour la
+simulation :
+
+- Simulation-21032022.jar : une bibliothèque de simulation utilisée
+  dans le simulateur de « petite ville intelligente ».
+- BCM4Java-CyPhy-12102021.jar : une extension du modèle à composants
+  BCM4Java pour la programmation de systèmes cyber-physiques également
+  utilisée dans le simulateur de « petite ville intelligente ».
+- commons-math3-3.5.jar : pour la génération de nombres aléatoires
+  dans la simulation.
+
+Pour utiliser ces éléments, vous pouvez d'abord créer un projet Java 8
+sous Eclipse avec les éléments contenus dans l'archive
+SmartCityFrontEnd-21032022-src.tgz. Placez ensuite dans le « build path »
+de ce projet les jars suivants :
+
+- BCM4Java-20092021.jar (déjà fourni précédemment)
+- SmartCityCommons-21032022.jar
+- SmartCityBasic-21032022.jar
+- Simulation-11032022.jar
+- BCM4Java-CyPhy-12102021.jar
+
+Allez ensuite dans le répertoire src du projet créé, dans le package
+fr.sorbonne_u.cps.smartcity et exécutez SmartCityCVM. Cela lancera une
+exécution du simulateur de base similaire à celle qui vous a déjà été
+distribuée il y a quelques semaines. Toutefois, il y a eu quelques
+modifications de noms de classes et de noms de répertoires qui vous
+demanderons quelques adaptations simples de votre code pour connecter
+cette nouvelle version du simulateur de base à votre propre code.
+En remplaçant le jar SmartCityBasic-21032022.jar par
+SmartCitySmall-21032022.jar, vous pourrez réexécuter la classe
+SmartCityCVM mais cette fois-ci, étant liée au simulateur de petite
+ville intelligente, ce sera la simulation de cette dernière qui sera
+exécutée.
+
+Les deux simulations sont programmées pour durer 20 minutes dans le
+temps logique (Java LocalTime), mais avec un facteur d'accélération de
+10, ce qui fait que l'exécution en tant que telle durera 2 minutes.
+Pour l'instant, ce simulateur ne fait que des remontées de
+ notifications selon un scénario qui est décrit dans l'annexe B de la
+nouvelle version du caher des charges du projet. En allant dans les
+classes dîtes de façades, il est possible d'activer le test des
+actions (intervention sur feux ou d'ambulances, etc.) en changeant
+la valeur de la constante de classe TEST_ACTIONS déclarée au début
+de ces classes.
+
+Pour votre projet, vous pourrez à nouveau vous inspirer des classes
+façades dans SmartCityFrontEnd-21032022-src pour adapter vos
+composants émetteurs d'événements et exécuteurs d'actions pour vous
+connecter au simulateur de petite ville. Normalement, il y a peu de
+changements par rapport à la version précédente du simulateur de base,
+outre les quelques modifications de noms de classes et de packages
+déjà mentionnées. Il faudra bien sûr mettre dans le « huild path » de
+votre projet les jars précédents. Notez aussi les modifications dans
+la méthode main de la classe SmartCityCVM pour gérer explicitement le
+temps qui s'écoule pendant la simulation.
+
+Pour gérer le temps ainsi que contrôler la durée et le temps dans les
+simulations, vous pouvez ainsi vous inspirer de cette méthode
+SmartCityCVM#main. Le temps dans la simulation est maintenant géré par
+une horloge créée à partir de la classe TimeManager fournise dans
+SmartCityCommons-21032022.jar. Pour créer une instance de cette
+horloge, il faut lui founir un moment de départ de la simulation et un
+moment de fin sous la forme d'instances de LocalTime avant de lancer
+l'exécution des composants comme illustré dans cette méthode
+main. Ensuite, tous ce qui se passera pendant l'exécution devra se
+situer entre ces deux instants.  Pour gérer le temps (comme par
+exemple, faire exécuter une action à un instant donné), vous
+utiliserez le TimeManager comme montré dans cette méthode main et dans
+les classes de façade et de proxy fournies. Lisez également la
+documentation de la classe TimeManager pour plus de détails.
