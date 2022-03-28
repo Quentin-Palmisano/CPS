@@ -68,13 +68,15 @@ public abstract class Correlator extends AbstractComponent implements EventRecep
 	@Override
 	public synchronized void	execute() throws Exception
 	{
-		super.execute();
-
+		
+		Thread.sleep(1000);
+		
 		String ibp = managementPort.registerCorrelator(uri, receptionPort.getPortURI());
 		this.doPortConnection(emissionPort.getPortURI(), ibp, EventEmissionConnector.class.getCanonicalName());
-		
+
 		String eibp = managementPort.getExecutorInboundPortURI(executorURI);
 		this.doPortConnection(executionPort.getPortURI(), eibp, ActionExecutionConnector.class.getCanonicalName());
+		
 	}
 	
 	@Override

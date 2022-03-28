@@ -39,12 +39,17 @@ public class HealthCorrelator extends Correlator {
 		this.getTracer().setRelativePosition(3, 0);
 		this.toggleTracing();
 		
+
+		System.out.println("healthcorrelator cons");
+		
 	}
 	
 	@Override
 	public synchronized void	execute() throws Exception
 	{
 		super.execute();
+		
+		System.out.println("healthcorrelator");
 
 		managementPort.subscribe(uri, stationURI);
 	}

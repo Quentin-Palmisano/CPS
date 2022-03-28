@@ -30,6 +30,8 @@ public class TrafficCorrelator extends Correlator {
 	public synchronized void	execute() throws Exception
 	{
 		super.execute();
+		
+		System.out.println("trafficcorrelator");
 
 		managementPort.subscribe(uri, stationURI);
 	}

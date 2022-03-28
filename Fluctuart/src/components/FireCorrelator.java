@@ -31,12 +31,16 @@ public class FireCorrelator extends Correlator {
 		this.getTracer().setRelativePosition(3, 1);
 		this.toggleTracing();
 		
+		System.out.println("firecorrelator cons");
+		
 	}
 	
 	@Override
 	public synchronized void	execute() throws Exception
 	{
 		super.execute();
+
+		System.out.println("firecorrelator");
 
 		managementPort.subscribe(uri, stationURI);
 	}
