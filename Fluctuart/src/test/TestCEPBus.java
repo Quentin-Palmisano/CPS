@@ -100,8 +100,6 @@ class TestCEPBus extends AbstractSmartCityCVM {
 
 			AbstractComponent.createComponent(TrafficCorrelator.class.getCanonicalName(), new Object[] {"Traffic Correlator " + p, uri});
 		}
-
-		
 		
 		super.deploy();
 	}
