@@ -44,7 +44,7 @@ public abstract class Correlator extends AbstractComponent implements EventRecep
 		super(1, 1);
 		this.uri = uri;
 		this.state = state;
-		this.ruleBase=rb;
+		this.ruleBase = rb;
 		this.executorURI = executorURI;
 		
 		managementPort = new CEPBusManagementOutboundPort(this);
@@ -69,7 +69,7 @@ public abstract class Correlator extends AbstractComponent implements EventRecep
 	public synchronized void	execute() throws Exception
 	{
 		
-		Thread.sleep(1000);
+		Thread.sleep(100);
 		
 		String ibp = managementPort.registerCorrelator(uri, receptionPort.getPortURI());
 		this.doPortConnection(emissionPort.getPortURI(), ibp, EventEmissionConnector.class.getCanonicalName());

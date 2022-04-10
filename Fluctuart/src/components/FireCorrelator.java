@@ -7,7 +7,6 @@ import components.interfaces.EventReceptionCI;
 import correlator.FireCorrelatorState;
 import fr.sorbonne_u.components.annotations.OfferedInterfaces;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
-import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import rules.F01;
 import rules.F02;
 import rules.F03;
@@ -31,16 +30,12 @@ public class FireCorrelator extends Correlator {
 		this.getTracer().setRelativePosition(3, 1);
 		this.toggleTracing();
 		
-		System.out.println("firecorrelator cons");
-		
 	}
 	
 	@Override
 	public synchronized void	execute() throws Exception
 	{
 		super.execute();
-
-		System.out.println("firecorrelator");
 
 		managementPort.subscribe(uri, stationURI);
 	}
