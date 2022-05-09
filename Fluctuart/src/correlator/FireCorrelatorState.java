@@ -41,21 +41,21 @@ public class FireCorrelatorState extends CorrelatorState implements FireCorrelat
 	public void triggerFirstAlarm(AbsolutePosition position, TypeOfFirefightingResource resource) throws Exception {
 		correlator.traceMessage("Trigger Alarm\n");
 		
-		executor.execute(FireAction.FIRST_ALARM, new Serializable[] {position, resource});
+		executor.executeAction(FireAction.FIRST_ALARM, new Serializable[] {position, resource});
 	}
 	
 	@Override
 	public void triggerSecondAlarm(AbsolutePosition position) throws Exception {
 		correlator.traceMessage("Trigger Alarm\n");
 		
-		executor.execute(FireAction.SECOND_ALARM, new Serializable[] {position});
+		executor.executeAction(FireAction.SECOND_ALARM, new Serializable[] {position});
 	}
 	
 	@Override
 	public void triggerGeneralAlarm(AbsolutePosition position) throws Exception {
 		correlator.traceMessage("Trigger Alarm\n");
 		
-		executor.execute(FireAction.GENERAL_ALARM, new Serializable[] {position});
+		executor.executeAction(FireAction.GENERAL_ALARM, new Serializable[] {position});
 	}
 
 }

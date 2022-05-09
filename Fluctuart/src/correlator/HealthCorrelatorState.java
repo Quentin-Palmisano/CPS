@@ -31,7 +31,7 @@ public class HealthCorrelatorState extends CorrelatorState implements HealthCorr
 	public void triggerIntervention(AbsolutePosition position, String personId, TypeOfSAMURessources type) throws Exception{
 		correlator.traceMessage("Trigger Intervention at position " + position + " for " + personId + " of type " + type + "\n");
 		
-		this.executor.execute(HealthAction.INTERVENTION, new Serializable[] {position, personId, type});
+		this.executor.executeAction(HealthAction.INTERVENTION, new Serializable[] {position, personId, type});
 	}
 	
 	@Override

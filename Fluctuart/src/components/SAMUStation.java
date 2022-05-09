@@ -14,7 +14,6 @@ import events.AtomicEvent;
 import fr.sorbonne_u.components.annotations.OfferedInterfaces;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
 import fr.sorbonne_u.components.exceptions.ComponentShutdownException;
-import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import fr.sorbonne_u.cps.smartcity.components.SAMUStationFacade;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
 import fr.sorbonne_u.cps.smartcity.grid.IntersectionPosition;
@@ -228,7 +227,7 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionI {
 	}
 
 	@Override
-	public ResponseI execute(ActionI a, Serializable[] params) throws Exception {
+	public ResponseI executeAction(ActionI a, Serializable[] params) throws Exception {
 		HealthAction action = (HealthAction) a;
 		if(action == HealthAction.INTERVENTION) {
 			this.actionOBP.triggerIntervention((AbsolutePosition) params[0], (String) params[1], (TypeOfSAMURessources) params[2]);	

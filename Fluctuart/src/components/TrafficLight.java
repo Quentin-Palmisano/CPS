@@ -13,7 +13,6 @@ import connectors.EventEmissionConnector;
 import events.AtomicEvent;
 import fr.sorbonne_u.components.annotations.OfferedInterfaces;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
-import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import fr.sorbonne_u.cps.smartcity.components.TrafficLightFacade;
 import fr.sorbonne_u.cps.smartcity.grid.Direction;
 import fr.sorbonne_u.cps.smartcity.grid.IntersectionPosition;
@@ -81,7 +80,7 @@ public class TrafficLight extends TrafficLightFacade implements ActionExecutionI
 
 
 	@Override
-	public ResponseI execute(ActionI a, Serializable[] params) throws Exception {
+	public ResponseI executeAction(ActionI a, Serializable[] params) throws Exception {
 		TrafficAction ta = (TrafficAction) a;
 		if(ta == TrafficAction.PRIORITY_CHANGE) {
 			actionOBP.changePriority((TypeOfTrafficLightPriority) params[0]);

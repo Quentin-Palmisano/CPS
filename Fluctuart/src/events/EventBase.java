@@ -1,9 +1,11 @@
 package events;
 
 import java.time.Duration;
-import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
+import fr.sorbonne_u.cps.smartcity.utils.TimeManager;
 import interfaces.EventBaseI;
 import interfaces.EventI;
 
@@ -18,6 +20,7 @@ public class EventBase implements EventBaseI {
 	@Override
 	public void addEvent(EventI e) {
 		events.add(e);
+		sort();
 	}
 	
 	@Override
@@ -25,6 +28,7 @@ public class EventBase implements EventBaseI {
 		for(EventI e : events) {
 			addEvent(e);
 		}
+		sort();
 	}
 
 	@Override
@@ -56,12 +60,26 @@ public class EventBase implements EventBaseI {
 	public void clearEvents(Duration d) {
 		ArrayList<EventI> toDelete = new ArrayList<>();
 		for(EventI e : events) {
-			Duration d1 = Duration.between(e.getTimeStamp(), LocalTime.now());
+			Duration d1 = Duration.between(e.getTimeStamp(), TimeManager.get().getCurrentLocalTime());
 			if (d.compareTo(d1) >= 0) {
 				toDelete.add(e);
 			}
 		}
 		events.removeAll(toDelete);
+	}
+	
+	private class TimeSort implements Comparator<EventI>
+	{
+	    // Used for sorting in ascending order of
+	    // roll number
+	    public int compare(EventI a, EventI b)
+	    {
+	        return a.getTimeStamp().compareTo(b.getTimeStamp());
+	    }
+	}
+	
+	private void sort() {
+		Collections.sort(events, new TimeSort());
 	}
 
 }
