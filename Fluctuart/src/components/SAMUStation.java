@@ -46,7 +46,6 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionI {
 		
 		managementPort = new CEPBusManagementOutboundPort(this);
 		managementPort.localPublishPort();
-		this.doPortConnection(managementPort.getPortURI(), CEPBus.ManagementURI, CEPBusManagementConnector.class.getCanonicalName());
 		
 		emissionPort = new EventEmissionOutboundPort(this);
 		emissionPort.localPublishPort();
@@ -63,6 +62,8 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionI {
 	public synchronized void	execute() throws Exception
 	{
 		super.execute();
+
+		this.doPortConnection(managementPort.getPortURI(), CEPBus.ManagementURI, CEPBusManagementConnector.class.getCanonicalName());
 		
 		String ibp = managementPort.registerEmitter(uri);
 		this.doPortConnection(emissionPort.getPortURI(), ibp, EventEmissionConnector.class.getCanonicalName());
@@ -73,6 +74,7 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionI {
 	@Override
 	public synchronized void	finalise() throws Exception
 	{
+		managementPort.unregisterExecutor(uri);
 		this.doPortDisconnection(this.emissionPort.getPortURI());
 		super.finalise();
 	}

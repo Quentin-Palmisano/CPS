@@ -45,7 +45,6 @@ public class FireStation extends FireStationFacade implements ActionExecutionI {
 		
 		managementPort = new CEPBusManagementOutboundPort(this);
 		managementPort.localPublishPort();
-		this.doPortConnection(managementPort.getPortURI(), CEPBus.ManagementURI, CEPBusManagementConnector.class.getCanonicalName());
 		
 		emissionPort = new EventEmissionOutboundPort(this);
 		emissionPort.localPublishPort();
@@ -60,6 +59,8 @@ public class FireStation extends FireStationFacade implements ActionExecutionI {
 	public synchronized void	execute() throws Exception
 	{
 		super.execute();
+		
+		this.doPortConnection(managementPort.getPortURI(), CEPBus.ManagementURI, CEPBusManagementConnector.class.getCanonicalName());
 		
 		String ibp = managementPort.registerEmitter(uri);
 		this.doPortConnection(emissionPort.getPortURI(), ibp, EventEmissionConnector.class.getCanonicalName());

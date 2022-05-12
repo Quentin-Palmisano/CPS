@@ -13,6 +13,7 @@ import events.EventBase;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.annotations.OfferedInterfaces;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
+import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import interfaces.EventI;
 import ports.ActionExecutionOutboundPort;
 import ports.CEPBusManagementOutboundPort;
@@ -48,7 +49,6 @@ public abstract class Correlator extends AbstractComponent implements EventRecep
 		
 		managementPort = new CEPBusManagementOutboundPort(this);
 		managementPort.localPublishPort();
-		this.doPortConnection(managementPort.getPortURI(), CEPBus.ManagementURI, CEPBusManagementConnector.class.getCanonicalName());
 		
 		emissionPort = new EventEmissionOutboundPort(this);
 		emissionPort.localPublishPort();
@@ -65,11 +65,23 @@ public abstract class Correlator extends AbstractComponent implements EventRecep
 		
 	}
 	
+	
+	
+	@Override
+	public synchronized void start() throws ComponentStartException {
+		super.start();
+		
+	}
+
+
+
 	@Override
 	public synchronized void	execute() throws Exception
 	{
 		
 		Thread.sleep(100);
+		
+		this.doPortConnection(managementPort.getPortURI(), CEPBus.ManagementURI, CEPBusManagementConnector.class.getCanonicalName());
 		
 		String ibp = managementPort.registerCorrelator(uri, receptionPort.getPortURI());
 		this.doPortConnection(emissionPort.getPortURI(), ibp, EventEmissionConnector.class.getCanonicalName());
