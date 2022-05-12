@@ -13,18 +13,14 @@ import interfaces.EventBaseI;
 import interfaces.EventI;
 import interfaces.RuleI;
 
-public class F02 implements RuleI{
+public class F07 implements RuleI {
 
-	public F02() {
-	}
-	
 	@Override
 	public ArrayList<EventI> match(EventBaseI eb) {
 		EventI he = null;
 		for (int i = 0 ; i < eb.numberOfEvents() && (he == null) ; i++) {
 			EventI e = eb.getEvent(i);
-			if (e.hasProperty("type") && e.getPropertyValue("type") == TypeOfFire.House && 
-				e.hasProperty("name") && e.getPropertyValue("name") == FireEventName.FIRE_ALARM) {
+			if (e.hasProperty("name") && e.getPropertyValue("name") == FireEventName.HOUSE_INTERVENTION_REQUEST) {
 				he = e;
 			}
 		}		
@@ -50,7 +46,7 @@ public class F02 implements RuleI{
 
 	@Override
 	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) throws Exception {
-		c.traceRuleTrigger("F02");
+		c.traceRuleTrigger("F07");
 		FireCorrelatorStateI fireState = (FireCorrelatorStateI)c;
 		fireState.triggerFirstAlarm((AbsolutePosition) matchedEvents.get(0).getPropertyValue("position"), TypeOfFirefightingResource.StandardTruck);
 	}
@@ -59,5 +55,5 @@ public class F02 implements RuleI{
 	public void update(ArrayList<EventI> matchedEvents, EventBaseI eb) {
 		((AtomicEvent) matchedEvents.get(0)).putProperty("name", FireEventName.FIRST_FIRE_ALARM);
 	}
-	
+
 }

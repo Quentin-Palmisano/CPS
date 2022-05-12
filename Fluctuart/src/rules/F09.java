@@ -4,33 +4,36 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-import correlator.HealthCorrelatorStateI;
+import correlator.FireCorrelatorStateI;
+import events.AtomicEvent;
 import events.ComplexEvent;
+import events.FireEventName;
 import events.HealthEventName;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
+import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFire;
+import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFirefightingResource;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfHealthAlarm;
-import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfSAMURessources;
 import fr.sorbonne_u.cps.smartcity.utils.TimeManager;
 import interfaces.CorrelatorStateI;
 import interfaces.EventBaseI;
 import interfaces.EventI;
 import interfaces.RuleI;
 
-public class S07 implements RuleI{
+public class F09 implements RuleI {
 
 	@Override
 	public ArrayList<EventI> match(EventBaseI eb) {
 		EventI e1 = null;
-		
 		EventI e2 = null;
 		for (int i = 0 ; i < eb.numberOfEvents() && (e1==null || e2==null) ; i++) {
 			EventI event = eb.getEvent(i);
 			if(event instanceof ComplexEvent) {
 				ComplexEvent e = (ComplexEvent) event;
-				if (e.hasProperty("type") && e.getPropertyValue("type")==TypeOfHealthAlarm.TRACKING &&
-					e.hasProperty("name") && e.getPropertyValue("name")==HealthEventName.HEALTH_ALARM) {
+				if (e.hasProperty("type") && e.getPropertyValue("type")==TypeOfFire.Building &&
+					e.hasProperty("name") && e.getPropertyValue("name")==FireEventName.FIRST_FIRE_ALARM) {
 					e1 = e;
-				}else if(e.hasProperty("name") && e.getPropertyValue("name")==HealthEventName.MANUAL_SIGNAL) {
+				}else if(e.hasProperty("type") && e.getPropertyValue("type")==TypeOfFire.Building &&
+						e.hasProperty("name") && e.getPropertyValue("name")==FireEventName.FIRE_ALARM) {
 					e2 = e;
 				}
 			}
@@ -47,13 +50,13 @@ public class S07 implements RuleI{
 
 	@Override
 	public boolean correlate(ArrayList<EventI> matchedEvents) {
-		String id = "";
-		String tmp = "";
+		AbsolutePosition p = null;
+		AbsolutePosition tmp = null;
 		for(EventI e : matchedEvents) {
-			if(e.hasProperty("personId")) tmp = (String) e.getPropertyValue("personId");
-			if(id=="") {
-				id=tmp;				
-			}else if(id!=tmp) {
+			if(e.hasProperty("position")) tmp = (AbsolutePosition) e.getPropertyValue("position");
+			if(p==null) {
+				p=tmp;				
+			}else if(p!=tmp) {
 				return false;
 			}
 		}
@@ -62,33 +65,28 @@ public class S07 implements RuleI{
 		EventI e = matchedEvents.get(0);
 		LocalTime t2 = e.getTimeStamp();
 		Duration d = Duration.between(t1, t2);
-		Duration x = d.minus(Duration.ofMinutes(10));
+		Duration x = d.minus(Duration.ofMinutes(15));
 		
 		return x.isNegative();
 	}
 
 	@Override
 	public boolean filter(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
-		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
-		return samuState.isMedicAvailable();
+		FireCorrelatorStateI fireState = (FireCorrelatorStateI)c;
+		return fireState.isStandardTruckAvailable();
 	}
 
 	@Override
 	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) throws Exception {
-		c.traceRuleTrigger("S07");
-		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
-		EventI e = matchedEvents.get(0);
-		AbsolutePosition p = (AbsolutePosition) e.getPropertyValue("position");
-		String s = (String) e.getPropertyValue("personId");
-		TypeOfSAMURessources t = TypeOfSAMURessources.MEDIC;
-		samuState.callMedic(p, s, t);
+		c.traceRuleTrigger("F09");
+		FireCorrelatorStateI fireState = (FireCorrelatorStateI)c;
+		fireState.triggerGeneralAlarm((AbsolutePosition) matchedEvents.get(0).getPropertyValue("position"));
+		//pas fini
 	}
 
 	@Override
 	public void update(ArrayList<EventI> matchedEvents, EventBaseI eb) {
-		for(EventI e : matchedEvents) {
-			eb.removeEvent(e);
-		}
+		//pas fini
 	}
 
 }

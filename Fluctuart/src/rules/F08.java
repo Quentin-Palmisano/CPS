@@ -2,28 +2,25 @@ package rules;
 
 import java.util.ArrayList;
 
-import correlator.HealthCorrelatorStateI;
-import events.HealthEventName;
+import correlator.FireCorrelatorStateI;
+import events.AtomicEvent;
+import events.FireEventName;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
-import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfHealthAlarm;
-import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfSAMURessources;
+import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFire;
+import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFirefightingResource;
 import interfaces.CorrelatorStateI;
 import interfaces.EventBaseI;
 import interfaces.EventI;
 import interfaces.RuleI;
 
-public class S03 implements RuleI {
+public class F08 implements RuleI {
 
-	public S03() {
-	}
-	
 	@Override
 	public ArrayList<EventI> match(EventBaseI eb) {
 		EventI he = null;
 		for (int i = 0 ; i < eb.numberOfEvents() && (he == null) ; i++) {
 			EventI e = eb.getEvent(i);
-			if (e.hasProperty("type") && e.getPropertyValue("type")==TypeOfHealthAlarm.MEDICAL &&
-				e.hasProperty("name") && e.getPropertyValue("name")==HealthEventName.HEALTH_ALARM) {
+			if (e.hasProperty("name") && e.getPropertyValue("name") == FireEventName.HOUSE_INTERVENTION_REQUEST) {
 				he = e;
 			}
 		}		
@@ -38,24 +35,23 @@ public class S03 implements RuleI {
 
 	@Override
 	public boolean correlate(ArrayList<EventI> matchedEvents) {
-		return 	true;
+		return true;
 	}
 
 	@Override
 	public boolean filter(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
-		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
-		return samuState.isMedicAvailable();
+		FireCorrelatorStateI fireState = (FireCorrelatorStateI)c;
+		return !fireState.isStandardTruckAvailable() && fireState.getNextStation(matchedEvents.get(0))!=null;
 	}
 
 	@Override
 	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) throws Exception {
-		c.traceRuleTrigger("S03");
-		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
+		c.traceRuleTrigger("F08");
+		FireCorrelatorStateI fireState = (FireCorrelatorStateI)c;
 		EventI e = matchedEvents.get(0);
-		AbsolutePosition p = (AbsolutePosition) e.getPropertyValue("position");
-		String s = (String) e.getPropertyValue("personId");
-		TypeOfSAMURessources t = TypeOfSAMURessources.MEDIC;
-		samuState.triggerIntervention(p, s, t);
+		if(e.hasProperty("stationId")) {
+			fireState.propagateEvent(e, null);
+		}
 	}
 
 	@Override

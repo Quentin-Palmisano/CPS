@@ -3,6 +3,8 @@ package rules;
 import java.util.ArrayList;
 
 import correlator.HealthCorrelatorStateI;
+import events.HealthEventName;
+import fr.sorbonne_u.cps.smartcity.SmartCityDescriptor;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfHealthAlarm;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfSAMURessources;
@@ -22,7 +24,8 @@ public class S01 implements RuleI {
 		EventI he = null;
 		for (int i = 0 ; i < eb.numberOfEvents() && (he == null) ; i++) {
 			EventI e = eb.getEvent(i);
-			if (e.hasProperty("type") && (e.getPropertyValue("type")==TypeOfHealthAlarm.EMERGENCY)) {
+			if (e.hasProperty("type") && e.getPropertyValue("type")==TypeOfHealthAlarm.EMERGENCY && 
+				e.hasProperty("name") && e.getPropertyValue("name")==HealthEventName.HEALTH_ALARM) {
 				he = e;
 			}
 		}
@@ -43,7 +46,12 @@ public class S01 implements RuleI {
 	@Override
 	public boolean filter(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
 		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
-		return samuState.isAmbulanceAvailable();
+		
+		//Test si la position de l'event est dans la zone d'action de sa station.
+		boolean b = SmartCityDescriptor.dependsUpon((AbsolutePosition) matchedEvents.get(0).getPropertyValue("position"),
+				(String) matchedEvents.get(0).getPropertyValue("stationId"));
+		
+		return samuState.isAmbulanceAvailable() && b;
 	}
 
 	@Override

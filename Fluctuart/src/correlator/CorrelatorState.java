@@ -2,6 +2,7 @@ package correlator;
 
 import components.Correlator;
 import components.interfaces.ActionExecutionCI;
+import components.interfaces.EventEmissionCI;
 import components.interfaces.EventReceptionCI;
 import interfaces.CorrelatorStateI;
 import interfaces.EventI;
@@ -10,9 +11,14 @@ public abstract class CorrelatorState implements EventReceptionCI, CorrelatorSta
 
 	protected ActionExecutionCI executor;
 	protected Correlator correlator;
+	protected EventEmissionCI emitter;
 	
 	public void setExecutor(ActionExecutionCI executor) {
 		this.executor = executor;
+	}
+	
+	public void setEmitter(EventEmissionCI emitter) {
+		this.emitter = emitter;
 	}
 	
 	public void setCorrelator(Correlator correlator) {

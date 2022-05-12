@@ -16,5 +16,6 @@
 	<classpathentry kind="lib" path="lib/javassist.jar"/>
 	<classpathentry kind="lib" path="lib/jing.jar"/>
 	<classpathentry kind="lib" path="lib/BCM4Java-20092021.jar"/>
+	<classpathentry kind="lib" path="CPS-SmartCity/SmartCitySmall-11052022.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
