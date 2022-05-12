@@ -13,18 +13,14 @@ import interfaces.EventBaseI;
 import interfaces.EventI;
 import interfaces.RuleI;
 
-public class F02 implements RuleI{
+public class F06 implements RuleI {
 
-	public F02() {
-	}
-	
 	@Override
 	public ArrayList<EventI> match(EventBaseI eb) {
 		EventI he = null;
 		for (int i = 0 ; i < eb.numberOfEvents() && (he == null) ; i++) {
 			EventI e = eb.getEvent(i);
-			if (e.hasProperty("type") && e.getPropertyValue("type") == TypeOfFire.House && 
-				e.hasProperty("name") && e.getPropertyValue("name") == FireEventName.FIRE_ALARM) {
+			if (e.hasProperty("name") && e.getPropertyValue("name") == FireEventName.BUILDING_INTERVENTION_REQUEST) {
 				he = e;
 			}
 		}		
@@ -45,19 +41,24 @@ public class F02 implements RuleI{
 	@Override
 	public boolean filter(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
 		FireCorrelatorStateI fireState = (FireCorrelatorStateI)c;
-		return fireState.isStandardTruckAvailable();
+		return !fireState.isHighLadderTruckAvailable() && fireState.getNextStation(matchedEvents.get(0))!=null;
 	}
 
 	@Override
 	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) throws Exception {
-		c.traceRuleTrigger("F02");
+		c.traceRuleTrigger("F06");
 		FireCorrelatorStateI fireState = (FireCorrelatorStateI)c;
-		fireState.triggerFirstAlarm((AbsolutePosition) matchedEvents.get(0).getPropertyValue("position"), TypeOfFirefightingResource.StandardTruck);
+		EventI e = matchedEvents.get(0);
+		if(e.hasProperty("stationId")) {
+			fireState.propagateEvent(e, null);
+		}
 	}
 
 	@Override
 	public void update(ArrayList<EventI> matchedEvents, EventBaseI eb) {
-		((AtomicEvent) matchedEvents.get(0)).putProperty("name", FireEventName.FIRST_FIRE_ALARM);
+		for(EventI e : matchedEvents) {
+			eb.removeEvent(e);
+		}
 	}
-	
+
 }

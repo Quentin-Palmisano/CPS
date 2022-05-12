@@ -11,6 +11,7 @@ import components.interfaces.EventEmissionCI;
 import connectors.CEPBusManagementConnector;
 import connectors.EventEmissionConnector;
 import events.AtomicEvent;
+import events.FireEventName;
 import fr.sorbonne_u.components.annotations.OfferedInterfaces;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
 import fr.sorbonne_u.cps.smartcity.components.FireStationFacade;
@@ -79,7 +80,7 @@ public class FireStation extends FireStationFacade implements ActionExecutionI {
 	{
 		super.fireAlarm(position, occurrence, type);
 		AtomicEvent event = new AtomicEvent(occurrence);
-		event.putProperty("name", "fireAlarm");
+		event.putProperty("name", FireEventName.FIRE_ALARM);
 		event.putProperty("position", position);
 		event.putProperty("type", type);
 		event.putProperty("stationId", stationId);
@@ -94,7 +95,7 @@ public class FireStation extends FireStationFacade implements ActionExecutionI {
 	{
 		super.endOfFire(position, occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
-		event.putProperty("name", "endOfFire");
+		event.putProperty("name", FireEventName.END_OF_FIRE);
 		event.putProperty("position", position);
 		event.putProperty("stationId", stationId);
 		emissionPort.sendEvent(uri, event);
@@ -111,7 +112,7 @@ public class FireStation extends FireStationFacade implements ActionExecutionI {
 	{
 		super.requestPriority(intersection, priority, vehicleId, destination, occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
-		event.putProperty("name", "requestPriority");
+		event.putProperty("name", FireEventName.REQUEST_PRIORITY);
 		event.putProperty("intersection", intersection);
 		event.putProperty("priority", priority);
 		event.putProperty("vehicleId", vehicleId);
@@ -126,7 +127,7 @@ public class FireStation extends FireStationFacade implements ActionExecutionI {
 	{
 		super.atDestination(vehicleId, occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
-		event.putProperty("name", "atDestination");
+		event.putProperty("name", FireEventName.AT_DESTINATION);
 		event.putProperty("vehicleId", vehicleId);
 		event.putProperty("stationId", stationId);
 		emissionPort.sendEvent(uri, event);
@@ -138,7 +139,7 @@ public class FireStation extends FireStationFacade implements ActionExecutionI {
 	{
 		super.atStation(vehicleId, occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
-		event.putProperty("name", "atStation");
+		event.putProperty("name", FireEventName.AT_STATION);
 		event.putProperty("vehicleId", vehicleId);
 		event.putProperty("stationId", stationId);
 		emissionPort.sendEvent(uri, event);
@@ -150,7 +151,7 @@ public class FireStation extends FireStationFacade implements ActionExecutionI {
 	{
 		super.notifyNoStandardTruckAvailable(occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
-		event.putProperty("name", "notifyNoStandardTruckAvailable");
+		event.putProperty("name", FireEventName.NOTIFY_NO_STANDARD_TRUCK_AVAILABLE);
 		event.putProperty("stationId", stationId);
 		emissionPort.sendEvent(uri, event);
 	}
@@ -161,7 +162,7 @@ public class FireStation extends FireStationFacade implements ActionExecutionI {
 	{
 		super.notifyStandardTrucksAvailable(occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
-		event.putProperty("name", "notifyStandardTrucksAvailable");
+		event.putProperty("name", FireEventName.NOTIFY_STANDARD_TRUCKS_AVAILABLE);
 		event.putProperty("stationId", stationId);
 		emissionPort.sendEvent(uri, event);
 	}
@@ -172,7 +173,7 @@ public class FireStation extends FireStationFacade implements ActionExecutionI {
 	{
 		super.notifyNoHighLadderTruckAvailable(occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
-		event.putProperty("name", "notifyNoHighLadderTruckAvailable");
+		event.putProperty("name", FireEventName.NOTIFY_NO_HIGH_LADDER_TRUCK_AVAILABLE);
 		event.putProperty("stationId", stationId);
 		emissionPort.sendEvent(uri, event);
 	}
@@ -183,7 +184,7 @@ public class FireStation extends FireStationFacade implements ActionExecutionI {
 	{
 		super.notifyHighLadderTrucksAvailable(occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
-		event.putProperty("name", "notifyHighLadderTrucksAvailable");
+		event.putProperty("name", FireEventName.NOTIFY_HIGH_LADDER_TRUCKS_AVAILABLE);
 		event.putProperty("stationId", stationId);
 		emissionPort.sendEvent(uri, event);
 	}

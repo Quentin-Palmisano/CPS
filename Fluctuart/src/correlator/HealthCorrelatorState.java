@@ -69,7 +69,8 @@ public class HealthCorrelatorState extends CorrelatorState implements HealthCorr
 		AtomicEvent e = (AtomicEvent) event;
 
 		String nearestStation = getNextStation(event);
-		AbsolutePosition nearestPos = SmartCityDescriptor.getPosition(nearestStation);;
+		if(nearestStation==null)return false;
+		AbsolutePosition nearestPos = SmartCityDescriptor.getPosition(nearestStation);
 		
 		AtomicEvent evnt = new AtomicEvent(TimeManager.get().getCurrentLocalTime());
 		if(name==null) {
@@ -77,14 +78,12 @@ public class HealthCorrelatorState extends CorrelatorState implements HealthCorr
 		}else {
 			evnt.putProperty("name", name);
 		}
-		evnt.putProperty("name", HealthEventName.INTERVENTION_REQUEST);
 		evnt.putProperty("position", nearestPos);
 		if(type==null) {
 			evnt.putProperty("type", e.getPropertyValue("type"));			
 		}else {
 			evnt.putProperty("type", type);
 		}
-		evnt.putProperty("type", e.getPropertyValue("type"));
 		evnt.putProperty("stationId", nearestStation);
 		emitter.sendEvent(correlator.uri, evnt);
 		return true;

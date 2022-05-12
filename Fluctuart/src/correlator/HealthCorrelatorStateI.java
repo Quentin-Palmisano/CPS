@@ -20,6 +20,6 @@ public interface HealthCorrelatorStateI extends CorrelatorStateI {
 	void setAmbulancesNotAvailable();
 	void setMedicsNotAvailable();
 	String getNextStation(EventI event);
-	boolean propagateEvent(EventI e, TypeOfHealthAlarm type, HealthEventName name) throws Exception;
+	boolean propagateEvent(EventI event, TypeOfHealthAlarm type, HealthEventName name) throws Exception;
 
 }
