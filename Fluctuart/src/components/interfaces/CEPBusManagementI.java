@@ -1,9 +1,5 @@
 package components.interfaces;
 
-import fr.sorbonne_u.components.interfaces.ComponentInterface;
-import fr.sorbonne_u.components.interfaces.OfferedCI;
-import fr.sorbonne_u.components.interfaces.RequiredCI;
-
 public interface CEPBusManagementI {
 	
 	public String registerEmitter(String uri) throws Exception;

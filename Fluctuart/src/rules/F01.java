@@ -59,13 +59,6 @@ public class F01 implements RuleI {
 		for(EventI e : matchedEvents) {
 			eb.removeEvent(e);
 		}
-		
-		//ComplexEvent e = new ComplexEvent(LocalTime.now());
-		//AtomicEvent event = new AtomicEvent(LocalTime.now());
-		//e.addEvent(event);
-
-		//AtomicEvent f = new FirstFireSignal(LocalTime.now());
-		//eb.addEvent(f);
 	}
 
 }

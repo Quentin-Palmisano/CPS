@@ -19,8 +19,8 @@ public class ActionExecutionOutboundPort extends AbstractOutboundPort implements
 	}
 	
 	@Override
-	public ResponseI execute(ActionI a, Serializable[] params) throws Exception {
-		return ((ActionExecutionCI) this.getConnector()).execute(a, params);
+	public ResponseI executeAction(ActionI a, Serializable[] params) throws Exception {
+		return ((ActionExecutionCI) this.getConnector()).executeAction(a, params);
 	}
 
 }

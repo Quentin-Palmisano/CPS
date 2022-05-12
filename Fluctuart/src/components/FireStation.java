@@ -13,7 +13,6 @@ import connectors.EventEmissionConnector;
 import events.AtomicEvent;
 import fr.sorbonne_u.components.annotations.OfferedInterfaces;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
-import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import fr.sorbonne_u.cps.smartcity.components.FireStationFacade;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
 import fr.sorbonne_u.cps.smartcity.grid.IntersectionPosition;
@@ -190,7 +189,7 @@ public class FireStation extends FireStationFacade implements ActionExecutionI {
 	}
 
 	@Override
-	public ResponseI execute(ActionI a, Serializable[] params) throws Exception {
+	public ResponseI executeAction(ActionI a, Serializable[] params) throws Exception {
 		FireAction fa = (FireAction) a;
 		if(fa == FireAction.FIRST_ALARM) {
 			actionOBP.triggerFirstAlarm((AbsolutePosition) params[0], (TypeOfFirefightingResource) params[1]);

@@ -1,5 +1,6 @@
 package events;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -29,6 +30,27 @@ public class ComplexEvent extends Event implements ComplexEventI {
 
 	public ArrayList<EventI> getCorrelatedEvents(){
 		return events;
+	}
+
+	@Override
+	public LocalTime getTimeStamp() {
+		return null;
+	}
+
+	@Override
+	public boolean hasProperty(String name) {
+		for(EventI e : events) {
+			if(e.hasProperty(name)) return true;
+		}
+		return false;
+	}
+
+	@Override
+	public Serializable getPropertyValue(String name) {
+		for(EventI e : events) {
+			if(e.hasProperty(name)) return e.getPropertyValue(name);
+		}
+		return null;
 	}
 
 }

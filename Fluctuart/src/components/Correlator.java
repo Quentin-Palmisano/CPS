@@ -13,7 +13,6 @@ import events.EventBase;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.annotations.OfferedInterfaces;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
-import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import interfaces.EventI;
 import ports.ActionExecutionOutboundPort;
 import ports.CEPBusManagementOutboundPort;

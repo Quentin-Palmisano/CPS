@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import correlator.HealthCorrelatorStateI;
 import events.HealthEventName;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfHealthAlarm;
+import fr.sorbonne_u.cps.smartcity.utils.TimeManager;
 import interfaces.CorrelatorStateI;
 import interfaces.EventBaseI;
 import interfaces.EventI;
@@ -34,7 +35,7 @@ public class S06 extends S05 {
 	
 	@Override
 	public boolean filter(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
-		LocalTime t1 = LocalTime.now();
+		LocalTime t1 = TimeManager.get().getCurrentLocalTime();
 		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
 		EventI e = matchedEvents.get(0);
 		LocalTime t2 = e.getTimeStamp();

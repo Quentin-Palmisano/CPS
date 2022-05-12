@@ -15,7 +15,7 @@ public class TrafficCorrelatorState extends CorrelatorState implements TrafficCo
 
 	@Override
 	public void changePriority(TypeOfTrafficLightPriority priority) throws Exception {
-		executor.execute(TrafficAction.PRIORITY_CHANGE, new Serializable[] {priority});
+		executor.executeAction(TrafficAction.PRIORITY_CHANGE, new Serializable[] {priority});
 	}
 
 }

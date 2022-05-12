@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import components.interfaces.ActionExecutionCI;
 import components.interfaces.CEPBusManagementCI;
 import components.interfaces.CEPBusManagementI;
 import components.interfaces.EventEmissionCI;
@@ -14,8 +13,6 @@ import connectors.EventReceptionConnector;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.annotations.OfferedInterfaces;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
-import fr.sorbonne_u.cps.smartcity.interfaces.SAMUActionCI;
-import fr.sorbonne_u.cps.smartcity.interfaces.SAMUNotificationCI;
 import interfaces.EventI;
 import ports.CEPBusManagementInboundPort;
 import ports.EventEmissionInboundPort;
@@ -50,7 +47,7 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementI, Even
 	private final CEPBusManagementInboundPort managementPort;
 	
 	protected CEPBus() throws Exception {
-		super(1, 1);
+		super(3, 3);
 		
 		emissionPort = new EventEmissionInboundPort(this);
 		emissionPort.publishPort();
@@ -95,6 +92,8 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementI, Even
 		}
 		
 	}
+	
+	
 
 	@Override
 	public String registerEmitter(String uri) throws Exception {

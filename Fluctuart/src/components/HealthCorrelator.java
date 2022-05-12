@@ -4,8 +4,6 @@ import components.interfaces.ActionExecutionCI;
 import components.interfaces.CEPBusManagementCI;
 import components.interfaces.EventEmissionCI;
 import components.interfaces.EventReceptionCI;
-import connectors.ActionExecutionConnector;
-import connectors.EventEmissionConnector;
 import correlator.HealthCorrelatorState;
 import fr.sorbonne_u.components.annotations.OfferedInterfaces;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
