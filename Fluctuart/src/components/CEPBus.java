@@ -45,7 +45,7 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementI, Even
 	private final CEPBusManagementInboundPort managementPort;
 	
 	protected CEPBus() throws Exception {
-		super(3, 3);
+		super(1, 1);
 		
 		emissionPort = new EventEmissionInboundPort(this);
 		emissionPort.publishPort();
