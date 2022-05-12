@@ -2,7 +2,6 @@ package components;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import components.interfaces.CEPBusManagementCI;
 import components.interfaces.CEPBusManagementI;
@@ -38,7 +37,6 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementI, Even
 		EventReceptionOutboundPort receptionPort;
 	}
 	
-	private final HashSet<String> emitters = new HashSet<>();
 	private final HashMap<String, EventReceptionOutboundConnection> correlators = new HashMap<>();
 	private final HashMap<String, ArrayList<String>> subscriptions = new HashMap<>();
 	private final HashMap<String, String> executors = new HashMap<>();
@@ -97,13 +95,12 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementI, Even
 
 	@Override
 	public String registerEmitter(String uri) throws Exception {
-		emitters.add(uri);
 		return emissionPort.getPortURI();
 	}
 
 	@Override
 	public void unregisterEmitter(String uri) throws Exception {
-		emitters.remove(uri);
+		
 	}
 
 	@Override
@@ -131,6 +128,7 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementI, Even
 	@Override
 	public void unregisterExecutor(String uri) throws Exception {
 		executors.remove(uri);
+		
 	}
 	
 	@Override
