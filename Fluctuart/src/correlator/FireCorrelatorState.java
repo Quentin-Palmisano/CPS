@@ -20,15 +20,15 @@ public class FireCorrelatorState extends CorrelatorState implements FireCorrelat
 	
 	@Override
 	public void receiveEvent(String emitterURI, EventI event) throws Exception {
-		String name = (String) event.getPropertyValue("name");
-		if(name.equals("notifyNoHighLadderTruckAvailable")) {
+		FireEventName name = (FireEventName) event.getPropertyValue("name");
+		if(name==FireEventName.NOTIFY_NO_HIGH_LADDER_TRUCK_AVAILABLE) {
 			highLadderTruckAvailable = false;
-		} else if(name.equals("notifyHighLadderTrucksAvailable")) {
+		} else if(name==FireEventName.NOTIFY_NO_HIGH_LADDER_TRUCK_AVAILABLE) {
 			highLadderTruckAvailable = true;
 		}
-		if(name.equals("notifyNoStandardTruckAvailable")) {
+		if(name==FireEventName.NOTIFY_NO_STANDARD_TRUCK_AVAILABLE) {
 			standardTruckAvailable = false;
-		} else if(name.equals("notifyStandardTrucksAvailable")) {
+		} else if(name==FireEventName.NOTIFY_STANDARD_TRUCKS_AVAILABLE) {
 			standardTruckAvailable = true;
 		}
 	}
