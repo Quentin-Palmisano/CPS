@@ -29,6 +29,17 @@ public class HealthCorrelator extends Correlator {
 		ruleBase.addRule(new S08());
 		ruleBase.addRule(new S09());
 		ruleBase.addRule(new S10());
+		ruleBase.addRule(new S10bis());
+		ruleBase.addRule(new S11());
+		ruleBase.addRule(new S12());
+		ruleBase.addRule(new S12bis());
+		ruleBase.addRule(new S13());
+		ruleBase.addRule(new S14());
+		ruleBase.addRule(new S15());
+		ruleBase.addRule(new S16());
+		ruleBase.addRule(new S17());
+		ruleBase.addRule(new S18());
+		ruleBase.addRule(new S19());
 
 		this.getTracer().setTitle(uri);
 		this.getTracer().setRelativePosition(3, 0);

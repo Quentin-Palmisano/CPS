@@ -12,9 +12,9 @@ import interfaces.EventBaseI;
 import interfaces.EventI;
 import interfaces.RuleI;
 
-public class S10bis extends S10 {
+public class S11 implements RuleI {
 
-	public S10bis() {
+	public S11() {
 	}
 	
 
@@ -23,7 +23,7 @@ public class S10bis extends S10 {
 		EventI he = null;
 		for (int i = 0 ; i < eb.numberOfEvents() && (he == null) ; i++) {
 			EventI e = eb.getEvent(i);
-			if (e.hasProperty("type") && e.getPropertyValue("type")==TypeOfHealthAlarm.EMERGENCY && 
+			if (e.hasProperty("type") && e.getPropertyValue("type")==TypeOfHealthAlarm.MEDICAL && 
 				e.hasProperty("name") && e.getPropertyValue("name")==HealthEventName.INTERVENTION_REQUEST) {
 				he = e;
 			}
@@ -45,12 +45,18 @@ public class S10bis extends S10 {
 	@Override
 	public boolean filter(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
 		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
-		return !samuState.isAmbulanceAvailable() && samuState.getNextStation(matchedEvents.get(0))==null;
+		return samuState.isMedicAvailable();
 	}
 
 	@Override
 	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) throws Exception {
-		c.traceRuleTrigger("S10bis");
+		c.traceRuleTrigger("S11");
+		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
+		EventI e = matchedEvents.get(0);
+		AbsolutePosition p = (AbsolutePosition) e.getPropertyValue("position");
+		String s = (String) e.getPropertyValue("personId");
+		TypeOfSAMURessources t = TypeOfSAMURessources.MEDIC;
+		samuState.triggerIntervention(p, s, t);
 	}
 
 	@Override

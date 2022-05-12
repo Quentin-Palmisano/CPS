@@ -121,4 +121,24 @@ public class HealthCorrelatorState extends CorrelatorState implements HealthCorr
 		if(nearestStation=="")return null;
 		return nearestStation;
 	}
+
+	@Override
+	public void setAmbulancesAvailable() {
+		ambulanceAvailable = true;
+	}
+
+	@Override
+	public void setMedicsAvailable() {
+		medicAvailable = true;
+	}
+
+	@Override
+	public void setAmbulancesNotAvailable() {
+		ambulanceAvailable = false;
+	}
+
+	@Override
+	public void setMedicsNotAvailable() {
+		medicAvailable = false;
+	}
 }

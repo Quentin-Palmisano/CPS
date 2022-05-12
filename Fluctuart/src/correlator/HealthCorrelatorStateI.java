@@ -15,6 +15,10 @@ public interface HealthCorrelatorStateI extends CorrelatorStateI {
 	void callMedic(AbsolutePosition position, String personId, TypeOfSAMURessources type) throws Exception;
 	boolean isAmbulanceAvailable();
 	boolean isMedicAvailable();
+	void setAmbulancesAvailable();
+	void setMedicsAvailable();
+	void setAmbulancesNotAvailable();
+	void setMedicsNotAvailable();
 	String getNextStation(EventI event);
 	boolean propagateEvent(EventI e, TypeOfHealthAlarm type, HealthEventName name) throws Exception;
 
