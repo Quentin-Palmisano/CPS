@@ -3,5 +3,6 @@ package actions;
 import interfaces.ActionI;
 
 public enum HealthAction implements ActionI {
-	INTERVENTION
+	INTERVENTION,
+	CALL_MEDIC;
 }

@@ -1,25 +1,30 @@
 package rules;
 
-import java.time.Duration;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
 import correlator.HealthCorrelatorStateI;
 import events.HealthEventName;
+import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfHealthAlarm;
+import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfSAMURessources;
 import interfaces.CorrelatorStateI;
 import interfaces.EventBaseI;
 import interfaces.EventI;
+import interfaces.RuleI;
 
-public class S06 extends S05 {
+public class S10bis extends S10 {
+
+	public S10bis() {
+	}
+	
 
 	@Override
 	public ArrayList<EventI> match(EventBaseI eb) {
 		EventI he = null;
 		for (int i = 0 ; i < eb.numberOfEvents() && (he == null) ; i++) {
 			EventI e = eb.getEvent(i);
-			if (e.hasProperty("type") && e.getPropertyValue("type")==TypeOfHealthAlarm.TRACKING &&
-				e.hasProperty("name") && e.getPropertyValue("name")==HealthEventName.HEALTH_ALARM) {
+			if (e.hasProperty("type") && e.getPropertyValue("type")==TypeOfHealthAlarm.EMERGENCY && 
+				e.hasProperty("name") && e.getPropertyValue("name")==HealthEventName.INTERVENTION_REQUEST) {
 				he = e;
 			}
 		}
@@ -31,33 +36,28 @@ public class S06 extends S05 {
 			return null;
 		}
 	}
-	
+
+	@Override
+	public boolean correlate(ArrayList<EventI> matchedEvents) {
+		return true;
+	}
+
 	@Override
 	public boolean filter(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
-		LocalTime t1 = LocalTime.now();
 		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
-		EventI e = matchedEvents.get(0);
-		LocalTime t2 = e.getTimeStamp();
-		Duration d = Duration.between(t1, t2);
-		Duration x = d.minus(Duration.ofMinutes(10));
-		return !samuState.isMedicAvailable() && !x.isNegative() && samuState.getNextStation(matchedEvents.get(0))!=null;
+		return !samuState.isAmbulanceAvailable();
 	}
 
 	@Override
 	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) throws Exception {
-		c.traceRuleTrigger("S06");
-		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
-		EventI e = matchedEvents.get(0);
-		if(e.hasProperty("stationId")) {
-			samuState.propagateEvent(e, TypeOfHealthAlarm.MEDICAL, HealthEventName.INTERVENTION_REQUEST);
-		}
+		c.traceRuleTrigger("S10");
 	}
-	
+
 	@Override
 	public void update(ArrayList<EventI> matchedEvents, EventBaseI eb) {
 		for(EventI e : matchedEvents) {
 			eb.removeEvent(e);
 		}
 	}
-	
+
 }

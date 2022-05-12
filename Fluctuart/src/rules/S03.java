@@ -3,6 +3,7 @@ package rules;
 import java.util.ArrayList;
 
 import correlator.HealthCorrelatorStateI;
+import events.HealthEventName;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfHealthAlarm;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfSAMURessources;
@@ -21,7 +22,8 @@ public class S03 implements RuleI {
 		EventI he = null;
 		for (int i = 0 ; i < eb.numberOfEvents() && (he == null) ; i++) {
 			EventI e = eb.getEvent(i);
-			if (e.hasProperty("type") && (e.getPropertyValue("type")==TypeOfHealthAlarm.MEDICAL)) {
+			if (e.hasProperty("type") && e.getPropertyValue("type")==TypeOfHealthAlarm.MEDICAL &&
+				e.hasProperty("name") && e.getPropertyValue("name")==HealthEventName.HEALTH_ALARM) {
 				he = e;
 			}
 		}		

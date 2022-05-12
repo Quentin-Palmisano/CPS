@@ -62,6 +62,7 @@ public abstract class Correlator extends AbstractComponent implements EventRecep
 		
 		state.setExecutor(executionPort);
 		state.setCorrelator(this);
+		state.setEmitter(emissionPort);
 		
 	}
 	

@@ -16,7 +16,7 @@ import interfaces.EventBaseI;
 import interfaces.EventI;
 import interfaces.RuleI;
 
-public class S07 implements RuleI{
+public class S08 extends S07{
 
 	@Override
 	public ArrayList<EventI> match(EventBaseI eb) {
@@ -70,18 +70,17 @@ public class S07 implements RuleI{
 	@Override
 	public boolean filter(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
 		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
-		return samuState.isMedicAvailable();
+		return !samuState.isMedicAvailable() && samuState.getNextStation(matchedEvents.get(0))!=null;
 	}
 
 	@Override
 	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) throws Exception {
-		c.traceRuleTrigger("S07");
+		c.traceRuleTrigger("S08");
 		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
 		EventI e = matchedEvents.get(0);
-		AbsolutePosition p = (AbsolutePosition) e.getPropertyValue("position");
-		String s = (String) e.getPropertyValue("personId");
-		TypeOfSAMURessources t = TypeOfSAMURessources.MEDIC;
-		samuState.callMedic(p, s, t);
+		if(e.hasProperty("stationId")) {
+			samuState.propagateEvent(e, null, HealthEventName.CONSCIOUS_FALL);
+		}
 	}
 
 	@Override
