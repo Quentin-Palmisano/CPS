@@ -17,6 +17,11 @@ public class FireCorrelatorState extends CorrelatorState implements FireCorrelat
 
 	boolean highLadderTruckAvailable = false;
 	boolean standardTruckAvailable = false;
+	public final String stationId;
+
+	public FireCorrelatorState(String stationId) {
+		this.stationId=stationId;
+	}
 	
 	@Override
 	public void receiveEvent(String emitterURI, EventI event) throws Exception {

@@ -1,13 +1,11 @@
 package correlator;
 
 import java.io.Serializable;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import actions.HealthAction;
 import events.AtomicEvent;
-import events.ComplexEvent;
 import events.HealthEventName;
 import fr.sorbonne_u.cps.smartcity.SmartCityDescriptor;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
@@ -20,7 +18,7 @@ public class HealthCorrelatorState extends CorrelatorState implements HealthCorr
 
 	boolean ambulanceAvailable = false;
 	boolean medicAvailable = false;
-	String stationId;
+	public final String stationId;
 
 	public HealthCorrelatorState(String stationId) {
 		this.stationId=stationId;
@@ -50,7 +48,6 @@ public class HealthCorrelatorState extends CorrelatorState implements HealthCorr
 	@Override
 	public void callMedic(AbsolutePosition position, String personId, TypeOfSAMURessources type) throws Exception{
 		correlator.traceMessage("Call Medic for position " + position + " for " + personId + " of type " + type + "\n");
-
 		this.executor.executeAction(HealthAction.CALL_MEDIC, new Serializable[] {position, personId, type});
 	}
 
@@ -74,13 +71,13 @@ public class HealthCorrelatorState extends CorrelatorState implements HealthCorr
 		
 		AtomicEvent evnt = new AtomicEvent(TimeManager.get().getCurrentLocalTime());
 		if(name==null) {
-			evnt.putProperty("name", e.getPropertyValue("name"));			
+			evnt.putProperty("name", e.getPropertyValue("name"));
 		}else {
 			evnt.putProperty("name", name);
 		}
 		evnt.putProperty("position", nearestPos);
 		if(type==null) {
-			evnt.putProperty("type", e.getPropertyValue("type"));			
+			evnt.putProperty("type", e.getPropertyValue("type"));
 		}else {
 			evnt.putProperty("type", type);
 		}

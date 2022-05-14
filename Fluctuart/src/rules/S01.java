@@ -1,5 +1,6 @@
 package rules;
 
+import java.awt.Taskbar.State;
 import java.util.ArrayList;
 
 import correlator.HealthCorrelatorStateI;

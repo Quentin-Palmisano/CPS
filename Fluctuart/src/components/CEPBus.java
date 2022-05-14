@@ -12,6 +12,7 @@ import connectors.EventReceptionConnector;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.annotations.OfferedInterfaces;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
+import fr.sorbonne_u.components.exceptions.ComponentShutdownException;
 import interfaces.EventI;
 import ports.CEPBusManagementInboundPort;
 import ports.EventEmissionInboundPort;
@@ -24,14 +25,14 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementI, Even
 	public static final String ManagementURI = "CEPBUS_MANAGEMENT_URI";
 	
 	private class EventReceptionOutboundConnection {
-		public EventReceptionOutboundConnection(CEPBus bus, String inboundPortURI) throws Exception {
-			receptionPort = new EventReceptionOutboundPort(bus);
+		public EventReceptionOutboundConnection(String inboundPortURI) throws Exception {
+			receptionPort = new EventReceptionOutboundPort(CEPBus.this);
 			receptionPort.localPublishPort();
 
-			bus.doPortConnection(receptionPort.getPortURI(), inboundPortURI, EventReceptionConnector.class.getCanonicalName());
+			CEPBus.this.doPortConnection(receptionPort.getPortURI(), inboundPortURI, EventReceptionConnector.class.getCanonicalName());
 		}
-		public void destroy(CEPBus bus) throws Exception {
-			bus.doPortDisconnection(receptionPort.getPortURI());
+		public void destroy() throws Exception {
+			CEPBus.this.doPortDisconnection(receptionPort.getPortURI());
 			receptionPort.unpublishPort();
 		}
 		EventReceptionOutboundPort receptionPort;
@@ -54,11 +55,39 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementI, Even
 		managementPort.publishPort();
 		
 		this.getTracer().setTitle("CEPBus");
-		this.getTracer().setRelativePosition(2, 0);
+		this.getTracer().setRelativePosition(0, 0);
 		this.toggleTracing();
 		
 	}
+	
+	
+	@Override
+	public synchronized void finalise() throws Exception {
+		
+		Thread.sleep(2000);
+		
+		for(String uri : correlators.keySet()) {
+			EventReceptionOutboundConnection conn = correlators.get(uri);
+			conn.destroy();
+		}
+		correlators.clear();
+		
+		super.finalise();
+	}
 
+	@Override
+	public synchronized void	shutdown() throws ComponentShutdownException
+	{
+		try {
+			this.emissionPort.unpublishPort();
+			this.managementPort.unpublishPort();
+		} catch (Exception e) {
+			throw new ComponentShutdownException(e) ;
+		}
+		super.shutdown();
+	}
+	
+	
 	@Override
 	public void sendEvent(String emitterURI, EventI event) throws Exception {
 
@@ -105,13 +134,13 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementI, Even
 
 	@Override
 	public String registerCorrelator(String uri, String inboundPortURI) throws Exception {
-		correlators.put(uri, new EventReceptionOutboundConnection(this, inboundPortURI));
+		correlators.put(uri, new EventReceptionOutboundConnection(inboundPortURI));
 		return emissionPort.getPortURI();
 	}
 
 	@Override
 	public void unregisterCorrelator(String uri) throws Exception {
-		correlators.get(uri).destroy(this);
+		correlators.get(uri).destroy();
 		correlators.remove(uri);
 	}
 

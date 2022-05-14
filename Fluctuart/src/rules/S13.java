@@ -2,6 +2,7 @@ package rules;
 
 import java.util.ArrayList;
 
+import correlator.HealthCorrelatorState;
 import correlator.HealthCorrelatorStateI;
 import events.HealthEventName;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
@@ -43,6 +44,7 @@ public class S13 implements RuleI {
 
 	@Override
 	public boolean filter(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
+		if(!matchedEvents.get(0).getPropertyValue("stationId").equals(((HealthCorrelatorState) c).stationId)) return false;
 		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
 		return samuState.isMedicAvailable();
 	}

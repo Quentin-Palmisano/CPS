@@ -15,7 +15,9 @@ import events.HealthEventName;
 import fr.sorbonne_u.components.annotations.OfferedInterfaces;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
 import fr.sorbonne_u.components.exceptions.ComponentShutdownException;
+import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import fr.sorbonne_u.cps.smartcity.components.SAMUStationFacade;
+import fr.sorbonne_u.cps.smartcity.connections.SAMUActionConnector;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
 import fr.sorbonne_u.cps.smartcity.grid.IntersectionPosition;
 import fr.sorbonne_u.cps.smartcity.interfaces.SAMUActionCI;
@@ -39,10 +41,10 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionI {
 
 	public final String uri;
 	
-	protected SAMUStation(String uri, String stationId, String notificationInboundPortURI, String actionInboundPortURI)
+	protected SAMUStation(String stationId, String notificationInboundPortURI, String actionInboundPortURI)
 			throws Exception {
 		super(stationId, notificationInboundPortURI, actionInboundPortURI);
-		this.uri = uri;
+		this.uri = getURI(stationId);
 		
 		managementPort = new CEPBusManagementOutboundPort(this);
 		managementPort.localPublishPort();
@@ -53,18 +55,29 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionI {
 		actionPort = new ActionExecutionInboundPort(this);
 		actionPort.publishPort();
 		
-		
-		
 	}
 	
 	
+	
+	@Override
+	public synchronized void start() throws ComponentStartException {
+		super.start();
+		
+		try {
+			this.doPortConnection(managementPort.getPortURI(), CEPBus.ManagementURI, CEPBusManagementConnector.class.getCanonicalName());
+		} catch (Exception e) {
+			throw new ComponentStartException(e) ;
+		}
+		
+	}
+
+
+
 	@Override
 	public synchronized void	execute() throws Exception
 	{
 		super.execute();
 
-		this.doPortConnection(managementPort.getPortURI(), CEPBus.ManagementURI, CEPBusManagementConnector.class.getCanonicalName());
-		
 		String ibp = managementPort.registerEmitter(uri);
 		this.doPortConnection(emissionPort.getPortURI(), ibp, EventEmissionConnector.class.getCanonicalName());
 		
@@ -74,8 +87,10 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionI {
 	@Override
 	public synchronized void	finalise() throws Exception
 	{
-		managementPort.unregisterExecutor(uri);
+		//managementPort.unregisterExecutor(uri);
 		this.doPortDisconnection(this.emissionPort.getPortURI());
+		//managementPort.unregisterEmitter(uri);
+		this.doPortDisconnection(this.managementPort.getPortURI());
 		super.finalise();
 	}
 
@@ -84,6 +99,8 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionI {
 	{
 		try {
 			this.emissionPort.unpublishPort();
+			this.managementPort.unpublishPort();
+			this.actionPort.unpublishPort();
 		} catch (Exception e) {
 			throw new ComponentShutdownException(e) ;
 		}
@@ -231,11 +248,12 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionI {
 
 	@Override
 	public ResponseI executeAction(ActionI a, Serializable[] params) throws Exception {
-		HealthAction action = (HealthAction) a;
-		if(action == HealthAction.INTERVENTION) {
-			this.actionOBP.triggerIntervention((AbsolutePosition) params[0], (String) params[1], (TypeOfSAMURessources) params[2]);	
-		}
+		this.actionOBP.triggerIntervention((AbsolutePosition) params[0], (String) params[1], (TypeOfSAMURessources) params[2]);
 		return null;
+	}
+	
+	public static String getURI(String stationID) {
+		return "SAMUStation " + stationID;
 	}
 	
 }

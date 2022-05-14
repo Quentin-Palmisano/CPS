@@ -13,12 +13,13 @@ import rules.*;
 @RequiredInterfaces(required={ActionExecutionCI.class, EventEmissionCI.class, CEPBusManagementCI.class})
 public class FireCorrelator extends Correlator {
 
-	private String stationURI;
+	public final String stationID;
 	
-	protected FireCorrelator(String uri, String stationURI) throws Exception {
-		super(uri, stationURI, new FireCorrelatorState(), new RuleBase());
-		this.stationURI = stationURI;
+	protected FireCorrelator(String stationID) throws Exception {
+		super(getURI(stationID), FireStation.getURI(stationID), new FireCorrelatorState(stationID), new RuleBase());
+		this.stationID = stationID;
 		
+		/*
 		ruleBase.addRule(new F01());
 		ruleBase.addRule(new F02());
 		ruleBase.addRule(new F03());
@@ -47,6 +48,7 @@ public class FireCorrelator extends Correlator {
 //		ruleBase.addRule(new F20());
 //		ruleBase.addRule(new F21());
 //		ruleBase.addRule(new F22());
+ */
 
 		this.getTracer().setTitle(uri);
 		this.getTracer().setRelativePosition(3, 1);
@@ -54,12 +56,8 @@ public class FireCorrelator extends Correlator {
 		
 	}
 	
-	@Override
-	public synchronized void	execute() throws Exception
-	{
-		super.execute();
-
-		managementPort.subscribe(uri, stationURI);
+	public static String getURI(String stationID) {
+		return "FireCorrelator " + stationID;
 	}
 	
 }

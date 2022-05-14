@@ -37,5 +37,4 @@ public abstract class CorrelatorState implements EventReceptionCI, CorrelatorSta
 		correlator.traceMessage("Rule " + ruleName + " was triggered \n");
 	}
 	
-	
 }

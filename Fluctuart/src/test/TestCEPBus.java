@@ -34,21 +34,17 @@ class TestCEPBus extends AbstractSmartCityCVM {
 			String samuStationId = samuStationsIditerator.next();
 			String notificationInboundPortURI = AbstractPort.generatePortURI();
 			this.register(samuStationId, notificationInboundPortURI);
-			
-			String uri = "SAMUStation " + samuStationId;
 
 			AbstractComponent.createComponent(
 					SAMUStation.class.getCanonicalName(),
 					new Object[]{
-							uri,
 							samuStationId,
 							notificationInboundPortURI,
 							SmartCityDescriptor.
 										getActionInboundPortURI(samuStationId)
 							});
 			
-
-			AbstractComponent.createComponent(HealthCorrelator.class.getCanonicalName(), new Object[] {"Health Correlator " + samuStationId, uri});
+			AbstractComponent.createComponent(HealthCorrelator.class.getCanonicalName(), new Object[] {samuStationId});
 			
 		}
 		
@@ -61,19 +57,16 @@ class TestCEPBus extends AbstractSmartCityCVM {
 			String notificationInboundPortURI = AbstractPort.generatePortURI();
 			this.register(fireStationId, notificationInboundPortURI);
 			
-			String uri = "FireStation " + fireStationId;
-			
 			AbstractComponent.createComponent(
 				FireStation.class.getCanonicalName(),
 				new Object[]{
-						uri,
 						fireStationId,
 						notificationInboundPortURI,
 						SmartCityDescriptor.
 										getActionInboundPortURI(fireStationId)
 						});
 			
-			AbstractComponent.createComponent(FireCorrelator.class.getCanonicalName(), new Object[] {"Fire Correlator " + fireStationId, uri});
+			AbstractComponent.createComponent(FireCorrelator.class.getCanonicalName(), new Object[] {fireStationId});
 			
 		}
 
@@ -85,12 +78,9 @@ class TestCEPBus extends AbstractSmartCityCVM {
 			String notificationInboundPortURI = AbstractPort.generatePortURI();
 			this.register(p.toString(), notificationInboundPortURI);
 			
-			String uri = "Traffic Light " + p;
-			
 			AbstractComponent.createComponent(
 					TrafficLight.class.getCanonicalName(),
 					new Object[]{
-							uri,
 							p,
 							notificationInboundPortURI,
 							SmartCityDescriptor.
@@ -98,8 +88,9 @@ class TestCEPBus extends AbstractSmartCityCVM {
 							});
 			
 
-			AbstractComponent.createComponent(TrafficCorrelator.class.getCanonicalName(), new Object[] {"Traffic Correlator " + p, uri});
+			AbstractComponent.createComponent(TrafficCorrelator.class.getCanonicalName(), new Object[] {p});
 		}
+		
 		
 		super.deploy();
 	}

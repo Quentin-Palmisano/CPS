@@ -13,6 +13,7 @@ import events.EventBase;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.annotations.OfferedInterfaces;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
+import fr.sorbonne_u.components.exceptions.ComponentShutdownException;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import interfaces.EventI;
 import ports.ActionExecutionOutboundPort;
@@ -38,14 +39,14 @@ public abstract class Correlator extends AbstractComponent implements EventRecep
 	protected final EventReceptionInboundPort receptionPort;
 	protected final ActionExecutionOutboundPort executionPort;
 	
-	private final String executorURI;
+	private final String stationURI;
 
-	protected Correlator(String uri, String executorURI, CorrelatorState state, RuleBase rb) throws Exception {
+	protected Correlator(String uri, String stationURI, CorrelatorState state, RuleBase rb) throws Exception {
 		super(1, 1);
 		this.uri = uri;
 		this.state = state;
 		this.ruleBase = rb;
-		this.executorURI = executorURI;
+		this.stationURI = stationURI;
 		
 		managementPort = new CEPBusManagementOutboundPort(this);
 		managementPort.localPublishPort();
@@ -71,6 +72,12 @@ public abstract class Correlator extends AbstractComponent implements EventRecep
 	public synchronized void start() throws ComponentStartException {
 		super.start();
 		
+		try {
+			this.doPortConnection(managementPort.getPortURI(), CEPBus.ManagementURI, CEPBusManagementConnector.class.getCanonicalName());
+		} catch (Exception e) {
+			throw new ComponentStartException(e) ;
+		}
+		
 	}
 
 
@@ -81,14 +88,45 @@ public abstract class Correlator extends AbstractComponent implements EventRecep
 		
 		Thread.sleep(100);
 		
-		this.doPortConnection(managementPort.getPortURI(), CEPBus.ManagementURI, CEPBusManagementConnector.class.getCanonicalName());
-		
 		String ibp = managementPort.registerCorrelator(uri, receptionPort.getPortURI());
 		this.doPortConnection(emissionPort.getPortURI(), ibp, EventEmissionConnector.class.getCanonicalName());
 
-		String eibp = managementPort.getExecutorInboundPortURI(executorURI);
+		managementPort.subscribe(uri, stationURI);
+		
+		String eibp = managementPort.getExecutorInboundPortURI(stationURI);
 		this.doPortConnection(executionPort.getPortURI(), eibp, ActionExecutionConnector.class.getCanonicalName());
 		
+	}
+	
+	@Override
+	public synchronized void	finalise() throws Exception
+	{
+		
+		this.doPortDisconnection(this.executionPort.getPortURI());
+		
+		//managementPort.unsubscribe(uri, stationURI);
+		
+		this.doPortDisconnection(this.emissionPort.getPortURI());
+		
+		//managementPort.unregisterCorrelator(uri);
+
+		this.doPortDisconnection(this.managementPort.getPortURI());
+		
+		super.finalise();
+	}
+
+	@Override
+	public synchronized void	shutdown() throws ComponentShutdownException
+	{
+		try {
+			this.emissionPort.unpublishPort();
+			this.managementPort.unpublishPort();
+			this.executionPort.unpublishPort();
+			this.receptionPort.unpublishPort();
+		} catch (Exception e) {
+			throw new ComponentShutdownException(e) ;
+		}
+		super.shutdown();
 	}
 	
 	@Override
