@@ -20,9 +20,9 @@ import ports.CEPBusManagementInboundPort;
 import ports.EventEmissionInboundPort;
 import ports.EventReceptionOutboundPort;
 
-@OfferedInterfaces(offered={EventEmissionCI.class, CEPBusManagementCI.class})
+@OfferedInterfaces(offered={EventEmissionCI.class, CEPBusManagementCI.class, EventEmissionCI.class})
 @RequiredInterfaces(required={EventReceptionCI.class})
-public class CEPBus extends AbstractComponent implements CEPBusManagementI, EventEmissionI {
+public class CEPBus extends AbstractComponent implements CEPBusManagementI, EventEmissionI{
 
 	public static final String ManagementURI = "CEPBUS_MANAGEMENT_URI";
 	
