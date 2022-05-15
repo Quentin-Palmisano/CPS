@@ -19,7 +19,7 @@ public class FireCorrelator extends Correlator {
 		super(getURI(stationID), FireStation.getURI(stationID), new FireCorrelatorState(stationID), new RuleBase());
 		this.stationID = stationID;
 		
-		/*
+		
 		ruleBase.addRule(new F01());
 		ruleBase.addRule(new F02());
 		ruleBase.addRule(new F03());
@@ -48,7 +48,7 @@ public class FireCorrelator extends Correlator {
 //		ruleBase.addRule(new F20());
 //		ruleBase.addRule(new F21());
 //		ruleBase.addRule(new F22());
- */
+ 
 
 		this.getTracer().setTitle(uri);
 		this.getTracer().setRelativePosition(3, 1);

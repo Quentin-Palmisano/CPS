@@ -7,9 +7,11 @@ import java.util.Iterator;
 import actions.FireAction;
 import events.AtomicEvent;
 import events.FireEventName;
+import events.HealthEventName;
 import fr.sorbonne_u.cps.smartcity.SmartCityDescriptor;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfFirefightingResource;
+import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfHealthAlarm;
 import fr.sorbonne_u.cps.smartcity.utils.TimeManager;
 import interfaces.EventI;
 
@@ -68,7 +70,7 @@ public class FireCorrelatorState extends CorrelatorState implements FireCorrelat
 		
 		executor.executeAction(FireAction.GENERAL_ALARM, new Serializable[] {position});
 	}
-
+	
 	@Override
 	public boolean propagateEvent(EventI event, FireEventName name) throws Exception {
 		AtomicEvent e = (AtomicEvent) event;
@@ -76,8 +78,21 @@ public class FireCorrelatorState extends CorrelatorState implements FireCorrelat
 		String nearestStation = getNextStation(event);
 		if(nearestStation==null)return false;
 		
-		e.putProperty("stationId", nearestStation);
-		emitter.sendEvent(correlator.uri, e);
+		AtomicEvent evnt = new AtomicEvent(TimeManager.get().getCurrentLocalTime());
+		if(name==null) {
+			evnt.putProperty("name", e.getPropertyValue("name"));
+		}else {
+			evnt.putProperty("name", name);
+		}
+		
+		evnt.putProperty("position", e.getPropertyValue("position"));
+		
+		evnt.putProperty("lastStations", e.getPropertyValue("lastStations"));
+
+		evnt.putProperty("type", e.getPropertyValue("type"));
+		
+		evnt.putProperty("stationId", nearestStation);
+		emitter.sendEvent(correlator.uri, evnt);
 		return true;
 	}
 	

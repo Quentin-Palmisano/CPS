@@ -20,7 +20,7 @@ import ports.CEPBusManagementInboundPort;
 import ports.EventEmissionInboundPort;
 import ports.EventReceptionOutboundPort;
 
-@OfferedInterfaces(offered={EventEmissionCI.class, CEPBusManagementCI.class, EventEmissionCI.class})
+@OfferedInterfaces(offered={EventEmissionCI.class, CEPBusManagementCI.class})
 @RequiredInterfaces(required={EventReceptionCI.class})
 public class CEPBus extends AbstractComponent implements CEPBusManagementI, EventEmissionI{
 
@@ -89,53 +89,82 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementI, Even
 	@Override
 	public synchronized void	shutdown() throws ComponentShutdownException
 	{
+		
+		
+		rw.writeLock().lock();
 		try {
-			this.emissionPort.unpublishPort();
-			this.managementPort.unpublishPort();
-		} catch (Exception e) {
-			throw new ComponentShutdownException(e) ;
+		
+			try {
+				this.emissionPort.unpublishPort();
+				this.managementPort.unpublishPort();
+			} catch (Exception e) {
+				throw new ComponentShutdownException(e) ;
+			}
+			super.shutdown();
+			
+		} finally {
+			rw.writeLock().unlock();
 		}
-		super.shutdown();
 	}
+	
+	/*
+	 	rw.readLock().lock();
+	 	try {
+			
+		} finally {
+			rw.readLock().unlock();
+		}
+	 */
 	
 	
 	@Override
 	public void sendEvent(String emitterURI, EventI event) throws Exception {
-
-		this.traceMessage("Event received from " + emitterURI + " of name " + event.getPropertyValue("name") + "\n");
-		
-		if(subscriptions.containsKey(emitterURI)) {
-			ArrayList<String> subscribers = subscriptions.get(emitterURI);
-			for(String subscriber : subscribers) {
-				EventReceptionOutboundConnection correlation = correlators.get(subscriber);
-				correlation.receptionPort.receiveEvent(emitterURI, event);
+		rw.readLock().lock();
+	 	try {
+	 		this.traceMessage("Event received from " + emitterURI + " of name " + event.getPropertyValue("name") + "\n");
+			
+			if(subscriptions.containsKey(emitterURI)) {
+				ArrayList<String> subscribers = subscriptions.get(emitterURI);
+				for(String subscriber : subscribers) {
+					EventReceptionOutboundConnection correlation = correlators.get(subscriber);
+					correlation.receptionPort.receiveEvent(emitterURI, event);
+				}
 			}
+		} finally {
+			rw.readLock().unlock();
 		}
-		
 	}
 
 	@Override
 	public void sendEvents(String emitterURI, EventI[] events) throws Exception {
-		
-		for(EventI event : events) {
-			this.traceMessage("Events received from " + emitterURI + " of type " + event.getPropertyValue("name") + "\n");
-		}
-		
-		if(subscriptions.containsKey(emitterURI)) {
-			ArrayList<String> subscribers = subscriptions.get(emitterURI);
-			for(String subscriber : subscribers) {
-				EventReceptionOutboundConnection correlation = correlators.get(subscriber);
-				correlation.receptionPort.receiveEvents(emitterURI, events);
+		rw.readLock().lock();
+	 	try {
+	 		for(EventI event : events) {
+				this.traceMessage("Events received from " + emitterURI + " of type " + event.getPropertyValue("name") + "\n");
 			}
+			
+			if(subscriptions.containsKey(emitterURI)) {
+				ArrayList<String> subscribers = subscriptions.get(emitterURI);
+				for(String subscriber : subscribers) {
+					EventReceptionOutboundConnection correlation = correlators.get(subscriber);
+					correlation.receptionPort.receiveEvents(emitterURI, events);
+				}
+			}
+		} finally {
+			rw.readLock().unlock();
 		}
-		
 	}
 	
 	
 
 	@Override
 	public String registerEmitter(String uri) throws Exception {
-		return emissionPort.getPortURI();
+		rw.readLock().lock();
+		try {
+			return emissionPort.getPortURI();
+		} finally {
+			rw.readLock().unlock();
+		}
 	}
 
 	@Override
@@ -145,48 +174,82 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementI, Even
 
 	@Override
 	public String registerCorrelator(String uri, String inboundPortURI) throws Exception {
-		correlators.put(uri, new EventReceptionOutboundConnection(inboundPortURI));
-		return emissionPort.getPortURI();
+		rw.writeLock().lock();
+	 	try {
+	 		correlators.put(uri, new EventReceptionOutboundConnection(inboundPortURI));
+			return emissionPort.getPortURI();
+		} finally {
+			rw.writeLock().unlock();
+		}
 	}
 
 	@Override
 	public void unregisterCorrelator(String uri) throws Exception {
-		correlators.get(uri).destroy();
-		correlators.remove(uri);
+		rw.writeLock().lock();
+	 	try {
+	 		correlators.get(uri).destroy();
+			correlators.remove(uri);
+		} finally {
+			rw.writeLock().unlock();
+		}
 	}
 
 	@Override
 	public void registerExecutor(String uri, String inboundPortURI) throws Exception {
-		executors.put(uri, inboundPortURI);
+		rw.writeLock().lock();
+	 	try {
+	 		executors.put(uri, inboundPortURI);
+		} finally {
+			rw.writeLock().unlock();
+		}
 	}
 
 	@Override
 	public String getExecutorInboundPortURI(String uri) {
-		return executors.get(uri);
+		rw.readLock().lock();
+		try {
+			return executors.get(uri);
+		} finally {
+			rw.readLock().unlock();
+		}
 	}
 
 	@Override
 	public void unregisterExecutor(String uri) throws Exception {
-		executors.remove(uri);
-		
+		rw.writeLock().lock();
+	 	try {
+	 		executors.remove(uri);
+		} finally {
+			rw.writeLock().unlock();
+		}
 	}
 	
 	@Override
 	public void subscribe(String subscriberURI, String emitterURI) {
-		ArrayList<String> subscribers = subscriptions.get(emitterURI);
-		if(subscribers == null) {
-			subscribers = new ArrayList<String>();
-			subscriptions.put(emitterURI, subscribers);
+		rw.writeLock().lock();
+	 	try {
+	 		ArrayList<String> subscribers = subscriptions.get(emitterURI);
+			if(subscribers == null) {
+				subscribers = new ArrayList<String>();
+				subscriptions.put(emitterURI, subscribers);
+			}
+			subscribers.add(subscriberURI);
+		} finally {
+			rw.writeLock().unlock();
 		}
-		subscribers.add(subscriberURI);
 	}
 
 	@Override
 	public void unsubscribe(String subscriberURI, String emitterURI) {
-		ArrayList<String> subscribers = subscriptions.get(emitterURI);
-		assert subscribers != null;
-		assert subscribers.contains(subscriberURI);
-		subscribers.remove(subscriberURI);
+		rw.writeLock().lock();
+	 	try {
+	 		ArrayList<String> subscribers = subscriptions.get(emitterURI);
+			assert subscribers != null;
+			assert subscribers.contains(subscriberURI);
+			subscribers.remove(subscriberURI);
+		} finally {
+			rw.writeLock().unlock();
+		}
 	}
 
 }
