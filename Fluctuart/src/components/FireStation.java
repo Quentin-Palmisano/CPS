@@ -225,7 +225,7 @@ public class FireStation extends FireStationFacade implements ActionExecutionI {
 	}
 
 	@Override
-	public ResponseI executeAction(ActionI a, Serializable[] params) throws Exception {
+	public void executeAction(ActionI a, Serializable[] params) throws Exception {
 		FireAction fa = (FireAction) a;
 		if(fa == FireAction.FIRST_ALARM) {
 			actionOBP.triggerFirstAlarm((AbsolutePosition) params[0], (TypeOfFirefightingResource) params[1]);
@@ -234,7 +234,6 @@ public class FireStation extends FireStationFacade implements ActionExecutionI {
 		} else if(fa == FireAction.GENERAL_ALARM) {
 			actionOBP.triggerGeneralAlarm((AbsolutePosition) params[0]);
 		}
-		return null;
 	}
 	
 	public static String getURI(String stationID) {

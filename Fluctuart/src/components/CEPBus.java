@@ -15,6 +15,7 @@ import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.annotations.OfferedInterfaces;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
 import fr.sorbonne_u.components.exceptions.ComponentShutdownException;
+import fr.sorbonne_u.cps.smartcity.sim.vehicles.Vehicle;
 import interfaces.EventI;
 import ports.CEPBusManagementInboundPort;
 import ports.EventEmissionInboundPort;
@@ -50,7 +51,7 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementI, Even
 	private final ReadWriteLock rw = new ReentrantReadWriteLock();
 	
 	protected CEPBus() throws Exception {
-		super(5, 5);
+		super(10, 10);
 		
 		emissionPort = new EventEmissionInboundPort(this);
 		emissionPort.publishPort();

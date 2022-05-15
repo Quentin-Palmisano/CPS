@@ -4,7 +4,6 @@ import components.CEPBus;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.cvm.AbstractCVM;
 import fr.sorbonne_u.components.cvm.AbstractDistributedCVM;
-import fr.sorbonne_u.components.examples.ddeployment_cs.components.DynamicAssembler;
 import fr.sorbonne_u.components.helpers.CVMDebugModes;
 
 public class TestCEPBusReparti extends AbstractDistributedCVM {
@@ -33,7 +32,7 @@ public class TestCEPBusReparti extends AbstractDistributedCVM {
 				JVM_2_ok = true ;
 			}
 		}
-		assert	JVM_1_ok && JVM_1_ok;
+		assert	JVM_1_ok && JVM_2_ok;
 	}
 	
 	@Override
