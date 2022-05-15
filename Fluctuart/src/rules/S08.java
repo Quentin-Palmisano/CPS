@@ -57,10 +57,10 @@ public class S08 extends S07{
 		LocalTime t1 = TimeManager.get().getCurrentLocalTime();
 		EventI e = matchedEvents.get(0);
 		LocalTime t2 = e.getTimeStamp();
-		Duration d = Duration.between(t1, t2);
-		Duration x = d.minus(Duration.ofMinutes(10));
+		Duration d = Duration.between(t2, t1);
+		boolean duration = d.compareTo(Duration.ofMinutes(10))<0;
 
-		return x.isNegative();
+		return duration;
 	}
 
 	@Override

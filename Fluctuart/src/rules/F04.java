@@ -48,7 +48,7 @@ public class F04 implements RuleI {
 		FireCorrelatorStateI fireState = (FireCorrelatorStateI)c;
 		EventI e = matchedEvents.get(0);
 		if(e.hasProperty("stationId")) {
-			fireState.propagateEvent(e, FireEventName.HOUSE_INTERVENTION_REQUEST);
+			fireState.propagateEvent(e, FireEventName.INTERVENTION_REQUEST);
 		}
 	}
 

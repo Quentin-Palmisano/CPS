@@ -64,10 +64,10 @@ public class F09 implements RuleI {
 		LocalTime t1 = TimeManager.get().getCurrentLocalTime();
 		EventI e = matchedEvents.get(0);
 		LocalTime t2 = e.getTimeStamp();
-		Duration d = Duration.between(t1, t2);
-		Duration x = d.minus(Duration.ofMinutes(15));
-		
-		return x.isNegative();
+		Duration d = Duration.between(t2, t1);
+		boolean duration = d.compareTo(Duration.ofMinutes(15))<0;
+
+		return duration;
 	}
 
 	@Override

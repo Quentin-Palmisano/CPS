@@ -58,10 +58,10 @@ public class S07 implements RuleI{
 		LocalTime t1 = TimeManager.get().getCurrentLocalTime();
 		EventI e = matchedEvents.get(0);
 		LocalTime t2 = e.getTimeStamp();
-		Duration d = Duration.between(t1, t2);
-		Duration x = d.minus(Duration.ofMinutes(10));
+		Duration d = Duration.between(t2, t1);
+		boolean duration = d.compareTo(Duration.ofMinutes(10))<0;
 
-		return x.isNegative();
+		return duration;
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class S07 implements RuleI{
 		EventI e = matchedEvents.get(0);
 		AbsolutePosition p = (AbsolutePosition) e.getPropertyValue("position");
 		String s = (String) e.getPropertyValue("personId");
-		TypeOfSAMURessources t = TypeOfSAMURessources.MEDIC;
+		TypeOfSAMURessources t = TypeOfSAMURessources.TELEMEDIC;
 		samuState.callMedic(p, s, t);
 	}
 

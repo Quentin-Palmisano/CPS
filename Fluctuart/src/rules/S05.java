@@ -2,6 +2,7 @@ package rules;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 
 import correlator.HealthCorrelatorStateI;
@@ -46,9 +47,9 @@ public class S05 implements RuleI {
 		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
 		EventI e = matchedEvents.get(0);
 		LocalTime t2 = e.getTimeStamp();
-		Duration d = Duration.between(t1, t2);
-		Duration x = d.minus(Duration.ofMinutes(10));
-		return samuState.isMedicAvailable() && !x.isNegative();
+		Duration d = Duration.between(t2, t1);
+		boolean duration = d.compareTo(Duration.ofMinutes(10))>0;
+		return samuState.isMedicAvailable() && duration;
 	}
 
 	@Override
