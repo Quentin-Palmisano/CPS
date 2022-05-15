@@ -26,6 +26,7 @@ public class HealthCorrelatorState extends CorrelatorState implements HealthCorr
 	
 	@Override
 	public void receiveEvent(String emitterURI, EventI event) throws Exception {
+		if(!(event.getPropertyValue("name") instanceof HealthEventName)) return;
 		HealthEventName name = (HealthEventName) event.getPropertyValue("name");
 		if(name==HealthEventName.NOTIFY_NO_AMBULANCE_AVAILABLE) {
 			ambulanceAvailable = false;

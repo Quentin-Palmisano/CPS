@@ -1,6 +1,7 @@
 package events;
 
 public enum TrafficLightEventName {
-	VEHICLEPASSAGE,
+	WAIT_FOR_VEHICLE_PASSAGE,
+	VEHICLE_PASSAGE,
 	REQUEST_PRIORITY;
 }

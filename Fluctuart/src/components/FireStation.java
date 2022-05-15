@@ -12,6 +12,7 @@ import connectors.CEPBusManagementConnector;
 import connectors.EventEmissionConnector;
 import events.AtomicEvent;
 import events.FireEventName;
+import events.TrafficLightEventName;
 import fr.sorbonne_u.components.annotations.OfferedInterfaces;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
 import fr.sorbonne_u.components.exceptions.ComponentShutdownException;
@@ -147,7 +148,7 @@ public class FireStation extends FireStationFacade implements ActionExecutionI {
 	{
 		super.requestPriority(intersection, priority, vehicleId, destination, occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
-		event.putProperty("name", FireEventName.REQUEST_PRIORITY);
+		event.putProperty("name", TrafficLightEventName.REQUEST_PRIORITY);
 		event.putProperty("intersection", intersection);
 		event.putProperty("priority", priority);
 		event.putProperty("vehicleId", vehicleId);

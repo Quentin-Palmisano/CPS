@@ -1,5 +1,7 @@
 package components;
 
+import java.util.Iterator;
+
 import components.interfaces.ActionExecutionCI;
 import components.interfaces.CEPBusManagementCI;
 import components.interfaces.EventEmissionCI;
@@ -7,6 +9,7 @@ import components.interfaces.EventReceptionCI;
 import correlator.FireCorrelatorState;
 import fr.sorbonne_u.components.annotations.OfferedInterfaces;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
+import fr.sorbonne_u.cps.smartcity.SmartCityDescriptor;
 import rules.*;
 
 @OfferedInterfaces(offered={EventReceptionCI.class})
@@ -51,6 +54,22 @@ public class FireCorrelator extends Correlator {
 		this.getTracer().setTitle(uri);
 		this.getTracer().setRelativePosition(3, 1);
 		this.toggleTracing();
+		
+	}
+	
+	@Override
+	public synchronized void	execute() throws Exception
+	{
+		super.execute();
+		
+		Iterator<String> fireStationsIditerator = SmartCityDescriptor.createFireStationIdIterator();
+		while (fireStationsIditerator.hasNext()) {
+			String fireStationId = fireStationsIditerator.next();
+			if(fireStationId.equals(stationID)) continue;
+			
+			managementPort.subscribe(uri, getURI(fireStationId));
+			
+		}
 		
 	}
 	

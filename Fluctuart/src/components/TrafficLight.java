@@ -11,6 +11,7 @@ import components.interfaces.EventEmissionCI;
 import connectors.CEPBusManagementConnector;
 import connectors.EventEmissionConnector;
 import events.AtomicEvent;
+import events.TrafficLightEventName;
 import fr.sorbonne_u.components.annotations.OfferedInterfaces;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
 import fr.sorbonne_u.components.exceptions.ComponentShutdownException;
@@ -106,7 +107,7 @@ public class TrafficLight extends TrafficLightFacade implements ActionExecutionI
 	public void	vehiclePassage(String vehicleId, Direction d, LocalTime occurrence) throws Exception {
 		super.vehiclePassage(vehicleId, d, occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
-		event.putProperty("name", "vehiclePassage");
+		event.putProperty("name", TrafficLightEventName.VEHICLE_PASSAGE);
 		event.putProperty("vehicleId", vehicleId);
 		event.putProperty("direction", d);
 		emissionPort.sendEvent(uri, event);
@@ -119,6 +120,8 @@ public class TrafficLight extends TrafficLightFacade implements ActionExecutionI
 		TrafficAction ta = (TrafficAction) a;
 		if(ta == TrafficAction.PRIORITY_CHANGE) {
 			actionOBP.changePriority((TypeOfTrafficLightPriority) params[0]);
+		}else if(ta == TrafficAction.RETURN_TO_NORMAL_MODE) {
+			actionOBP.returnToNormalMode();
 		}
 		return null;
 	}

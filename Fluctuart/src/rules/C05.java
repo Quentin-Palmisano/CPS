@@ -2,6 +2,7 @@ package rules;
 
 import java.util.ArrayList;
 
+import correlator.TrafficCorrelatorStateI;
 import interfaces.CorrelatorStateI;
 import interfaces.EventBaseI;
 import interfaces.EventI;
@@ -26,6 +27,8 @@ public class C05 implements RuleI {
 
 	@Override
 	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
+		c.traceRuleTrigger("C05");
+		TrafficCorrelatorStateI trafficState = (TrafficCorrelatorStateI)c;
 	}
 
 	@Override

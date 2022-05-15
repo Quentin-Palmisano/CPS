@@ -3,7 +3,6 @@ package components;
 import java.io.Serializable;
 import java.time.LocalTime;
 
-import actions.HealthAction;
 import components.interfaces.ActionExecutionCI;
 import components.interfaces.ActionExecutionI;
 import components.interfaces.CEPBusManagementCI;
@@ -12,13 +11,12 @@ import connectors.CEPBusManagementConnector;
 import connectors.EventEmissionConnector;
 import events.AtomicEvent;
 import events.HealthEventName;
+import events.TrafficLightEventName;
 import fr.sorbonne_u.components.annotations.OfferedInterfaces;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
 import fr.sorbonne_u.components.exceptions.ComponentShutdownException;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
-import fr.sorbonne_u.cps.smartcity.SmartCityDescriptor;
 import fr.sorbonne_u.cps.smartcity.components.SAMUStationFacade;
-import fr.sorbonne_u.cps.smartcity.connections.SAMUActionConnector;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
 import fr.sorbonne_u.cps.smartcity.grid.IntersectionPosition;
 import fr.sorbonne_u.cps.smartcity.interfaces.SAMUActionCI;
@@ -171,7 +169,7 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionI {
 	{
 		super.requestPriority(intersection, priority, vehicleId, destination, occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
-		event.putProperty("name", HealthEventName.REQUEST_PRIORITY);
+		event.putProperty("name", TrafficLightEventName.REQUEST_PRIORITY);
 		event.putProperty("intersection", intersection);
 		event.putProperty("priority", priority);
 		event.putProperty("vehicleId", vehicleId);
