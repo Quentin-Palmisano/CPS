@@ -2,6 +2,8 @@ package components;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import components.interfaces.CEPBusManagementCI;
 import components.interfaces.CEPBusManagementI;
@@ -45,8 +47,10 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementI, Even
 	private final EventEmissionInboundPort emissionPort;
 	private final CEPBusManagementInboundPort managementPort;
 	
+	private final ReadWriteLock rw = new ReentrantReadWriteLock();
+	
 	protected CEPBus() throws Exception {
-		super(1, 1);
+		super(5, 5);
 		
 		emissionPort = new EventEmissionInboundPort(this);
 		emissionPort.publishPort();
@@ -66,13 +70,20 @@ public class CEPBus extends AbstractComponent implements CEPBusManagementI, Even
 		
 		Thread.sleep(2000);
 		
-		for(String uri : correlators.keySet()) {
-			EventReceptionOutboundConnection conn = correlators.get(uri);
-			conn.destroy();
-		}
-		correlators.clear();
+		rw.writeLock().lock();
+		try {
 		
-		super.finalise();
+			for(String uri : correlators.keySet()) {
+				EventReceptionOutboundConnection conn = correlators.get(uri);
+				conn.destroy();
+			}
+			correlators.clear();
+			
+			super.finalise();
+			
+		} finally {
+			rw.writeLock().unlock();
+		}
 	}
 
 	@Override

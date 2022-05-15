@@ -49,7 +49,7 @@ public class S10 extends S09 {
 		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
 		return !samuState.isAmbulanceAvailable() && samuState.getNextStation(matchedEvents.get(0))!=null;
 	}
-
+ 
 	@Override
 	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) throws Exception {
 		c.traceRuleTrigger("S10");

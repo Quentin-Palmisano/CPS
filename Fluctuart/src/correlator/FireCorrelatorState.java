@@ -75,18 +75,9 @@ public class FireCorrelatorState extends CorrelatorState implements FireCorrelat
 
 		String nearestStation = getNextStation(event);
 		if(nearestStation==null)return false;
-		AbsolutePosition nearestPos = SmartCityDescriptor.getPosition(nearestStation);;
 		
-		AtomicEvent evnt = new AtomicEvent(TimeManager.get().getCurrentLocalTime());
-		if(name==null) {
-			evnt.putProperty("name", e.getPropertyValue("name"));			
-		}else {
-			evnt.putProperty("name", name);
-		}
-		evnt.putProperty("position", nearestPos);
-		evnt.putProperty("type", e.getPropertyValue("type"));
-		evnt.putProperty("stationId", nearestStation);
-		emitter.sendEvent(correlator.uri, evnt);
+		e.putProperty("stationId", nearestStation);
+		emitter.sendEvent(correlator.uri, e);
 		return true;
 	}
 	
