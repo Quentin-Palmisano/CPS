@@ -98,7 +98,7 @@ class TestCEPBus extends AbstractSmartCityCVM {
 	public static void main(String[] args) {
 		try {
 			simulatedStartTime = LocalTime.of(12, 0);
-			simulatedEndTime = LocalTime.of(12, 0).plusMinutes(200);
+			simulatedEndTime = LocalTime.of(12, 0).plusMinutes(20);
 			TestCEPBus c = new TestCEPBus();
 			c.startStandardLifeCycle(
 					TimeManager.get().computeExecutionDuration() + START_DELAY);
