@@ -16,6 +16,7 @@ import fr.sorbonne_u.components.annotations.OfferedInterfaces;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
 import fr.sorbonne_u.components.exceptions.ComponentShutdownException;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
+import fr.sorbonne_u.cps.smartcity.SmartCityDescriptor;
 import fr.sorbonne_u.cps.smartcity.components.SAMUStationFacade;
 import fr.sorbonne_u.cps.smartcity.connections.SAMUActionConnector;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
