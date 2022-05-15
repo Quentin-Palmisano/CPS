@@ -97,6 +97,23 @@ public class FireCorrelatorState extends CorrelatorState implements FireCorrelat
 	}
 	
 	@Override
+	public boolean propagateEventToAllStation(EventI event, String stationId) throws Exception {
+		Iterator<String> fireStationsIditerator = SmartCityDescriptor.createFireStationIdIterator();
+		
+		while (fireStationsIditerator.hasNext()) {
+			String id = fireStationsIditerator.next();
+			if(id!=null && id!=stationId) {
+				AtomicEvent e = (AtomicEvent) event;
+				e.putProperty("stationId", id);
+				emitter.sendEvent(correlator.uri, e);
+				
+			}
+		}
+		
+		return true;
+	}
+	
+	@Override
 	public String getNextStation(EventI event) {
 		
 		AtomicEvent e = (AtomicEvent) event;
@@ -126,6 +143,26 @@ public class FireCorrelatorState extends CorrelatorState implements FireCorrelat
 		}
 		if(nearestStation=="")return null;
 		return nearestStation;
+	}
+
+	@Override
+	public void setHighLadderTruckAvailable() {
+		highLadderTruckAvailable = true;
+	}
+
+	@Override
+	public void setStandardTruckAvailable() {
+		standardTruckAvailable = true;
+	}
+
+	@Override
+	public void setHighLadderTruckNotAvailable() {
+		highLadderTruckAvailable = false;
+	}
+
+	@Override
+	public void setStandardTruckNotAvailable() {
+		standardTruckAvailable = false;
 	}
 
 }

@@ -73,7 +73,7 @@ public class F09 implements RuleI {
 	@Override
 	public boolean filter(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
 		FireCorrelatorStateI fireState = (FireCorrelatorStateI)c;
-		return fireState.isStandardTruckAvailable();
+		return true;
 	}
 
 	@Override
@@ -81,12 +81,21 @@ public class F09 implements RuleI {
 		c.traceRuleTrigger("F09");
 		FireCorrelatorStateI fireState = (FireCorrelatorStateI)c;
 		fireState.triggerGeneralAlarm((AbsolutePosition) matchedEvents.get(0).getPropertyValue("position"));
-		//pas fini
+		AtomicEvent e = new AtomicEvent(TimeManager.get().getCurrentLocalTime());
+		e.putProperty("name", FireEventName.GENERAL_ALARM);
+		e.putProperty("position", matchedEvents.get(0).getPropertyValue("position"));
+		e.putProperty("type", matchedEvents.get(0).getPropertyValue("type"));
+		fireState.propagateEventToAllStation(e, (String) matchedEvents.get(0).getPropertyValue("stationId"));
 	}
 
 	@Override
 	public void update(ArrayList<EventI> matchedEvents, EventBaseI eb) {
-		//pas fini
+		for(EventI e : matchedEvents) {
+			AtomicEvent event = (AtomicEvent) e;
+			if(event.getPropertyValue("name")==FireEventName.FIRST_FIRE_ALARM) {
+				event.putProperty("name", FireEventName.GENERAL_ALARM);
+			}
+		}
 	}
 
 }

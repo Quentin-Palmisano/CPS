@@ -25,8 +25,7 @@ public class F22 implements RuleI {
 		EventI he = null;
 		for (int i = 0 ; i < eb.numberOfEvents() && (he == null) ; i++) {
 			EventI e = eb.getEvent(i);
-			if (e.hasProperty("type") && e.getPropertyValue("type") == TypeOfFire.Building && 
-				e.hasProperty("name") && e.getPropertyValue("name") == FireEventName.FIRE_ALARM) {
+			if (e.hasProperty("name") && e.getPropertyValue("name") == FireEventName.END_OF_FIRE) {
 				he = e;
 			}
 		}		
@@ -46,20 +45,19 @@ public class F22 implements RuleI {
 
 	@Override
 	public boolean filter(ArrayList<EventI> matchedEvents, CorrelatorStateI c) {
-		FireCorrelatorStateI fireState = (FireCorrelatorStateI)c;
-		return fireState.isHighLadderTruckAvailable();
+		return true;
 	}
 
 	@Override
 	public void act(ArrayList<EventI> matchedEvents, CorrelatorStateI c) throws Exception {
-		c.traceRuleTrigger("F01");
-		FireCorrelatorStateI fireState = (FireCorrelatorStateI)c;
-		fireState.triggerFirstAlarm((AbsolutePosition) matchedEvents.get(0).getPropertyValue("position"), TypeOfFirefightingResource.HighLadderTruck);
+		c.traceRuleTrigger("F22");
 	}
 
 	@Override
 	public void update(ArrayList<EventI> matchedEvents, EventBaseI eb) {
-		((AtomicEvent) matchedEvents.get(0)).putProperty("name", FireEventName.FIRST_FIRE_ALARM);
+		for(EventI e : matchedEvents) {
+			eb.removeEvent(e);
+		}
 	}
 
 }
