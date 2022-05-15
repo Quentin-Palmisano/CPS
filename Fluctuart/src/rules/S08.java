@@ -41,18 +41,25 @@ public class S08 extends S07{
 		}
 	}
 
+	
+	
 	@Override
 	public boolean correlate(ArrayList<EventI> matchedEvents) {
+		boolean found = false;
 		String id = "";
-		String tmp = "";
 		for(EventI e : matchedEvents) {
-			if(e.hasProperty("personId")) tmp = (String) e.getPropertyValue("personId");
-			if(id=="") {
-				id=tmp;				
-			}else if(id!=tmp) {
-				return false;
+			if(e.hasProperty("personId")) {
+				String tmp = (String) e.getPropertyValue("personId");
+				if(id == "") {
+					id = tmp;
+				} else if(id==tmp) {
+					found = true;
+					break;
+				}
 			}
 		}
+		
+		if(!found) return false;
 
 		LocalTime t1 = TimeManager.get().getCurrentLocalTime();
 		EventI e = matchedEvents.get(0);

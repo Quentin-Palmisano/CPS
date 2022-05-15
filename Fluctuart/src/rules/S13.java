@@ -56,6 +56,9 @@ public class S13 implements RuleI {
 		EventI e = matchedEvents.get(0);
 		AbsolutePosition p = (AbsolutePosition) e.getPropertyValue("position");
 		String s = (String) e.getPropertyValue("personId");
+		if(!e.hasProperty("personId")) {
+			System.out.println("no person !!!!");
+		}
 		TypeOfSAMURessources t = TypeOfSAMURessources.TELEMEDIC;
 		samuState.callMedic(p, s, t);
 	}
