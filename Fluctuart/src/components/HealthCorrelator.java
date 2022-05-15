@@ -44,7 +44,7 @@ public class HealthCorrelator extends Correlator {
 		
 		
 		ruleBase.addRule(new S01());
-		/*
+		
 		ruleBase.addRule(new S02());
 		ruleBase.addRule(new S03());
 		ruleBase.addRule(new S04());
@@ -61,11 +61,11 @@ public class HealthCorrelator extends Correlator {
 		ruleBase.addRule(new S13());
 		ruleBase.addRule(new S14());
 		ruleBase.addRule(new S15());
+		
 		ruleBase.addRule(new S16());
 		ruleBase.addRule(new S17());
 		ruleBase.addRule(new S18());
 		ruleBase.addRule(new S19());
-		*/
 		
 
 		this.getTracer().setTitle(uri);
