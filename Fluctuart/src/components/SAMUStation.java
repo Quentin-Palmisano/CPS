@@ -137,9 +137,10 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionI {
 	{
 		super.trackingAlarm(position, personId, occurrence);
 		AtomicEvent event = new AtomicEvent(occurrence);
-		event.putProperty("name", HealthEventName.TRACKING_ALARM);
+		event.putProperty("name", HealthEventName.HEALTH_ALARM);
 		event.putProperty("position", position);
 		event.putProperty("personId", personId);
+		event.putProperty("type", TypeOfHealthAlarm.TRACKING);
 		event.putProperty("stationId", stationId);
 		emissionPort.sendEvent(uri, event);
 	}

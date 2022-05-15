@@ -23,7 +23,7 @@ public class S18 implements RuleI{
 		EventI he = null;
 		for (int i = 0 ; i < eb.numberOfEvents() && (he == null) ; i++) {
 			EventI e = eb.getEvent(i);
-			if (e.hasProperty("name") && e.getPropertyValue("name")==HealthEventName.AMBULANCES_AVAILABLE) {
+			if (e.hasProperty("name") && e.getPropertyValue("name")==HealthEventName.NOTIFY_AMBULANCES_AVAILABLE) {
 				he = e;
 			}
 		}

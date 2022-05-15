@@ -23,7 +23,7 @@ public class S19 implements RuleI{
 		EventI he = null;
 		for (int i = 0 ; i < eb.numberOfEvents() && (he == null) ; i++) {
 			EventI e = eb.getEvent(i);
-			if (e.hasProperty("name") && e.getPropertyValue("name")==HealthEventName.MEDICS_AVAILABLE) {
+			if (e.hasProperty("name") && e.getPropertyValue("name")==HealthEventName.NOTIFY_MEDICS_AVAILABLE) {
 				he = e;
 			}
 		}

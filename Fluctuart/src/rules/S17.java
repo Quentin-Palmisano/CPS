@@ -23,7 +23,7 @@ public class S17 implements RuleI{
 		EventI he = null;
 		for (int i = 0 ; i < eb.numberOfEvents() && (he == null) ; i++) {
 			EventI e = eb.getEvent(i);
-			if (e.hasProperty("name") && e.getPropertyValue("name")==HealthEventName.ALL_MEDICS_IN_INTERVENTION) {
+			if (e.hasProperty("name") && e.getPropertyValue("name")==HealthEventName.NOTIFY_NO_MEDIC_AVAILABLE) {
 				he = e;
 			}
 		}

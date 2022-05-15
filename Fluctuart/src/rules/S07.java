@@ -21,18 +21,15 @@ public class S07 implements RuleI{
 	@Override
 	public ArrayList<EventI> match(EventBaseI eb) {
 		EventI e1 = null;
-		
+
 		EventI e2 = null;
 		for (int i = 0 ; i < eb.numberOfEvents() && (e1==null || e2==null) ; i++) {
-			EventI event = eb.getEvent(i);
-			if(event instanceof ComplexEvent) {
-				ComplexEvent e = (ComplexEvent) event;
-				if (e.hasProperty("type") && e.getPropertyValue("type")==TypeOfHealthAlarm.TRACKING &&
+			EventI e = eb.getEvent(i);
+			if (e.hasProperty("type") && e.getPropertyValue("type")==TypeOfHealthAlarm.TRACKING &&
 					e.hasProperty("name") && e.getPropertyValue("name")==HealthEventName.HEALTH_ALARM) {
-					e1 = e;
-				}else if(e.hasProperty("name") && e.getPropertyValue("name")==HealthEventName.MANUAL_SIGNAL) {
-					e2 = e;
-				}
+				e1 = e;
+			}else if(e.hasProperty("name") && e.getPropertyValue("name")==HealthEventName.MANUAL_SIGNAL) {
+				e2 = e;
 			}
 		}
 		if (e1!=null && e2!=null) {
@@ -57,13 +54,13 @@ public class S07 implements RuleI{
 				return false;
 			}
 		}
-		
+
 		LocalTime t1 = TimeManager.get().getCurrentLocalTime();
 		EventI e = matchedEvents.get(0);
 		LocalTime t2 = e.getTimeStamp();
 		Duration d = Duration.between(t1, t2);
 		Duration x = d.minus(Duration.ofMinutes(10));
-		
+
 		return x.isNegative();
 	}
 
