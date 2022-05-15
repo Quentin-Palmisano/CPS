@@ -73,25 +73,17 @@ public class FireCorrelatorState extends CorrelatorState implements FireCorrelat
 	
 	@Override
 	public boolean propagateEvent(EventI event, FireEventName name) throws Exception {
-		AtomicEvent e = (AtomicEvent) event;
+		AtomicEvent evnt = (AtomicEvent) event;
 
 		String nearestStation = getNextStation(event);
 		if(nearestStation==null)return false;
 		
-		AtomicEvent evnt = new AtomicEvent(TimeManager.get().getCurrentLocalTime());
-		if(name==null) {
-			evnt.putProperty("name", e.getPropertyValue("name"));
-		}else {
+		if(name!=null) {
 			evnt.putProperty("name", name);
 		}
 		
-		evnt.putProperty("position", e.getPropertyValue("position"));
-		
-		evnt.putProperty("lastStations", e.getPropertyValue("lastStations"));
-
-		evnt.putProperty("type", e.getPropertyValue("type"));
-		
 		evnt.putProperty("stationId", nearestStation);
+		
 		emitter.sendEvent(correlator.uri, evnt);
 		return true;
 	}

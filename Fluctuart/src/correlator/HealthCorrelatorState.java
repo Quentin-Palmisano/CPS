@@ -41,15 +41,13 @@ public class HealthCorrelatorState extends CorrelatorState implements HealthCorr
 
 	@Override
 	public void triggerIntervention(AbsolutePosition position, String personId, TypeOfSAMURessources type) throws Exception{
+		if(position.equals(SmartCityDescriptor.getPosition(stationId))) return;
 		correlator.traceMessage("Trigger Intervention at position " + position + " for " + personId + " of type " + type + "\n");		
 		this.executor.executeAction(HealthAction.INTERVENTION, new Serializable[] {position, personId, type});
 	}
 	
 	@Override
 	public void callMedic(AbsolutePosition position, String personId, TypeOfSAMURessources type) throws Exception{
-		if(position.equals(SmartCityDescriptor.getPosition(stationId))) {
-			System.out.println("tg");
-		}
 		correlator.traceMessage("Call Medic for position " + position + " for " + personId + " of type " + type + "\n");
 		this.executor.executeAction(HealthAction.CALL_MEDIC, new Serializable[] {position, personId, type});
 	}
@@ -66,28 +64,21 @@ public class HealthCorrelatorState extends CorrelatorState implements HealthCorr
 
 	@Override
 	public boolean propagateEvent(EventI event, TypeOfHealthAlarm type, HealthEventName name) throws Exception {
-		AtomicEvent e = (AtomicEvent) event;
+		AtomicEvent evnt = (AtomicEvent) event;
 
 		String nearestStation = getNextStation(event);
 		if(nearestStation==null)return false;
 		
-		AtomicEvent evnt = new AtomicEvent(TimeManager.get().getCurrentLocalTime());
-		if(name==null) {
-			evnt.putProperty("name", e.getPropertyValue("name"));
-		}else {
+		if(name!=null) {
 			evnt.putProperty("name", name);
 		}
-		
-		evnt.putProperty("position", e.getPropertyValue("position"));
-		
-		evnt.putProperty("lastStations", e.getPropertyValue("lastStations"));
 
-		if(type==null) {
-			evnt.putProperty("type", e.getPropertyValue("type"));
-		}else {
+		if(type!=null) {
 			evnt.putProperty("type", type);
 		}
+		
 		evnt.putProperty("stationId", nearestStation);
+		
 		emitter.sendEvent(correlator.uri, evnt);
 		return true;
 	}
