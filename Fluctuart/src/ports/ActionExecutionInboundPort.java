@@ -20,13 +20,12 @@ public class ActionExecutionInboundPort extends AbstractInboundPort implements A
 	}
 	
 	@Override
-	public ResponseI executeAction(ActionI a, Serializable[] params) throws Exception {
-		return this.getOwner().handleRequest(owner -> {
+	public void executeAction(ActionI a, Serializable[] params) throws Exception {
+		this.getOwner().runTask(owner -> {
 			try {
-				return ((ActionExecutionI)owner).executeAction(a, params);
+				((ActionExecutionI)owner).executeAction(a, params);
 			} catch (Exception e) {
 				e.printStackTrace();
-				return null;
 			}
 		});
 	}

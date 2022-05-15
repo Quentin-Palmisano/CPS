@@ -116,14 +116,13 @@ public class TrafficLight extends TrafficLightFacade implements ActionExecutionI
 
 
 	@Override
-	public ResponseI executeAction(ActionI a, Serializable[] params) throws Exception {
+	public void executeAction(ActionI a, Serializable[] params) throws Exception {
 		TrafficAction ta = (TrafficAction) a;
 		if(ta == TrafficAction.PRIORITY_CHANGE) {
 			actionOBP.changePriority((TypeOfTrafficLightPriority) params[0]);
 		}else if(ta == TrafficAction.RETURN_TO_NORMAL_MODE) {
 			actionOBP.returnToNormalMode();
 		}
-		return null;
 	}
 	
 	public static String getURI(IntersectionPosition position) {

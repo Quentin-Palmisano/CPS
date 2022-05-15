@@ -26,16 +26,13 @@ public class F12 implements RuleI {
 		EventI e1 = null;
 		EventI e2 = null;
 		for (int i = 0 ; i < eb.numberOfEvents() && (e1==null || e2==null) ; i++) {
-			EventI event = eb.getEvent(i);
-			if(event instanceof ComplexEvent) {
-				ComplexEvent e = (ComplexEvent) event;
-				if (e.hasProperty("type") && e.getPropertyValue("type")==TypeOfFire.House &&
-					e.hasProperty("name") && e.getPropertyValue("name")==FireEventName.FIRST_FIRE_ALARM) {
-					e1 = e;
-				}else if(e.hasProperty("type") && e.getPropertyValue("type")==TypeOfFire.House &&
-						e.hasProperty("name") && e.getPropertyValue("name")==FireEventName.FIRE_ALARM) {
-					e2 = e;
-				}
+			EventI e = eb.getEvent(i);
+			if (e.hasProperty("type") && e.getPropertyValue("type")==TypeOfFire.House &&
+				e.hasProperty("name") && e.getPropertyValue("name")==FireEventName.FIRST_FIRE_ALARM) {
+				e1 = e;
+			}else if(e.hasProperty("type") && e.getPropertyValue("type")==TypeOfFire.House &&
+					e.hasProperty("name") && e.getPropertyValue("name")==FireEventName.FIRE_ALARM) {
+				e2 = e;
 			}
 		}
 		if (e1!=null && e2!=null) {

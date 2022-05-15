@@ -247,9 +247,8 @@ public class SAMUStation extends SAMUStationFacade implements ActionExecutionI {
 	}
 
 	@Override
-	public ResponseI executeAction(ActionI a, Serializable[] params) throws Exception {
+	public void executeAction(ActionI a, Serializable[] params) throws Exception {
 		this.actionOBP.triggerIntervention((AbsolutePosition) params[0], (String) params[1], (TypeOfSAMURessources) params[2]);
-		return null;
 	}
 	
 	public static String getURI(String stationID) {

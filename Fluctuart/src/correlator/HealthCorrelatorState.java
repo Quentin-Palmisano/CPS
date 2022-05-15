@@ -11,7 +11,6 @@ import fr.sorbonne_u.cps.smartcity.SmartCityDescriptor;
 import fr.sorbonne_u.cps.smartcity.grid.AbsolutePosition;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfHealthAlarm;
 import fr.sorbonne_u.cps.smartcity.interfaces.TypeOfSAMURessources;
-import fr.sorbonne_u.cps.smartcity.utils.TimeManager;
 import interfaces.EventI;
 
 public class HealthCorrelatorState extends CorrelatorState implements HealthCorrelatorStateI {

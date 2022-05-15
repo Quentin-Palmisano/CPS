@@ -6,7 +6,6 @@ import components.interfaces.ActionExecutionCI;
 import fr.sorbonne_u.components.ComponentI;
 import fr.sorbonne_u.components.ports.AbstractOutboundPort;
 import interfaces.ActionI;
-import interfaces.ResponseI;
 
 public class ActionExecutionOutboundPort extends AbstractOutboundPort implements ActionExecutionCI {
 
@@ -19,8 +18,8 @@ public class ActionExecutionOutboundPort extends AbstractOutboundPort implements
 	}
 	
 	@Override
-	public ResponseI executeAction(ActionI a, Serializable[] params) throws Exception {
-		return ((ActionExecutionCI) this.getConnector()).executeAction(a, params);
+	public void executeAction(ActionI a, Serializable[] params) throws Exception {
+		((ActionExecutionCI) this.getConnector()).executeAction(a, params);
 	}
 
 }

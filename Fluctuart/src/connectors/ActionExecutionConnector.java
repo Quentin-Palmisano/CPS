@@ -10,8 +10,8 @@ import interfaces.ResponseI;
 public class ActionExecutionConnector extends AbstractConnector implements ActionExecutionCI {
 
 	@Override
-	public ResponseI executeAction(ActionI a, Serializable[] params) throws Exception {
-		return ((ActionExecutionCI) this.offering).executeAction(a, params);
+	public void executeAction(ActionI a, Serializable[] params) throws Exception {
+		((ActionExecutionCI) this.offering).executeAction(a, params);
 	}
 	
 }
