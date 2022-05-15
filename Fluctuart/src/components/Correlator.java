@@ -132,7 +132,7 @@ public abstract class Correlator extends AbstractComponent implements EventRecep
 	@Override
 	public void receiveEvent(String emitterURI, EventI event) throws Exception {
 
-		this.traceMessage("Event received from " + emitterURI + " of name " + event.getPropertyValue("name") + "\n");
+		this.traceMessage("Event received from " + emitterURI + " of name " + event.getPropertyValue("name") + (event.hasProperty("type")?(" of type " +event.getPropertyValue("type")):"") + "\n");
 		
 		state.receiveEvent(emitterURI, event);
 		eventBase.addEvent(event);
@@ -143,7 +143,7 @@ public abstract class Correlator extends AbstractComponent implements EventRecep
 	public void receiveEvents(String emitterURI, EventI[] events) throws Exception {
 
 		for(EventI event : events) {
-			this.traceMessage("Event received from " + emitterURI + " of name " + event.getPropertyValue("name") + "\n");
+			this.traceMessage("Event received from " + emitterURI + " of name " + event.getPropertyValue("name") + (event.hasProperty("type")?(" of type " +event.getPropertyValue("type")):"") + "\n");
 		}
 		
 		state.receiveEvents(emitterURI, events);

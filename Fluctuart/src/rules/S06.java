@@ -39,9 +39,9 @@ public class S06 extends S05 {
 		HealthCorrelatorStateI samuState = (HealthCorrelatorStateI)c;
 		EventI e = matchedEvents.get(0);
 		LocalTime t2 = e.getTimeStamp();
-		Duration d = Duration.between(t1, t2);
-		Duration x = d.minus(Duration.ofMinutes(10));
-		return !samuState.isMedicAvailable() && !x.isNegative() && samuState.getNextStation(matchedEvents.get(0))!=null;
+		Duration d = Duration.between(t2, t1);
+		boolean duration = d.compareTo(Duration.ofMinutes(10))>0;
+		return !samuState.isMedicAvailable() && duration && samuState.getNextStation(matchedEvents.get(0))!=null;
 	}
 
 	@Override

@@ -20,7 +20,8 @@ public class F06bis implements RuleI {
 		EventI he = null;
 		for (int i = 0 ; i < eb.numberOfEvents() && (he == null) ; i++) {
 			EventI e = eb.getEvent(i);
-			if (e.hasProperty("name") && e.getPropertyValue("name") == FireEventName.BUILDING_INTERVENTION_REQUEST) {
+			if (e.hasProperty("name") && e.getPropertyValue("name") == FireEventName.INTERVENTION_REQUEST &&
+					e.hasProperty("type") && e.getPropertyValue("type") == TypeOfFire.Building) {
 				he = e;
 			}
 		}		
