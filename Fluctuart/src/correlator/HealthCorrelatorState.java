@@ -47,6 +47,9 @@ public class HealthCorrelatorState extends CorrelatorState implements HealthCorr
 	
 	@Override
 	public void callMedic(AbsolutePosition position, String personId, TypeOfSAMURessources type) throws Exception{
+		if(position.equals(SmartCityDescriptor.getPosition(stationId))) {
+			System.out.println("tg");
+		}
 		correlator.traceMessage("Call Medic for position " + position + " for " + personId + " of type " + type + "\n");
 		this.executor.executeAction(HealthAction.CALL_MEDIC, new Serializable[] {position, personId, type});
 	}
