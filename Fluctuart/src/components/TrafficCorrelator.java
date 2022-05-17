@@ -25,7 +25,6 @@ public class TrafficCorrelator extends Correlator {
 		this.position = position;
 		
 		ruleBase.addRule(new C01());
-		ruleBase.addRule(new C02());
 		
 		
 		this.getTracer().setTitle(uri);

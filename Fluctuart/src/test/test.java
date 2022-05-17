@@ -22,13 +22,4 @@ class test {
 		assert ((String)hp.getPropertyValue("type")).equals("emergency");
 	}
 	
-	@Test
-	void clearEventTest() {
-		EventBase eb = new EventBase();
-		eb.addEvent(new AtomicEvent(LocalTime.now().minusMinutes(10)));
-		eb.addEvent(new AtomicEvent(LocalTime.now()));
-		eb.clearEvents(Duration.ofMinutes(5));
-		assert (eb.numberOfEvents() == 1);
-	}
-	
 }

@@ -70,7 +70,8 @@ public class C02 implements RuleI {
 		IntersectionPosition i = (IntersectionPosition) v1.getPropertyValue("intersection");
 		IntersectionPosition nexti = i.next(d);
 		AbsolutePosition pi = new AbsolutePosition(nexti.getX(), nexti.getY());
-		//if(pi.equalAbsolutePosition(df)) return false;
+		if(pi.equalAbsolutePosition(df)) return false;
+		
 		
 		return true;
 	}
